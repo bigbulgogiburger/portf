@@ -41,7 +41,7 @@ Chrome을 사용해 `/print`에서 6페이지의 `public/dohoon-portfolio.pdf`�
 | ---------------------- | ---------------------------------- |
 | `OPENAI_API_KEY`       | 서버 전용 OpenAI API 키            |
 | `OPENAI_MODEL`         | 기본값 `gpt-5.6-luna`              |
-| `CHAT_RATE_LIMIT_ID`   | 배포된 Vercel Firewall SDK 규칙 ID |
+| `CHAT_RATE_LIMIT_ENABLED` | 아래 Vercel WAF 규칙 적용 후 `true` |
 | `NEXT_PUBLIC_SITE_URL` | 확정된 HTTPS 대표 URL, 끝에 / 제외 |
 
 [공식 Luna 모델 문서](https://developers.openai.com/api/docs/models/gpt-5.6-luna)의 Responses API를 사용합니다. 실제 키의 모델 접근권한은 연결 후 확인해야 합니다. 키 미설정 시 HTTP 503과 준비 중 안내를 반환하며 가짜 생성 답변을 표시하지 않습니다.
@@ -51,8 +51,8 @@ Chrome을 사용해 `/print`에서 6페이지의 `public/dohoon-portfolio.pdf`�
 - 사용자 메시지 800자, 최대 15개 메시지(8번째 질문까지), 입력 총 16,000자, 본문 최대 64KB, 출력 최대 1,100 토큰.
 - 출력은 텍스트로 렌더링하며 임의 HTML·링크를 실행하지 않습니다.
 - `store:false`, 브라우저 메모리에만 대화 유지. 앱은 질문과 응답을 로그에 남기지 않습니다.
-- localhost에서는 메모리 기반 분당 10회 제한(개발용). Vercel에서는 Firewall SDK를 사용하며 규칙 ID 미설정 또는 검사 오류 시 호출을 차단합니다. 메모리 제한을 분산 배포의 제한으로 취급하지 않습니다.
-- Vercel Firewall에서 SDK 조건과 전용 규칙 ID를 생성하고 IP당 10회/60초, 초과 시 차단으로 설정한 뒤 게시합니다. 지역별 제한 특성은 [Vercel 문서](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting-sdk)를 참고합니다.
+- localhost에서는 메모리 기반 분당 10회 제한(개발용). Vercel에서는 WAF가 서버 함수 진입 전에 제한합니다. 적용 확인 환경변수가 `true`가 아니면 AI 호출을 차단합니다. 이 변수 자체가 제한을 설정하는 것은 아니므로 WAF 규칙을 유지해야 합니다.
+- Vercel Firewall에서 `path equals /api/chat` AND `method equals POST` 규칙을 활성화하고 IP당 10회/60초 fixed window, 초과 시 HTTP 429로 설정합니다. 설정 후 `CHAT_RATE_LIMIT_ENABLED=true`로 배포합니다. 지역별 제한 특성은 [Vercel 문서](https://vercel.com/docs/vercel-firewall/vercel-waf/rate-limiting)를 참고합니다.
 - 공개 운영 전 OpenAI 프로젝트 예산 알림·사용량을 설정하고 Vercel Firewall 차단과 실제 모델 응답을 확인합니다.
 - 챗봇 중단: Vercel의 `OPENAI_API_KEY`를 제거하고 재배포. 사이트와 이메일 링크는 계속 사용할 수 있습니다.
 

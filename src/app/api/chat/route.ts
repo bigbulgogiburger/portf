@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import { checkRateLimit } from "@vercel/firewall";
 import { projects } from "@/data/portfolio";
 import {
   answerSchema,
@@ -55,17 +54,12 @@ export async function POST(request: Request) {
     );
   try {
     if (process.env.VERCEL) {
-      if (!process.env.CHAT_RATE_LIMIT_ID)
+      // Vercel WAF limits POST /api/chat before requests reach this function.
+      if (process.env.CHAT_RATE_LIMIT_ENABLED !== "true")
         return fail(
           "AI 어시스턴트를 준비하고 있어요. 잠시 후 다시 방문해 주세요.",
           503,
         );
-      const { rateLimited } = await checkRateLimit(
-        process.env.CHAT_RATE_LIMIT_ID,
-        { request },
-      );
-      if (rateLimited)
-        return fail("잠시 쉬어갈게요. 1분 후 다시 질문해 주세요.", 429);
     } else if (localRateLimit("local-development")) {
       return fail("잠시 쉬어갈게요. 1분 후 다시 질문해 주세요.", 429);
     }

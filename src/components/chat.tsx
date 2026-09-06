@@ -60,6 +60,8 @@ export function Chat({ embedded = false }: { embedded?: boolean }) {
         body: JSON.stringify({ messages: next }),
         signal: controller.signal,
       });
+      if (response.status === 429)
+        throw new Error("잠시 쉬어갈게요. 1분 후 다시 질문해 주세요.");
       const result = await response.json();
       if (!response.ok)
         throw new Error(
