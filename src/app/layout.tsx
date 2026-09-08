@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "@fontsource-variable/dm-sans";
-import "@fontsource-variable/noto-sans-kr";
+import localFont from "next/font/local";
+const pretendard = localFont({ src: "../../public/fonts/PretendardVariable.woff2", variable: "--pretendard", display: "swap", weight: "100 900" });
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -28,7 +29,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" className={pretendard.variable}>
       <body>{children}</body>
     </html>
   );

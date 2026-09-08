@@ -1,7 +1,9 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function Orbit() {
+  const [paused, setPaused] = useState(false);
+  const phaseRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -14,7 +16,7 @@ export function Orbit() {
       frame = 0,
       running = true,
       visible = true;
-    let phase = 0;
+    let phase = phaseRef.current;
     const draw = () => {
       ctx.clearRect(0, 0, width, height);
       const r = Math.min(width, height) * 0.28;
@@ -55,8 +57,9 @@ export function Orbit() {
         ctx.arc(p.x, p.y, 0.65 + bright * 1.15, 0, Math.PI * 2);
         ctx.fill();
       }
-      if (running && visible && !media.matches) {
+      if (running && visible && !media.matches && !paused) {
         phase += 0.014;
+        phaseRef.current = phase;
         frame = requestAnimationFrame(draw);
       }
     };
@@ -90,9 +93,17 @@ export function Orbit() {
       observer.disconnect();
       media.removeEventListener("change", change);
     };
-  }, []);
+  }, [paused]);
   return (
-    <div className="orbit-scene" aria-hidden="true">
+    <div className="orbit-stage" onPointerMove={(event) => {
+      if (paused || event.pointerType !== "mouse" || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      const bounds = event.currentTarget.getBoundingClientRect();
+      event.currentTarget.style.setProperty("--orbit-yaw", `${((event.clientX - bounds.left) / bounds.width - .5) * 10}deg`);
+      event.currentTarget.style.setProperty("--orbit-tilt", `${((event.clientY - bounds.top) / bounds.height - .5) * -8}deg`);
+    }} onPointerLeave={(event) => {
+      event.currentTarget.style.setProperty("--orbit-yaw", "0deg");
+      event.currentTarget.style.setProperty("--orbit-tilt", "0deg");
+    }}><button className="motion-toggle" aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? "움직임 재생 ↗" : "움직임 멈추기 Ⅱ"}</button><div className="orbit-scene" aria-hidden="true">
       <div className="orbit-grid" />
       <div className="orbit-halo" />
       <canvas ref={canvasRef} />
@@ -102,7 +113,7 @@ export function Orbit() {
       <span className="orbit-label label-bottom">
         HUMAN INTENT → WORKING SYSTEM
       </span>
-      <span className="orbit-coordinate">[ 37.56° N / 126.97° E ]</span>
+      <span className="orbit-coordinate">DESIGN · BUILD · OPERATE</span>
       <div className="orbit-chip chip-one">
         <span>01</span> BACKEND
       </div>
@@ -112,6 +123,6 @@ export function Orbit() {
       <div className="orbit-chip chip-three">
         <span>03</span> OPERATIONS
       </div>
-    </div>
+    </div></div>
   );
 }
