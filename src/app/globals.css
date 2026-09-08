@@ -2341,3 +2341,177 @@ i {
     display: none;
   }
 }
+
+/* September 2026 editorial review: evidence first, shared PDF palette. */
+:root { --bg:#101c2d; --surface:#192a40; --text:#f5f7fc; --muted:#b2bfd1; --line:#35465d; --lime:#9dbaff; }
+body { font-size:16px; }
+.eyebrow,.section-kicker { font-size:12px; letter-spacing:.07em; }
+.site-header { border-bottom:1px solid var(--line); }
+.nav-links>a { font-size:14px; }
+.hero-meta { font-size:12px; }
+.hero-content { grid-template-columns:1fr 1fr; gap:56px; min-height:460px; }
+.hero-copy { padding:50px 0; }
+.hero-copy>.eyebrow { color:var(--muted); margin-bottom:22px; }
+.hero h1 { font-size:clamp(40px,4.1vw,62px); white-space:normal; }
+.hero-description { color:var(--muted); font-size:16px; line-height:1.9; }
+.hero-actions { gap:24px; flex-wrap:wrap; }
+.hero-project { display:block; padding:22px; background:#1b2c43; border:1px solid #40546e; }
+.hero-project>.eyebrow { display:block; margin-bottom:16px; }
+.hero-project>.project-art { height:220px; }
+.hero-project>div:not(.project-art) { display:flex; justify-content:space-between; gap:16px; margin:18px 0 7px; }
+.hero-project strong { font-size:19px; }
+.hero-project>p { font-size:13px; color:var(--muted); }
+.proof-grid { margin:4px 0 0; padding:26px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); gap:30px; }
+.proof-grid>a { padding:0 24px; border-right:1px solid var(--line); }
+.proof-grid>a:first-child { padding-left:0; }
+.proof-grid>a:last-child { border:0; }
+.proof-number { font-size:36px; white-space:normal; }
+.proof-number>span { font-size:18px; }
+.proof-grid p { color:var(--muted); font-size:14px; margin-top:8px; }
+.work-section { padding-top:84px; }
+.section-heading { margin-bottom:36px; align-items:end; }
+.section-heading h2,.intro-grid h2,.career-grid h2,.agent-promo h2 { font-size:clamp(30px,3vw,42px); }
+.section-heading p { color:var(--muted); font-size:16px; }
+.section-kicker { margin-bottom:25px; }
+.project-grid { gap:36px 28px; }
+.project-card { background:#16263c; border:1px solid var(--line); --accent:#9dbaff; }
+.project-art-wrap { border:0; border-bottom:1px solid var(--line); border-radius:0; }
+.project-art { height:290px; background:#e9eef5; }
+.product-screen img { padding:30px 20px 22px; }
+.project-index { color:#263a54; font-size:12px; top:10px; left:15px; }
+.project-open { background:#101c2d; color:#cbdcff; border-color:#516987; }
+.project-copy { padding:25px 26px 28px; }
+.project-label { display:flex; justify-content:space-between; gap:12px; align-items:center; margin-bottom:14px; }
+.project-label>.eyebrow { color:#b2c6e6; }
+.project-status { font-size:12px; color:#d0ddf1; white-space:nowrap; }
+.project-copy h3 { font-size:25px; line-height:1.45; }
+.project-subtitle { font-size:14px; color:var(--muted); }
+.project-summary { font-size:16px; color:#d5deeb; line-height:1.85; }
+.tag-list>span { color:#c1d0e5; border-color:#44546b; font-size:12px; }
+.process-art { flex-direction:column; align-items:stretch; justify-content:center; padding:35px 30px; color:#172940; background:#e9eef5; }
+.process-heading { display:flex; flex-direction:column; gap:4px; font-size:26px; font-weight:700; }
+.process-heading>span { font-size:13px; font-weight:400; color:#51627b; }
+.process-steps { display:flex; margin:24px 0 18px; gap:8px; }
+.process-steps>div { flex:1; display:flex; align-items:center; gap:6px; }
+.process-steps strong { background:#d4e1f7; padding:12px 8px; flex:1; text-align:center; font-size:13px; white-space:normal; }
+.process-steps>div:last-child strong { background:#275cf4; color:white; }
+.process-art>p { font-size:13px; color:#51627b; }
+.intro-section,.capability-section,.career-section,.agent-section { padding-block:78px; }
+.intro-grid p { font-size:17px; line-height:1.95; }
+.capability-grid { gap:30px; }
+.capability-grid>div { background:var(--surface); padding:26px; }
+.capability-grid h3 { font-size:24px; }
+.capability-grid p,.capability-grid li { font-size:15px; color:var(--muted); }
+.career-grid { grid-template-columns:.8fr 1.2fr; gap:80px; }
+.career-grid>div>p { font-size:16px; max-width:360px; }
+.career-list p { color:var(--muted); font-size:16px; }
+.career-date,.career-list h3>span { color:var(--muted); font-size:14px; }
+.agent-section { border-top:1px solid var(--line); }
+.contact-section { padding:60px 0; background:#1b2f49; }
+.contact-section h2 { font-size:36px; }
+.contact-email { font-size:clamp(21px,4vw,52px); }
+.case-page>.section-kicker { flex-wrap:wrap; gap:12px; }
+.case-page>h1 { font-size:clamp(32px,4vw,58px); max-width:1000px; }
+.case-intro { font-size:19px; max-width:850px; color:#d5deeb; }
+.case-subtitle,.case-meta p { color:var(--muted); }
+.case-page>.project-art { max-width:980px; height:420px; margin-inline:auto; }
+.case-page>.process-art { max-width:980px; }
+.case-page>.process-art .process-heading { font-size:34px; }
+.case-page>.process-art .process-steps strong { font-size:18px; padding:24px; }
+.visual-caption { text-align:center; color:var(--muted); font-size:13px; }
+.case-section { max-width:900px; margin-inline:auto; padding-block:50px; }
+.case-section h2 { font-size:34px; }
+.case-section>p,.decisions p { font-size:17px; line-height:1.95; color:#d0daea; }
+.case-flow span { font-size:14px; background:#233c5c; color:#e0e9f7; }
+.case-section>small { font-size:13px; }
+.case-meta>div>span { font-size:12px; }
+@media(max-width:1100px) {
+ .hero-content { gap:28px; }
+ .hero-project>.project-art { height:180px; }
+ .proof-number { font-size:29px; }
+ .process-art { padding:28px 18px; }
+ .capability-grid { gap:15px; }
+}
+@media(max-width:760px) {
+ .container { width:calc(100% - 40px); }
+ .hero-meta { padding-top:22px; }
+ .hero-content { grid-template-columns:1fr; gap:10px; }
+ .hero-copy { padding:35px 0 24px; }
+ .hero h1 { font-size:43px; }
+ .hero-description { font-size:16px; }
+ .hero-project { padding:16px; }
+ .hero-project>.project-art { height:210px; }
+ .hero-project>p { font-size:13px; }
+ .proof-grid { grid-template-columns:1fr; gap:0; margin-top:28px; padding:0; }
+ .proof-grid>a,.proof-grid>a:first-child { padding:18px 0; border:0; border-bottom:1px solid var(--line); }
+ .proof-number { font-size:30px; }
+ .proof-grid p { margin-top:2px; }
+ .work-section { padding-top:58px; }
+ .section-heading { align-items:start; }
+ .section-heading p { margin-top:18px; }
+ .project-grid { grid-template-columns:1fr; gap:28px; }
+ .project-art { height:270px; }
+ .project-copy { padding:22px; }
+ .project-copy h3 { font-size:24px; }
+ .project-label { flex-wrap:wrap; gap:6px; }
+ .process-art { padding:28px 18px; }
+ .process-steps strong { font-size:12px; padding:12px 5px; }
+ .intro-section,.capability-section,.career-section,.agent-section { padding-block:54px; }
+ .intro-grid,.career-grid { grid-template-columns:1fr; gap:26px; }
+ .intro-grid p { font-size:16px; }
+ .capability-grid { grid-template-columns:1fr; gap:18px; }
+ .career-grid>div>p { max-width:none; }
+ .career-list h3 { display:flex; flex-direction:column; gap:4px; }
+ .contact-section { padding:45px 0; }
+ .case-page>.project-art { height:270px; }
+ .case-page>.process-art .process-heading { font-size:27px; }
+ .case-page>.process-art .process-steps strong { font-size:12px; padding:12px 6px; }
+ .case-page>.section-kicker { font-size:12px; }
+ .case-section h2 { font-size:27px; }
+ .case-section>p,.decisions p { font-size:16px; }
+ .case-section { padding-block:32px; }
+}
+
+.hero-copy>.eyebrow { font-size:14px; letter-spacing:0; line-height:1.7; }
+.hero-meta { letter-spacing:.05em; }
+
+/* Project reading surface: quiet paper panels against the navy introduction. */
+.work-section { --text:#142338; --muted:#526176; --line:#d5dfea; --lime:#275cf4; margin-top:58px; padding:76px 0 86px; background:#f3f6fb; color:var(--text); }
+.work-section .section-kicker { color:#50637c; }
+.work-section .section-heading { margin-bottom:42px; }
+.work-section .section-heading h2 { font-size:44px; }
+.work-section .project-card { background:white; border:1px solid #d8e0ec; transition:border-color .2s, box-shadow .2s; }
+.work-section .project-card:hover { border-color:#8da9d6; box-shadow:0 12px 28px #1423380c; }
+.work-section .project-card:focus-visible { outline:3px solid #275cf4; }
+.work-section .project-copy h3 { color:#142338; }
+.work-section .project-label>.eyebrow { color:#2850a0; }
+.work-section .project-status { color:#586880; }
+.work-section .project-summary { color:#43546d; }
+.work-section .tag-list>span { color:#465b78; border-color:#d2ddea; background:#f7f9fc; }
+.project-evidence { padding-top:20px; margin-top:20px; border-top:1px solid #e1e7f0; font-size:15px; color:#2353b1; font-weight:600; }
+.work-section .project-card:first-child { display:grid; grid-template-columns:1.05fr 1fr; grid-column:1/-1; align-items:stretch; }
+.work-section .project-card:first-child .project-art-wrap { border:0; border-right:1px solid #d8e0ec; display:flex; }
+.work-section .project-card:first-child .project-art { width:100%; height:100%; min-height:370px; }
+.work-section .project-card:first-child .project-copy { padding:40px; align-self:center; }
+.work-section .project-card:first-child h3 { font-size:32px; }
+.work-section .project-card:last-child { grid-column:1/-1; display:grid; grid-template-columns:.55fr 1fr; }
+.work-section .project-card:last-child .project-art { height:100%; min-height:330px; }
+.work-section .project-card:last-child .project-copy { padding:35px 40px; }
+.case-meta p { font-size:15px; line-height:1.85; }
+.case-section { margin-block:35px; }
+.case-result { background:#1d3350; border-left:3px solid #81a8ff; padding:35px 40px; }
+.case-result>p.metric-label { font-size:15px; color:#a9c5ff; }
+.case-next>a { gap:25px; }
+@media(max-width:760px) {
+ .work-section { margin-top:44px; padding:48px 0 52px; }
+ .work-section .section-heading h2 { font-size:32px; }
+ .work-section .project-card:first-child,.work-section .project-card:last-child { display:block; }
+ .work-section .project-card:first-child .project-art-wrap { border-right:0; }
+ .work-section .project-card:first-child .project-art,.work-section .project-card:last-child .project-art { height:260px; min-height:0; }
+ .work-section .project-card:first-child .project-copy,.work-section .project-card:last-child .project-copy { padding:24px; }
+ .work-section .project-card:first-child h3 { font-size:26px; }
+ .project-evidence { font-size:15px; }
+ .case-meta p { font-size:14px; }
+ .case-result { padding:26px 22px; }
+ .case-section { margin-block:25px; }
+}

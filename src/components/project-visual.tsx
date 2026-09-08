@@ -1,112 +1,18 @@
-import { Layers, Cpu, Network, ShieldCheck, ArrowRight } from "./icons";
-export function ProjectVisual({ id }: { id: string }) {
-  if (id === "service-agent")
-    return (
-      <div className="project-art agent-art" aria-hidden="true">
-        <div className="art-grid" />
-        <div className="agent-path" />
-        <div className="visual-node query-node">
-          <span className="node-icon">?</span>
-          <span>수리 접수 상태를 알려줘</span>
-        </div>
-        <div className="agent-core">
-          <Cpu size={32} />
-          <span>CS AGENT</span>
-          <small>CONTEXT → ACTION</small>
-        </div>
-        <div className="visual-node tool-node">
-          <ShieldCheck size={17} />
-          <span>권한 확인 · 도구 실행</span>
-          <i />
-        </div>
-        <div className="visual-note">DESIGNED FOR REAL OPERATIONS</div>
-      </div>
-    );
-  if (id === "harness")
-    return (
-      <div className="project-art harness-art" aria-hidden="true">
-        <div className="art-grid" />
-        <div className="terminal-window">
-          <div className="terminal-bar">
-            <i />
-            <i />
-            <i />
-            <span>workflow / quality-gate</span>
-          </div>
-          <div className="terminal-content">
-            <p>
-              <b>❯</b> harness run
-            </p>
-            <p className="terminal-muted">Requirement → Implementation</p>
-            <p>
-              <span className="code-line" /> Backend review <em>PASS</em>
-            </p>
-            <p>
-              <span className="code-line" /> Security review <em>PASS</em>
-            </p>
-            <p>
-              <span className="code-line" /> Integration check <em>PASS</em>
-            </p>
-            <div className="terminal-result">
-              <ShieldCheck size={16} /> Ready to commit <span>↗</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  if (id === "field-service")
-    return (
-      <div className="project-art field-art" aria-hidden="true">
-        <div className="art-grid" />
-        <div className="stack-layer layer-back" />
-        <div className="stack-layer layer-middle" />
-        <div className="stack-layer layer-front">
-          <Layers size={28} />
-          <b>SERVICE PLATFORM</b>
-          <div className="mini-cells">
-            <span>접수</span>
-            <span>수리</span>
-            <span>정산</span>
-          </div>
-          <small>DOMAIN · STATE · PERMISSION</small>
-        </div>
-      </div>
-    );
-  if (id === "payments")
-    return (
-      <div className="project-art payment-art" aria-hidden="true">
-        <div className="art-grid" />
-        <div className="payment-card">
-          <div>
-            <span>PAYMENT SERVICE</span>
-            <ShieldCheck size={20} />
-          </div>
-          <b>결제부터 환불까지.</b>
-          <span>CONSISTENCY BY DESIGN</span>
-          <hr />
-          <div>
-            <small>Webhook</small>
-            <ArrowRight size={16} />
-            <small>Verify</small>
-            <ArrowRight size={16} />
-            <small>Retry</small>
-          </div>
-        </div>
-      </div>
-    );
-  return (
-    <div className="project-art member-art" aria-hidden="true">
-      <div className="art-grid" />
-      <div className="network-orbit orbit-a" />
-      <div className="network-orbit orbit-b" />
-      <div className="network-core">
-        <Network size={28} />
-        <b>EVENT BUS</b>
-        <small>AWS SNS</small>
-      </div>
-      <span className="satellite sat-a">회원</span>
-      <span className="satellite sat-b">Q&A</span>
-      <span className="satellite sat-c">서비스</span>
-    </div>
-  );
+import Image from "next/image";
+import { ArrowRight } from "./icons";
+const screens: Record<string, {file:string; alt:string}> = {
+  "field-service": {file:"stanley-original-1",alt:"Stanley CS 관리자 대시보드"},
+  "platform-operations": {file:"surien-1",alt:"수리엔 엔지니어 업무용 모바일 앱"},
+  payments: {file:"skytab-1",alt:"스카이탭 학생·선생님 수업 화면"},
+  membership: {file:"linker-1",alt:"링커 모바일 서비스 화면"},
+};
+export function ProjectVisual({id, eager=false}:{id:string; eager?:boolean}) {
+  const screen=screens[id];
+  if(screen) return <div className={`project-art product-screen screen-${id}`}><Image src={`/projects/${screen.file}.png`} alt={screen.alt} loading={eager ? "eager" : "lazy"} fill sizes="(max-width: 760px) 90vw, 600px" style={{objectFit:"contain"}} /></div>;
+  const harness=id==="harness";
+  return <div className={`project-art process-art ${harness?"harness-art":"agent-art"}`} aria-label={harness?"검증한 코드와 커밋 대상 비교 흐름":"접수 초안 생성과 사용자 등록 흐름"}>
+    <div className="process-heading">{harness?"jira-harness":"CS AI Agent"}<span>{harness?"코드 검증 흐름":"신규 접수 흐름"}</span></div>
+    <div className="process-steps">{(harness?["테스트·리뷰","Git tree 기록","커밋 대상 비교"]:["권한 내 조회","접수 초안","사용자 등록"]).map((s,i)=><div key={s}><strong>{s}</strong>{i<2&&<ArrowRight size={18}/>}</div>)}</div>
+    <p>{harness?"차단 모드: 미검증·실패·코드 변경 시 재검증":"초안 유효시간 5분 · 등록 전 사용자 확인"}</p>
+  </div>;
 }

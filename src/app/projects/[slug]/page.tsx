@@ -37,18 +37,18 @@ export default async function ProjectPage({
           <span>
             {p.number} / {p.category}
           </span>
-          <span>CASE STUDY</span>
+          <span>{p.period} · {p.status}</span>
         </div>
         <h1>{p.title}</h1>
         <p className="case-subtitle">{p.subtitle}</p>
         <p className="case-intro">{p.summary}</p>
         <div className="case-meta">
           <div>
-            <span>MY ROLE</span>
+            <span>담당 역할</span>
             <p>{p.role}</p>
           </div>
           <div>
-            <span>TECH STACK</span>
+            <span>활용 기술</span>
             <div className="tag-list">
               {p.tags.map((t) => (
                 <span key={t}>{t}</span>
@@ -56,18 +56,18 @@ export default async function ProjectPage({
             </div>
           </div>
         </div>
-        <ProjectVisual id={p.id} />
+        <ProjectVisual id={p.id} eager />
         <p className="visual-caption">
-          공개용 개념 시각화 · 실제 고객사 화면이나 운영 로그가 아닙니다.
+          {["harness", "service-agent"].includes(p.id) ? "핵심 동작 흐름" : "프로젝트 화면 · 기존 포트폴리오 수록 이미지"}
         </p>
         <section className="case-section">
           <span className="eyebrow">01 / CHALLENGE</span>
-          <h2>먼저, 해결해야 할 문제.</h2>
+          <h2>문제와 제약</h2>
           <p>{p.challenge}</p>
         </section>
         <section className="case-section">
           <span className="eyebrow">02 / DECISIONS</span>
-          <h2>이렇게 설계했습니다.</h2>
+          <h2>설계와 구현</h2>
           <div className="decisions">
             {p.decisions.map((d, i) => (
               <article key={d.title}>
@@ -91,13 +91,13 @@ export default async function ProjectPage({
             이해를 돕기 위해 단순화한 개념 흐름입니다.
           </small>
         </section>
-        <section className="case-section">
-          <span className="eyebrow">03 / IMPACT</span>
+        <section className="case-section case-result">
+          <span className="eyebrow">03 / RESULT</span>
           <h2>{p.metric}</h2>
           <p className="metric-label">{p.metricLabel}</p>
           <p>{p.outcome}</p>
         </section>
-        <blockquote>{p.takeaway}</blockquote>
+
         {p.github && (
           <a
             className="button secondary"
@@ -116,7 +116,7 @@ export default async function ProjectPage({
           </Link>
         </div>
         <div className="case-contact">
-          <p>이 프로젝트에 대해 더 이야기하고 싶다면.</p>
+          <p>프로젝트 문의</p>
           <a className="text-link" href={`mailto:${profile.email}`}>
             {profile.email} <ArrowUpRight size={18} />
           </a>

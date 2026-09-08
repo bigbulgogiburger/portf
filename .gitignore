@@ -9,3 +9,4 @@ playwright-report/
 .DS_Store
 .playwright-cli/
 output/playwright/
+output/pdf/

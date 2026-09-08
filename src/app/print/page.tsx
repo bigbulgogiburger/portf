@@ -40,6 +40,7 @@ export default function Print() {
           </div>
           <h1>{p.title}</h1>
           <h2>{p.subtitle}</h2>
+          <p>{p.period} · {p.status}</p>
           <p>{p.summary}</p>
           <p className="print-tech">
             {p.role}
@@ -57,7 +58,7 @@ export default function Print() {
           ))}
           <h3>성과</h3>
           <p>{p.outcome}</p>
-          <blockquote>{p.takeaway}</blockquote>
+
           {p.github && <p>{p.github}</p>}
           <div className="print-page-footer">
             편도훈 · {profile.email} <span>{p.number}</span>

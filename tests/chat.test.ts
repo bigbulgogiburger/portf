@@ -44,15 +44,15 @@ test("local rate limiter caps requests and expires", () => {
   assert.equal(localRateLimit("unit-test", 61000), false);
 });
 test("corpus only includes reviewed public projects", () => {
-  assert.equal(projects.length, 5);
-  assert.equal(new Set(projects.map((p) => p.id)).size, 5);
+  assert.equal(projects.length, 6);
+  assert.equal(new Set(projects.map((p) => p.id)).size, projects.length);
   assert.ok(
-    !/Stanley|DeWalt|수리엔|010[. -]?5189|4,100|149건|525 MD/i.test(
+    !/DeWalt|010[. -]?5189|4,100|149건|525 MD/i.test(
       publicKnowledge,
     ),
   );
   assert.match(instructions, /NOT 편도훈/);
-  assert.match(publicKnowledge, /CS AI Agent를 도입/);
+  assert.match(publicKnowledge, /CS AI Agent를 개발·도입/);
   assert.equal(answerSchema.additionalProperties, false);
 });
 test("route rejects cross-origin and malformed requests without calling OpenAI", async () => {

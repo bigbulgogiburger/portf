@@ -1,4 +1,5 @@
 "use client";
+import { projects } from "@/data/portfolio";
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Menu, X } from "./icons";
@@ -15,7 +16,7 @@ export function Nav() {
         className={open ? "nav-links open" : "nav-links"}
       >
         <Link onClick={() => setOpen(false)} href="/#work">
-          프로젝트 <span>05</span>
+          프로젝트 <span>{String(projects.length).padStart(2, "0")}</span>
         </Link>
         <Link onClick={() => setOpen(false)} href="/#about">
           소개
@@ -28,7 +29,7 @@ export function Nav() {
           href="/#contact"
           className="nav-contact"
         >
-          함께 일하기 <ArrowUpRight size={15} />
+          연락처 <ArrowUpRight size={15} />
         </Link>
       </nav>
       <button

@@ -14,14 +14,14 @@ async function main() {
       );
     if (overflow)
       throw new Error("Print page overflows; inspect before publishing.");
-    await mkdir("public", { recursive: true });
+    await mkdir("output/pdf", { recursive: true });
     await page.pdf({
-      path: "public/dohoon-portfolio.pdf",
+      path: "output/pdf/portfolio-web-print.pdf",
       format: "A4",
       printBackground: true,
       preferCSSPageSize: true,
     });
-    console.log("Generated public/dohoon-portfolio.pdf (6 pages expected)");
+    console.log("Generated output/pdf/portfolio-web-print.pdf (7 pages expected)");
   } finally {
     await browser.close();
   }
