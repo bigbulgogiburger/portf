@@ -75,7 +75,7 @@ export const projects: Project[] = [
     decisions: [
       { title: "React 화면을 유지하며 백엔드 이관", body: "Next.js 백엔드 API 약 50개를 Spring Boot로 이관했습니다. MongoDB 데이터를 MySQL·JPA 구조로 재설계하고 기존 React 화면과 연동했습니다." },
       { title: "서버별 수작업을 배포 파이프라인으로", body: "GitLab·Jenkins·Docker로 빌드·이미지 생성·배포 과정을 자동화했습니다. AWS·Nginx 운영 환경과 Prometheus·Grafana 모니터링도 구축했습니다." },
-      { title: "Geocoding API의 순차 대기 해소", body: "엑셀의 각 주소를 좌표로 변환하는 API 직렬 호출이 병목이었습니다. CompletableFuture·ExecutorService로 병렬 처리하고 행별 성공·실패와 사유를 모아 반환하도록 개선했습니다." },
+      { title: "엑셀 대량 업로드의 비동기·병렬 처리", body: "엑셀 대량 업로드에서 행마다 Geocoding API 응답을 기다린 뒤 다음 행을 처리해 대기 시간이 누적됐습니다. CompletableFuture로 행별 호출을 비동기 작업으로 나누고 ExecutorService의 스레드 풀에서 병렬 실행했습니다. 결과를 모아 행별 성공·실패와 사유를 반환했습니다." },
     ],
     outcome: "백엔드 API 약 50개를 Spring Boot로 이관하고, 배포 작업을 약 1시간에서 약 10분으로 단축했습니다. Flutter 앱의 Play Store·TestFlight 배포와 Vue·React 화면 유지보수도 담당했습니다.",
     flow: ["GitLab", "Jenkins 빌드", "Docker 이미지", "배포·모니터링"],
