@@ -64,7 +64,7 @@ export default function Home() {
         </section>
         <section className="career-section container" id="experience" data-reveal>
           <div className="section-kicker"><span>04 / CAREER</span><span>2021.05 – 현재</span></div>
-          <div className="career-grid"><div><h2>경력</h2><p className="muted">링커 → 플랫비 → 교육지대는 법인 합병에 따른 소속 변경입니다. 합병 이후에도 링커 서비스 개발을 계속 담당했습니다.</p><a className="text-link" href="/dohoon-portfolio.pdf" download><Download size={16}/> 포트폴리오 PDF</a></div><div className="career-list">{career.map((c,i)=><article key={c.company}><div className="career-date"><i className={i===0?"current":""}/>{c.period}</div><h3>{c.company}<span>{c.role}</span></h3><p>{c.body}</p></article>)}</div></div>
+          <div className="career-grid"><div><h2>경력</h2><p className="muted">주식회사 링커 → 플랫비 주식회사 → 교육지대(주)는 법인 합병 승계로 이어진 하나의 재직(2021.05~2023.11)입니다. 합병 이후에도 링커 서비스 개발을 계속 담당했습니다.</p><a className="text-link" href="/dohoon-portfolio.pdf" download><Download size={16}/> 포트폴리오 PDF</a></div><div className="career-list">{career.map((c,i)=><article key={c.company}><div className="career-date"><i className={i===0?"current":""}/>{c.period}</div><h3>{c.company}<span>{c.role}</span></h3><p>{c.body}</p></article>)}</div></div>
         </section>
         <section className="agent-section container" id="assistant" data-reveal>
           <div className="agent-promo"><div className="eyebrow">PORTFOLIO ASSISTANT</div><h2>경력·프로젝트 질문</h2><p>공개된 프로젝트 본문을 바탕으로 답변합니다. 담당 역할과 구현 내용은 각 프로젝트에서도 확인할 수 있습니다.</p><a className="text-link" href="#contact">이메일로 문의 <ArrowUpRight size={18}/></a></div><Chat embedded/>

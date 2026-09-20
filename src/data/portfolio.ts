@@ -51,7 +51,7 @@ export const projects: Project[] = [
     title: "수리엔 CS AI Agent", subtitle: "접수·현황·정산 조회와 신규 접수 초안",
     summary: "여러 화면에서 찾던 운영 정보를 대화로 조회하고, 신규 접수는 사람이 초안을 확인해 등록하도록 구현했습니다.",
     role: "업무 시나리오 · LLM API·도구 연동 · 권한 통제 · QA 배포",
-    period: "2026 · 7월 QA 배포", status: "개발·도입",
+    period: "2026 · 7월 QA 배포", status: "개발·QA 배포",
     tags: ["LLM API", "Tool-calling", "SELECT 전용 도구", "백엔드 인증·인가"], accent: "lime",
     metric: "접수 초안 → 사용자 등록", metricLabel: "조회 권한과 실제 접수 생성을 백엔드에서 통제",
     challenge: "운영자가 접수·현황·정산 정보를 여러 화면에서 반복해서 조회했습니다. 자연어 조회를 제공하면서 소속 그룹의 데이터 범위를 지키고, 모델의 응답만으로 접수가 생성되지 않도록 해야 했습니다.",
@@ -115,10 +115,8 @@ export const projects: Project[] = [
   },
 ];
 export const career = [
-  { period: "2023.11 — 현재", company: "DB Inc.", role: "백엔드 개발 · PM", body: "수리엔 백엔드 이관·운영, 배포 자동화, CS AI Agent 개발·도입. 현재 전동공구사 A/S 플랫폼의 DB·API·화면 개발과 고객사 요구사항 협의 담당." },
-  { period: "2023.01 — 2023.11", company: "교육지대", role: "서버개발자", body: "스카이탭 회원·로그인·결제 기능 개발. Prometheus·Grafana·Pinpoint 모니터링 구축. 합병 이후 링커 서비스 운영 지속." },
-  { period: "2021.11 — 2023.01", company: "플랫비", role: "서버개발자", body: "독립 결제 서버와 Inicis·Apple 결제·환불 연동. 링커 통합회원 전환과 Q&A 개발 지속." },
-  { period: "2021.05 — 2021.11", company: "링커", role: "백엔드개발자", body: "입시 정보·멘토링 서비스 백엔드 개발·운영. Spring Batch 통합과 링커·모지 Q&A 개발 참여." },
+  { period: "2023.11 — 현재", company: "DB Inc.", role: "백엔드 개발 · PM", body: "수리엔 백엔드 이관·운영, 배포 자동화, CS AI Agent 개발·QA 배포. 현재 전동공구사 A/S 플랫폼의 DB·API·화면 개발과 고객사 요구사항 협의 담당." },
+  { period: "2021.05 — 2023.11", company: "교육지대(주)", role: "서버개발자", body: "주식회사 링커로 입사해 플랫비 주식회사, 교육지대(주)로 법인 합병 승계된 하나의 재직. 입시 정보·멘토링 서비스 백엔드와 링커 통합회원·Q&A, Spring Batch 통합, 스카이탭 독립 결제 서버와 Inicis·Apple 연동, 회원·로그인 기능, Prometheus·Grafana·Pinpoint 모니터링 구축." },
 ];
 export const capabilities = [
   { title: "Backend", caption: "A/S 도메인 · 회원·결제 연동", skills: ["Java · Spring Boot", "JPA · QueryDSL · MyBatis", "Spring Security", "MySQL · PostgreSQL · Redis"] },
