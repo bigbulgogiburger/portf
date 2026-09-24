@@ -28,7 +28,7 @@ npm run dev -- --port 3100
 
 ## PDF
 
-`public/dohoon-portfolio.pdf`는 2026-09-08에 검토한 13페이지 제출용 정본을 2026-09-20에 재직 이력 2건(교육지대(주) 2021.05~2023.11 합병 승계 + DB Inc.)으로 다시 생성한 판입니다(`portfolio-submission-2026/review-20260920.py`). 웹의 다운로드 링크는 이 파일을 사용합니다.
+`public/dohoon-portfolio.pdf`는 편도훈 위키에서 관리하는 2026-09-24 범용판 v4(17페이지)입니다. 원본은 위키의 `커리어/포트폴리오/2026/편도훈_포트폴리오_2026-09-24_범용_v4.pdf`이며, 웹 공개용이라 전화번호를 제외했습니다. 웹의 다운로드 링크는 이 파일을 사용합니다.
 
 개발 서버 실행 후 `npm run pdf`를 실행하면 `/print`에서 별도의 7페이지 텍스트 인쇄본을 `output/pdf/portfolio-web-print.pdf`에 생성합니다. 제출용 PDF를 덮어쓰지 않습니다. 다른 포트는 `PORTFOLIO_BASE_URL`로 지정합니다.
 
