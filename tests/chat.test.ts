@@ -5,6 +5,7 @@ import {
   localRateLimit,
   answerSchema,
   instructions,
+  toPlainText,
 } from "../src/lib/chat";
 import { projects, publicKnowledge } from "../src/data/portfolio";
 import { POST } from "../src/app/api/chat/route";
@@ -113,4 +114,15 @@ test("route rejects cross-origin and malformed requests without calling OpenAI",
     ).status,
     413,
   );
+});
+test("strips Markdown emphasis the chat panel cannot render", () => {
+  assert.equal(
+    toPlainText("가장 대표적인 것은 **jira-harness**입니다."),
+    "가장 대표적인 것은 jira-harness입니다.",
+  );
+  assert.equal(
+    toPlainText("## 요약\n`Spring Retry`와 __AOP__"),
+    "요약\nSpring Retry와 AOP",
+  );
+  assert.equal(toPlainText("2 * 3 = 6"), "2 * 3 = 6");
 });
