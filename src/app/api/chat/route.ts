@@ -4,6 +4,7 @@ import {
   answerSchema,
   instructions,
   localRateLimit,
+  toPlainText,
   validateMessages,
 } from "@/lib/chat";
 
@@ -105,7 +106,7 @@ export async function POST(request: Request) {
     const ids = new Set(parsed.sourceIds);
     return Response.json(
       {
-        answer: parsed.answer,
+        answer: toPlainText(parsed.answer),
         sources: projects
           .filter((p) => ids.has(p.id))
           .slice(0, 3)
