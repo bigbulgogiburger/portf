@@ -52,7 +52,7 @@ export const projects: Project[] = [
     summary: "여러 화면에서 찾던 운영 정보를 대화로 조회하고, 신규 접수는 사람이 초안을 확인해 등록하도록 구현했습니다.",
     role: "업무 시나리오 · LLM API·도구 연동 · 권한 통제 · QA 배포",
     period: "2026.07", status: "개발·QA 배포",
-    tags: ["LLM API", "Tool-calling", "SELECT 전용 도구", "백엔드 인증·인가"], accent: "lime",
+    tags: ["Python · FastAPI", "LLM API", "Tool-calling", "SELECT 전용 도구", "백엔드 인증·인가"], accent: "lime",
     metric: "접수 초안 → 사용자 확인 후 접수 생성", metricLabel: "조회 권한과 실제 접수 생성을 백엔드에서 통제",
     challenge: "운영자가 접수·현황·정산 정보를 여러 화면에서 반복해서 조회했습니다. 자연어 조회를 제공하면서 소속 그룹의 데이터 범위를 지키고, 모델의 응답만으로 접수가 생성되지 않도록 해야 했습니다.",
     decisions: [
@@ -75,7 +75,7 @@ export const projects: Project[] = [
     decisions: [
       { title: "React 화면을 유지하며 백엔드 이관", body: "Next.js 백엔드 API 약 50개를 Spring Boot로 이관했습니다. MongoDB 데이터를 MySQL·JPA 구조로 재설계하고 기존 React 화면과 연동했습니다." },
       { title: "서버별 수작업을 배포 파이프라인으로", body: "GitLab·Jenkins·Docker로 빌드·이미지 생성·배포 과정을 자동화했습니다. AWS·Nginx 운영 환경과 Prometheus·Grafana 모니터링도 구축했습니다." },
-      { title: "엑셀 대량 업로드의 비동기·병렬 처리", body: "엑셀 대량 업로드에서 행마다 Geocoding API 응답을 기다린 뒤 다음 행을 처리해 대기 시간이 누적됐습니다. CompletableFuture로 행별 호출을 비동기 작업으로 나누고 ExecutorService의 스레드 풀에서 병렬 실행했습니다. 결과를 모아 행별 성공·실패와 사유를 반환했습니다." },
+      { title: "엑셀 대량 업로드의 비동기·병렬 처리", body: "엑셀 대량 업로드는 행마다 외부 API 응답을 기다린 뒤 다음 행을 처리하는 직렬 구조라 대기 시간이 행 수만큼 누적됐습니다. CompletableFuture로 행별 처리를 비동기 작업으로 나누고 ExecutorService의 스레드 풀에서 병렬 실행했습니다. 모든 작업의 결과를 모아 행별 성공·실패와 사유를 반환했습니다." },
     ],
     outcome: "백엔드 API 약 50개를 Spring Boot로 이관하고, 배포 작업을 약 1시간에서 약 10분으로 단축했습니다. Flutter 앱의 Play Store·TestFlight 배포와 Vue·React 화면 유지보수도 담당했습니다.",
     flow: ["GitLab", "Jenkins 빌드", "Docker 이미지", "배포·모니터링"],
@@ -132,6 +132,7 @@ export const capabilities: { title: string; caption: string; skills: Skill[] }[]
     { name: "MongoDB → MySQL", where: "수리엔 데이터 이관" },
   ] },
   { title: "Applied AI", caption: "CS Agent · 개발 결과 검증", skills: [
+    { name: "Python · FastAPI", where: "CS AI Agent" },
     { name: "LLM API · Tool-calling", where: "CS AI Agent" },
     { name: "업무 도구·백엔드 권한 통제", where: "CS AI Agent" },
     { name: "Claude Code · jira-harness", where: "jira-harness" },
