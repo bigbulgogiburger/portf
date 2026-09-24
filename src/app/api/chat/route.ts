@@ -70,7 +70,7 @@ export async function POST(request: Request) {
     });
     const response = await client.responses.create(
       {
-        model: process.env.OPENAI_MODEL || "gpt-5.6-luna",
+        model: process.env.OPENAI_MODEL || "gpt-6-luna",
         instructions,
         input: messages,
         store: false,

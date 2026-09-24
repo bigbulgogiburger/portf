@@ -39,11 +39,11 @@ npm run dev -- --port 3100
 | 환경변수               | 용도                               |
 | ---------------------- | ---------------------------------- |
 | `OPENAI_API_KEY`       | 서버 전용 OpenAI API 키            |
-| `OPENAI_MODEL`         | 기본값 `gpt-5.6-luna`              |
+| `OPENAI_MODEL`         | 기본값 `gpt-6-luna`              |
 | `CHAT_RATE_LIMIT_ENABLED` | 아래 Vercel WAF 규칙 적용 후 `true` |
 | `NEXT_PUBLIC_SITE_URL` | 확정된 HTTPS 대표 URL, 끝에 / 제외 |
 
-[공식 Luna 모델 문서](https://developers.openai.com/api/docs/models/gpt-5.6-luna)의 Responses API를 사용합니다. 실제 키의 모델 접근권한은 연결 후 확인해야 합니다. 키 미설정 시 HTTP 503과 준비 중 안내를 반환하며 가짜 생성 답변을 표시하지 않습니다.
+[공식 Luna 모델 문서](https://developers.openai.com/api/docs/models/gpt-6-luna)의 Responses API를 사용합니다. 실제 키의 모델 접근권한은 연결 후 확인해야 합니다. 키 미설정 시 HTTP 503과 준비 중 안내를 반환하며 가짜 생성 답변을 표시하지 않습니다.
 
 - 공개된 코퍼스 전체를 서버 instructions에 넣습니다. 벡터 DB나 외부 검색은 사용하지 않습니다.
 - Structured Outputs로 답변과 근거 프로젝트 ID를 받고 허용된 ID만 링크합니다.

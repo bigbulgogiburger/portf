@@ -26,10 +26,14 @@ export default async function ProjectPage({
   const p = projects.find((p) => p.id === slug);
   if (!p) notFound();
   const next = projects[(projects.indexOf(p) + 1) % projects.length];
+  const inProgress = p.status.endsWith("중");
   return (
     <>
+      <a className="skip-link" href="#main">
+        본문으로 이동
+      </a>
       <Nav />
-      <main className={`case-page container accent-${p.accent}`}>
+      <main id="main" className={`case-page container accent-${p.accent}`}>
         <Link href="/#work" className="text-link back-link">
           ← 모든 프로젝트
         </Link>
@@ -56,9 +60,20 @@ export default async function ProjectPage({
             </div>
           </div>
         </div>
+        {p.github && (
+          <a
+            className="button secondary"
+            href={p.github}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Github size={18} /> GitHub에서 코드·검증 정책 확인{" "}
+            <ArrowUpRight size={18} />
+          </a>
+        )}
         <ProjectVisual id={p.id} eager />
         <p className="visual-caption">
-          {["harness", "service-agent"].includes(p.id) ? "핵심 동작 흐름" : "프로젝트 화면 · 기존 포트폴리오 수록 이미지"}
+          {["harness", "service-agent"].includes(p.id) ? "핵심 동작 흐름" : "서비스 화면"}
         </p>
         <section className="case-section">
           <span className="eyebrow">01 / CHALLENGE</span>
@@ -92,31 +107,25 @@ export default async function ProjectPage({
           </small>
         </section>
         <section className="case-section case-result">
-          <span className="eyebrow">03 / RESULT</span>
+          <span className="eyebrow">
+            03 / {inProgress ? "CURRENT SCOPE" : "RESULT"}
+          </span>
           <h2>{p.metric}</h2>
           <p className="metric-label">{p.metricLabel}</p>
           <p>{p.outcome}</p>
         </section>
-
-        {p.github && (
-          <a
-            className="button secondary"
-            href={p.github}
-            target="_blank"
-            rel="noreferrer"
-          >
-            <Github size={18} /> 소스 코드 살펴보기 <ArrowUpRight size={18} />
-          </a>
-        )}
         <div className="case-next">
-          <span className="eyebrow">NEXT PROJECT</span>
+          <span className="eyebrow">다음 프로젝트</span>
           <Link href={`/projects/${next.id}`}>
             {next.title}
             <ArrowUpRight />
           </Link>
         </div>
+        <Link href="/#work" className="text-link back-link">
+          ← 모든 프로젝트 보기
+        </Link>
         <div className="case-contact">
-          <p>프로젝트 문의</p>
+          <p>채용·프로젝트 문의</p>
           <a className="text-link" href={`mailto:${profile.email}`}>
             {profile.email} <ArrowUpRight size={18} />
           </a>
