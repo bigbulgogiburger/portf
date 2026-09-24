@@ -1,3 +1,5 @@
+import Script from "next/script";
+import Link from "next/link";
 import { profile, projects, career, capabilities } from "@/data/portfolio";
 export const metadata = {
   title: "공개용 포트폴리오",
@@ -6,20 +8,31 @@ export const metadata = {
 export default function Print() {
   return (
     <main className="print-document">
+      <div className="print-actions">
+        <button type="button" id="print-document-button">인쇄 / PDF로 저장</button>
+        <Link href="/">웹 포트폴리오로 돌아가기</Link>
+      </div>
+      <Script id="print-document-action">{`
+        document.addEventListener("click", (event) => {
+          if (event.target instanceof Element && event.target.closest("#print-document-button")) {
+            window.print();
+          }
+        });
+      `}</Script>
       <section className="print-sheet">
         <div className="print-label">PORTFOLIO / PUBLIC EDITION / 2026.09</div>
         <h1>{profile.name}</h1>
         <h2>{profile.headline}</h2>
         <p>{profile.description}</p>
         <div className="print-contact">
-          {profile.email}
+          <a href={`mailto:${profile.email}`}>{profile.email}</a>
           <br />
-          {profile.github}
+          <a href={profile.github}>{profile.github}</a>
         </div>
         <h3>핵심 역량</h3>
         {capabilities.map((c) => (
           <p key={c.title}>
-            <b>{c.title}</b> — {c.skills.join(" · ")}
+            <b>{c.title}</b> — {c.skills.map((s) => s.name).join(" · ")}
           </p>
         ))}
         <h3>경력</h3>
@@ -59,9 +72,9 @@ export default function Print() {
           <h3>성과</h3>
           <p>{p.outcome}</p>
 
-          {p.github && <p>{p.github}</p>}
+          {p.github && <p><a href={p.github}>{p.github}</a></p>}
           <div className="print-page-footer">
-            편도훈 · {profile.email} <span>{p.number}</span>
+            편도훈 · <a href={`mailto:${profile.email}`}>{profile.email}</a> <span>{p.number}</span>
           </div>
         </section>
       ))}

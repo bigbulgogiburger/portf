@@ -9,35 +9,82 @@ const questions = [
   "AI를 실제로 어떻게 활용했나요?",
   "가장 인상적인 프로젝트는?",
 ];
-export function Chat({ embedded = false }: { embedded?: boolean }) {
+const OPEN_EVENT = "portfolio-chat:open";
+// Home section entry point: opens the single floating chat with a question.
+export function ChatPrompts() {
+  return (
+    <div className="agent-prompts">
+      {questions.map((q) => (
+        <button
+          key={q}
+          onClick={() =>
+            window.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: q }))
+          }
+        >
+          {q}
+          <ArrowUpRight size={15} />
+        </button>
+      ))}
+    </div>
+  );
+}
+export function Chat() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [sources, setSources] = useState<Source[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [launcherHidden, setLauncherHidden] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const historyRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const controllerRef = useRef<AbortController | null>(null);
+  const submitRef = useRef<(q: string) => Promise<void>>(async () => {});
   useEffect(() => () => controllerRef.current?.abort(), []);
   useEffect(() => {
-    if (!embedded && open) {
+    if (open) {
       dialogRef.current?.showModal();
       inputRef.current?.focus();
-    } else if (!embedded) dialogRef.current?.close();
-  }, [open, embedded]);
+    } else dialogRef.current?.close();
+  }, [open]);
   useEffect(() => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     historyRef.current?.scrollTo({
       top: historyRef.current.scrollHeight,
-      behavior: "smooth",
+      behavior: reduce.matches ? "auto" : "smooth",
     });
   }, [messages, busy, error]);
+  // Hide the launcher while the home chat section or contact is on screen.
+  useEffect(() => {
+    const targets = ["assistant", "contact"]
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => !!el);
+    if (!targets.length) return;
+    const visible = new Set<Element>();
+    const observer = new IntersectionObserver((entries) => {
+      for (const e of entries)
+        if (e.isIntersecting) visible.add(e.target);
+        else visible.delete(e.target);
+      setLauncherHidden(visible.size > 0);
+    });
+    targets.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
   function close() {
     setOpen(false);
     triggerRef.current?.focus();
   }
+  useEffect(() => {
+    function onOpen(e: Event) {
+      setOpen(true);
+      const q = (e as CustomEvent<string>).detail;
+      if (q) void submitRef.current(q);
+    }
+    window.addEventListener(OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_EVENT, onOpen);
+  }, []);
   async function submit(question = input) {
     const text = question.trim();
     if (!text || busy) return;
@@ -84,6 +131,9 @@ export function Chat({ embedded = false }: { embedded?: boolean }) {
       controllerRef.current = null;
     }
   }
+  useEffect(() => {
+    submitRef.current = submit;
+  });
   const panel = (
     <>
       <div className="chat-header">
@@ -105,23 +155,17 @@ export function Chat({ embedded = false }: { embedded?: boolean }) {
         >
           새 대화
         </button>
-        {!embedded && (
-          <button
-            className="icon-button"
-            aria-label="챗봇 닫기"
-            onClick={close}
-          >
-            <X size={20} />
-          </button>
-        )}
+        <button className="icon-button" aria-label="챗봇 닫기" onClick={close}>
+          <X size={20} />
+        </button>
       </div>
       <div className="chat-history" ref={historyRef}>
         <div className="chat-welcome">
-          <span className="eyebrow">HELLO, CURIOUS HUMAN.</span>
+          <span className="eyebrow">PORTFOLIO Q&amp;A</span>
           <h3>
             안녕하세요.
             <br />
-            도훈님에 대해 궁금한가요?
+            경력과 프로젝트를 물어보세요.
           </h3>
           <p>
             경력과 프로젝트를 함께 살펴봐요.
@@ -178,18 +222,15 @@ export function Chat({ embedded = false }: { embedded?: boolean }) {
           void submit();
         }}
       >
-        <label
-          className="sr-only"
-          htmlFor={embedded ? "chat-embedded" : "chat-floating"}
-        >
+        <label className="sr-only" htmlFor="chat-floating">
           경력과 프로젝트 질문
         </label>
         <input
           ref={inputRef}
-          id={embedded ? "chat-embedded" : "chat-floating"}
+          id="chat-floating"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="도훈님에 대해 물어보세요"
+          placeholder="경력이나 프로젝트를 질문해 주세요"
           maxLength={800}
           disabled={busy}
           autoComplete="off"
@@ -209,12 +250,12 @@ export function Chat({ embedded = false }: { embedded?: boolean }) {
       </p>
     </>
   );
-  if (embedded) return <div className="chat-panel embedded-chat">{panel}</div>;
   return (
     <>
       <button
         ref={triggerRef}
-        className="chat-launcher"
+        className={`chat-launcher${launcherHidden && !open ? " is-hidden" : ""}`}
+        tabIndex={launcherHidden && !open ? -1 : undefined}
         aria-label="도훈의 AI 챗봇 열기"
         onClick={() => setOpen(true)}
       >

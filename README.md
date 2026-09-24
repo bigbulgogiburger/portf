@@ -28,7 +28,7 @@ npm run dev -- --port 3100
 
 ## PDF
 
-`public/dohoon-portfolio.pdf`는 2026-09-08에 검토한 13페이지 제출용 정본을 2026-09-20에 재직 이력 2건(교육지대(주) 2021.05~2023.11 합병 승계 + DB Inc.)으로 다시 생성한 판입니다(`portfolio-submission-2026/review-20260920.py`). 웹의 다운로드 링크는 이 파일을 사용합니다.
+`public/dohoon-portfolio.pdf`는 편도훈 위키에서 관리하는 2026-09-24 범용판 v4(17페이지)입니다. 원본은 위키의 `커리어/포트폴리오/2026/편도훈_포트폴리오_2026-09-24_범용_v4.pdf`이며, 웹 공개용이라 전화번호를 제외했습니다. 웹의 다운로드 링크는 이 파일을 사용합니다.
 
 개발 서버 실행 후 `npm run pdf`를 실행하면 `/print`에서 별도의 7페이지 텍스트 인쇄본을 `output/pdf/portfolio-web-print.pdf`에 생성합니다. 제출용 PDF를 덮어쓰지 않습니다. 다른 포트는 `PORTFOLIO_BASE_URL`로 지정합니다.
 
@@ -39,11 +39,11 @@ npm run dev -- --port 3100
 | 환경변수               | 용도                               |
 | ---------------------- | ---------------------------------- |
 | `OPENAI_API_KEY`       | 서버 전용 OpenAI API 키            |
-| `OPENAI_MODEL`         | 기본값 `gpt-5.6-luna`              |
+| `OPENAI_MODEL`         | 기본값 `gpt-6-luna`              |
 | `CHAT_RATE_LIMIT_ENABLED` | 아래 Vercel WAF 규칙 적용 후 `true` |
 | `NEXT_PUBLIC_SITE_URL` | 확정된 HTTPS 대표 URL, 끝에 / 제외 |
 
-[공식 Luna 모델 문서](https://developers.openai.com/api/docs/models/gpt-5.6-luna)의 Responses API를 사용합니다. 실제 키의 모델 접근권한은 연결 후 확인해야 합니다. 키 미설정 시 HTTP 503과 준비 중 안내를 반환하며 가짜 생성 답변을 표시하지 않습니다.
+[공식 Luna 모델 문서](https://developers.openai.com/api/docs/models/gpt-6-luna)의 Responses API를 사용합니다. 실제 키의 모델 접근권한은 연결 후 확인해야 합니다. 키 미설정 시 HTTP 503과 준비 중 안내를 반환하며 가짜 생성 답변을 표시하지 않습니다.
 
 - 공개된 코퍼스 전체를 서버 instructions에 넣습니다. 벡터 DB나 외부 검색은 사용하지 않습니다.
 - Structured Outputs로 답변과 근거 프로젝트 ID를 받고 허용된 ID만 링크합니다.
