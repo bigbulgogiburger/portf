@@ -1,6 +1,6 @@
 import Script from "next/script";
 import Link from "next/link";
-import { profile, projects, career, capabilities } from "@/data/portfolio";
+import { profile, projects, career, capabilities, resultLabel } from "@/data/portfolio";
 export const metadata = {
   title: "공개용 포트폴리오",
   robots: { index: false, follow: false },
@@ -29,6 +29,11 @@ export default function Print() {
           <br />
           <a href={profile.github}>{profile.github}</a>
         </div>
+        <h3>대표 성과</h3>
+        <p>
+          API 약 50개 Spring Boot 이관 · 배포 약 1시간 → 약 10분(서버 2대 기준) ·
+          통합회원 약 1만 명 전환 완료
+        </p>
         <h3>핵심 역량</h3>
         {capabilities.map((c) => (
           <p key={c.title}>
@@ -42,6 +47,7 @@ export default function Print() {
               {c.company} · {c.role}
             </b>
             <small>{c.period}</small>
+            {c.note && <p className="print-note">{c.note}</p>}
             <p>{c.body}</p>
           </div>
         ))}
@@ -69,7 +75,10 @@ export default function Print() {
               <p>{d.body}</p>
             </div>
           ))}
-          <h3>성과</h3>
+          <h3>{resultLabel(p).ko}</h3>
+          <p>
+            <b>{p.metric}</b> — {p.metricLabel}
+          </p>
           <p>{p.outcome}</p>
 
           {p.github && <p><a href={p.github}>{p.github}</a></p>}

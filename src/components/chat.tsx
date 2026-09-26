@@ -165,13 +165,9 @@ export function Chat() {
           <h3>
             안녕하세요.
             <br />
-            경력과 프로젝트를 물어보세요.
+            경력과 프로젝트를 질문해 주세요.
           </h3>
-          <p>
-            경력과 프로젝트를 함께 살펴봐요.
-            <br />
-            공개된 포트폴리오를 바탕으로 답변합니다.
-          </p>
+          <p>공개된 포트폴리오를 바탕으로 답변합니다.</p>
         </div>
         {!messages.length && (
           <div className="suggested-questions">
@@ -202,7 +198,14 @@ export function Chat() {
           <div className="chat-sources">
             <span>관련 프로젝트</span>
             {sources.map((s) => (
-              <a key={s.id} href={`/projects/${s.id}`}>
+              // New tab keeps this conversation, which lives only in page memory.
+              <a
+                key={s.id}
+                href={`/projects/${s.id}`}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${s.title} (새 탭)`}
+              >
                 {s.title}
                 <ArrowUpRight size={13} />
               </a>
@@ -244,7 +247,10 @@ export function Chat() {
         </button>
       </form>
       <p className="chat-disclosure">
-        AI 답변은 오류가 있을 수 있습니다. <a href="/privacy">이용 안내</a>
+        AI 답변은 오류가 있을 수 있습니다.{" "}
+        <a href="/privacy" target="_blank" rel="noreferrer">
+          이용 안내(새 탭)
+        </a>
         <br />
         질문은 OpenAI로 전송됩니다. 개인정보는 입력하지 마세요.
       </p>

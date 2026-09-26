@@ -110,7 +110,7 @@ export async function POST(request: Request) {
         sources: projects
           .filter((p) => ids.has(p.id))
           .slice(0, 3)
-          .map((p) => ({ id: p.id, title: p.subtitle })),
+          .map((p) => ({ id: p.id, title: p.title })),
       },
       { headers },
     );

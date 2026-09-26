@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s | 편도훈",
   },
   description:
-    "Java·Spring, AI Agent, MSA, DevOps. 기획부터 개발과 운영까지 연결하는 백엔드 엔지니어 편도훈의 포트폴리오.",
+    "Java·Spring 백엔드 개발자 편도훈의 포트폴리오. 결제·회원·A/S 서비스 설계와 운영, CS AI Agent와 AI Coding 검증 도구 개발.",
   openGraph: {
     title: "편도훈 · Backend × Applied AI",
     description: "결제·회원·A/S 서비스 설계와 운영, CS AI Agent와 AI Coding 도구 개발.",
