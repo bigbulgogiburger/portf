@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { projects, profile } from "@/data/portfolio";
+import { projects, profile, resultLabel } from "@/data/portfolio";
 import { Nav } from "@/components/nav";
 import { ProjectVisual } from "@/components/project-visual";
 import { Chat } from "@/components/chat";
@@ -26,7 +26,6 @@ export default async function ProjectPage({
   const p = projects.find((p) => p.id === slug);
   if (!p) notFound();
   const next = projects[(projects.indexOf(p) + 1) % projects.length];
-  const inProgress = p.status.endsWith("중");
   return (
     <>
       <a className="skip-link" href="#main">
@@ -108,7 +107,7 @@ export default async function ProjectPage({
         </section>
         <section className="case-section case-result">
           <span className="eyebrow">
-            03 / {inProgress ? "CURRENT SCOPE" : "RESULT"}
+            03 / {resultLabel(p).en}
           </span>
           <h2>{p.metric}</h2>
           <p className="metric-label">{p.metricLabel}</p>

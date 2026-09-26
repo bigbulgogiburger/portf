@@ -5,6 +5,7 @@ import { Reveal } from "@/components/reveal";
 import { Nav } from "@/components/nav";
 import { ProjectVisual } from "@/components/project-visual";
 import { Chat, ChatPrompts } from "@/components/chat";
+import { SkillList } from "@/components/skill-list";
 import { ArrowUpRight, Github, Download, Mail } from "@/components/icons";
 
 export default function Home() {
@@ -61,7 +62,7 @@ export default function Home() {
         <section className="capability-section container" data-reveal>
           <div className="section-kicker"><span>03 / TECHNOLOGY</span><span>실무에 사용한 기술</span></div>
           <div className="section-heading"><h2>기술과 적용 경험</h2></div>
-          <div className="capability-grid">{capabilities.map((c,i)=><div key={c.title}><span className="capability-number">0{i+1}</span><h3>{c.title}</h3><p>{c.caption}</p><ul>{c.skills.map(s=><li key={s.name}>{s.name}{s.where&&<small>{s.where}</small>}</li>)}</ul></div>)}</div>
+          <div className="capability-grid">{capabilities.map((c,i)=><div key={c.title}><span className="capability-number">0{i+1}</span><h3>{c.title}</h3><p>{c.caption}</p><SkillList skills={c.skills}/></div>)}</div>
         </section>
         <section className="career-section container" id="experience" data-reveal>
           <div className="section-kicker"><span>04 / CAREER</span><span>2021.05 – 현재</span></div>

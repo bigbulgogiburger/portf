@@ -2670,3 +2670,25 @@ h1,h2,h3 { font-weight:600; }
  .agent-section { display:block; padding:65px 0; }
  .agent-prompts { margin-top:28px; }
 }
+
+/* Audit 2: readable chat and print text, spacing and mobile menu fixes. */
+.chat-form input { font-size:16px; }
+.chat-reset { font-size:12px; min-height:36px; padding-inline:10px; }
+.chat-disclosure,.chat-error { font-size:12px; line-height:1.6; }
+.chat-disclosure a { display:inline-block; padding-block:4px; }
+.case-page>.button.secondary { margin-bottom:24px; }
+.skill-more { display:none; }
+.print-note { color:#4b5a3f; }
+@media screen {
+ .print-sheet p { font-size:15px; line-height:1.75; }
+ .print-career { font-size:15px; }
+ .print-sheet h4 { font-size:16px; }
+}
+@media print {
+ .print-sheet p { font-size:13px; }
+}
+@media(max-width:760px) {
+ .skill-list:not(.open) .skill-extra { display:none; }
+ .skill-more { display:inline-flex; align-items:center; min-height:44px; margin-top:12px; padding:0; font-size:14px; color:var(--lime); background:none; border:0; }
+ .nav-links.open { box-shadow:0 0 0 100vmax #0009; }
+}

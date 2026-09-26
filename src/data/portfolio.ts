@@ -32,7 +32,7 @@ export const projects: Project[] = [
   {
     id: "harness", number: "02", category: "오픈소스 · AI CODING",
     title: "jira-harness", subtitle: "Claude Code 개발·검증 플러그인",
-    summary: "검증 이후 코드가 바뀌면 다시 검사하도록 커밋을 통제하는 Claude Code 플러그인입니다.",
+    summary: "차단 모드에서 검증 이후 코드가 바뀌면 재검증하도록 커밋을 통제하는 Claude Code 플러그인입니다.",
     role: "플러그인 설계·개발 · MIT 라이선스 공개", period: "2026", status: "공개",
     tags: ["JavaScript", "Node.js", "Git hooks", "Claude Code"], accent: "violet",
     metric: "Git tree ID 대조", metricLabel: "검증한 코드와 커밋할 코드의 일치 확인",
@@ -42,7 +42,7 @@ export const projects: Project[] = [
       { title: "검증 시점의 Git tree ID 기록", body: "테스트·리뷰 시점의 Git tree ID를 저장하고 커밋 대상과 대조합니다. 차단 모드에서 검증 미실행·실패 또는 검증 이후 코드 변경을 감지하면 커밋을 막고 재검증하도록 구성했습니다." },
       { title: "프로젝트별 검증 명령과 정책 분리", body: "프로젝트의 빌드·테스트 명령과 브랜치 정책을 설정으로 분리했습니다. 차단 조건과 예외는 공개 저장소의 코드와 문서에서 확인할 수 있습니다." },
     ],
-    outcome: "Claude Code 플러그인을 MIT 라이선스로 공개했습니다. 검증 기록과 커밋 대상의 코드 상태를 대조해, 검증되지 않은 변경이 커밋되지 않도록 합니다.",
+    outcome: "Claude Code 플러그인을 MIT 라이선스로 공개했습니다. 검증 기록과 커밋 대상의 코드 상태를 대조해, 차단 모드에서 검증 미실행·실패·코드 변경을 감지하면 커밋을 막습니다.",
     flow: ["구현", "테스트·리뷰", "tree ID 기록", "커밋 대상 대조"],
     github: "https://github.com/bigbulgogiburger/jira-harness",
   },
@@ -70,7 +70,7 @@ export const projects: Project[] = [
     role: "백엔드 개발·PM · 데이터 모델 이관 · CI/CD·모니터링",
     period: "2023.11 – 현재", status: "개발·운영",
     tags: ["Spring Boot", "MySQL", "Jenkins · Docker", "Prometheus · Grafana"], accent: "cyan",
-    metric: "약 1시간 → 약 10분", metricLabel: "서버 2대 기준 · 수동 배포 약 1시간 → Jenkins 파이프라인 약 10분",
+    metric: "약 1시간 → 약 10분", metricLabel: "서버 2대 기준 · 수동 배포 약 1시간 → Jenkins 파이프라인 약 10분 (배포 기록·작업 체감)",
     challenge: "외주에서 인계한 Next.js·MongoDB 서버를 내부에서 유지보수해야 했습니다. 배포 때마다 SVN checkout, 파일 이동, deploy.sh 실행을 서버별로 반복하는 작업도 개선이 필요했습니다.",
     decisions: [
       { title: "React 화면을 유지하며 백엔드 이관", body: "Next.js 백엔드 API 약 50개를 Spring Boot로 이관했습니다. MongoDB 데이터를 MySQL·JPA 구조로 재설계하고 기존 React 화면과 연동했습니다." },
@@ -87,14 +87,14 @@ export const projects: Project[] = [
     role: "플랫비: 결제·환불 연동 / 교육지대: 회원·결제·모니터링",
     period: "2022.02 – 2023.11", status: "개발·운영 완료",
     tags: ["Java · Spring", "Inicis · Apple API", "Spring Retry", "Pinpoint"], accent: "amber",
-    metric: "독립 결제 서버 분리 · Apple 환불 재시도 오류 해결", metricLabel: "독립 결제 서버를 API로 서비스 본체와 연동",
+    metric: "독립 결제 서버 분리 · Apple 환불 재시도 오류 해결", metricLabel: "검증 로직을 별도 Bean으로 분리해 AOP 프록시 경유 호출로 변경",
     challenge: "기존 서비스와 기술 스택이 다른 결제 기능을 개발해야 했습니다. 서버 간 요청과 사용자 요청의 인증을 분리하고, Apple 환불 결과를 서비스 DB에 반영해야 했습니다.",
     decisions: [
       { title: "Internal·External 인증 경로 분리", body: "플랫비에서 독립 결제 서버를 개발했습니다(2022.02~11). 서버 간 요청은 헤더 토큰으로, 사용자 요청은 통합회원 서버를 통해 검증하고 Inicis·Apple 결제를 연동했습니다." },
       { title: "@Retryable이 실행되지 않는 원인 추적", body: "Apple Verify API 재시도가 같은 객체 내부 호출로 Spring AOP 프록시를 거치지 않는 문제를 확인했습니다(2022.06~08). 검증 로직을 별도 Bean으로 분리해 프록시 경유 호출로 바꾸고 재시도와 환불 상태 동기화가 동작하도록 수정했습니다." },
       { title: "회원 연동과 운영 모니터링", body: "교육지대에서 스카이탭 회원·로그인·결제 기능을 개발했습니다(2023.02~06). Actuator·Micrometer·Prometheus·Grafana로 지표를 수집·시각화하고 Pinpoint로 호출 경로와 병목을 추적하도록 구성했습니다(2023.03~05)." },
     ],
-    outcome: "독립 결제 서버를 구축해 서비스 본체와 API로 연동했습니다. Spring AOP 자기 호출로 동작하지 않던 Apple 환불 검증 재시도를 수정하고, 이후 교육지대에서는 회원 연동과 운영 모니터링을 구축했습니다.",
+    outcome: "서비스 본체와 API로 연동하는 결제 서버를 운영하며, Spring AOP 자기 호출로 동작하지 않던 Apple 환불 검증 재시도를 복구했습니다. 이후 교육지대에서는 회원 연동과 운영 모니터링을 추가로 담당했습니다.",
     flow: ["환불 Webhook", "호출 Bean", "AOP Proxy", "검증 Bean", "DB 반영"],
   },
   {
@@ -116,7 +116,7 @@ export const projects: Project[] = [
 ];
 export const career = [
   { period: "2023.11 — 현재", company: "DB Inc.", role: "백엔드 개발 · PM", body: "수리엔 백엔드 이관·운영, 배포 자동화, CS AI Agent 개발·QA 배포. 현재 전동공구사 A/S 플랫폼의 DB·API·화면 개발과 고객사 요구사항 협의 담당." },
-  { period: "2021.05 — 2023.11", company: "교육지대(주)", role: "서버 개발자", body: "입시 정보·멘토링 서비스 백엔드와 링커 통합회원·Q&A, Spring Batch 통합, 스카이탭 독립 결제 서버와 Inicis·Apple 연동, 회원·로그인 기능, Prometheus·Grafana·Pinpoint 모니터링 구축." },
+  { period: "2021.05 — 2023.11", company: "교육지대(주)", role: "서버 개발자", note: "주식회사 링커 → 플랫비 주식회사 → 교육지대(주) 법인 합병 승계, 연속 재직", body: "입시 정보·멘토링 서비스 백엔드와 링커 통합회원·Q&A, Spring Batch 통합, 스카이탭 독립 결제 서버와 Inicis·Apple 연동, 회원·로그인 기능, Prometheus·Grafana·Pinpoint 모니터링 구축." },
 ];
 export type Skill = { name: string; where?: string };
 export const capabilities: { title: string; caption: string; skills: Skill[] }[] = [
@@ -153,5 +153,11 @@ export const capabilities: { title: string; caption: string; skills: Skill[] }[]
     { name: "Inicis · Apple 결제 API", where: "스카이탭" },
   ] },
 ];
+// Result heading by delivery stage: in-progress and QA-only work are not presented as outcomes.
+export function resultLabel(p: Project): { en: string; ko: string } {
+  if (p.status.endsWith("중")) return { en: "CURRENT SCOPE", ko: "현재 범위" };
+  if (p.status.includes("QA")) return { en: "QA SCOPE", ko: "QA 배포 범위" };
+  return { en: "RESULT", ko: "성과" };
+}
 // Reviewed public facts, shared by the site and its assistant.
 export const publicKnowledge = JSON.stringify({ profile, career, projects });
