@@ -103,7 +103,7 @@ export const projects: Project[] = [
     summary: "AWS SNS로 회원 약 1만 명의 통합회원 전환을 완료하고, 회원 DB를 공유할 수 없는 Q&A를 Redis 매핑으로 구현했습니다.",
     role: "링커·플랫비·교육지대 / 백엔드 개발·운영", period: "2021.05 – 2023.09", status: "개발·운영 완료",
     tags: ["AWS SNS", "Redis", "Spring Batch", "MySQL"], accent: "pink",
-    metric: "통합회원 약 1만 명 전환 완료", metricLabel: "AWS SNS 이벤트로 서비스별 회원 DB에 반영",
+    metric: "통합회원 약 1만 명 전환 완료", metricLabel: "DB 집계 기준 · AWS SNS 이벤트로 서비스별 회원 DB에 반영",
     challenge: "링커·모지의 회원 DB를 직접 공유할 수 없는 제약에서 회원 연동과 통합 Q&A를 제공해야 했습니다. 법인 합병으로 소속이 변경된 뒤에도 링커 서비스 개발을 계속 담당했습니다.",
     decisions: [
       { title: "회원 이벤트 규약과 전환 순서 조율", body: "AWS SNS Topic에 가입·전환·정보 변경 이벤트를 게시하고 각 서비스가 구독해 DB에 반영하도록 구현했습니다(2022.04~08). 관련 팀과 이벤트 규약·전환 순서를 협의하고 DB 플래그로 중복 처리를 방지했습니다." },

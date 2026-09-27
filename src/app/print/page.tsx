@@ -32,7 +32,7 @@ export default function Print() {
         <h3>대표 성과</h3>
         <p>
           API 약 50개 Spring Boot 이관 · 배포 약 1시간 → 약 10분(서버 2대 기준) ·
-          통합회원 약 1만 명 전환 완료
+          통합회원 약 1만 명 전환 완료(DB 집계 기준)
         </p>
         <h3>핵심 역량</h3>
         {capabilities.map((c) => (

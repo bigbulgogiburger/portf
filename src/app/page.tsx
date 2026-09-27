@@ -35,7 +35,7 @@ export default function Home() {
           <div className="proof-grid" data-reveal>
             <Link href="/projects/platform-operations"><span className="proof-number">약 50<span>개 API</span></span><p>Next.js → Spring Boot 이관</p></Link>
             <Link href="/projects/platform-operations"><span className="proof-number">약 1시간 <span>→</span> 약 10분</span><p>배포 자동화 · 서버 2대 기준</p></Link>
-            <Link href="/projects/membership"><span className="proof-number">약 1만<span>명</span></span><p>통합회원 전환 완료</p></Link>
+            <Link href="/projects/membership"><span className="proof-number">약 1만<span>명</span></span><p>통합회원 전환 완료 · DB 집계 기준</p></Link>
           </div>
         </section>
         <section className="work-section" id="work"><div className="container">
