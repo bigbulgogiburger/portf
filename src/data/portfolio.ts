@@ -50,8 +50,8 @@ export const projects: Project[] = [
     id: "service-agent", number: "03", category: "AI 업무 연동",
     title: "수리엔 CS AI Agent", subtitle: "접수·현황·정산 조회와 신규 접수 초안",
     summary: "여러 화면에서 찾던 운영 정보를 대화로 조회하고, 신규 접수는 사람이 초안을 확인해 등록하도록 구현했습니다.",
-    role: "업무 시나리오 · LLM API·도구 연동 · 권한 통제 · QA 배포",
-    period: "2026.07", status: "개발·QA 배포",
+    role: "업무 시나리오 · LLM API·도구 연동 · 권한 통제 · QA 배포·운영 도입",
+    period: "2026.07 – 2026.09", status: "개발·운영 도입",
     tags: ["Python · FastAPI", "LLM API", "Tool-calling", "SELECT 전용 도구", "백엔드 인증·인가"], accent: "lime",
     metric: "접수 초안 → 사용자 확인 후 접수 생성", metricLabel: "조회 권한과 실제 접수 생성을 백엔드에서 통제",
     challenge: "운영자가 접수·현황·정산 정보를 여러 화면에서 반복해서 조회했습니다. 자연어 조회를 제공하면서 소속 그룹의 데이터 범위를 지키고, 모델의 응답만으로 접수가 생성되지 않도록 해야 했습니다.",
@@ -60,7 +60,7 @@ export const projects: Project[] = [
       { title: "소속 그룹의 데이터 범위 검사", body: "사용자와 소속 그룹의 권한을 백엔드에서 검사합니다. 모델에 전달하는 지시문과 별도로 실제 조회 가능한 데이터 범위를 제한했습니다." },
       { title: "5분 동안 유효한 신규 접수 초안", body: "Agent가 작성한 초안 카드에서 사용자가 내용을 확인하고 [등록]을 눌러야 접수가 생성됩니다. 5분 안에 등록하지 않은 초안은 만료됩니다." },
     ],
-    outcome: "CS AI Agent를 개발·도입하고, 2026년 7월 QA 환경에 배포했습니다. 조회와 접수 초안·등록 절차를 설명한 사용 매뉴얼을 작성해 현업 테스트를 지원했습니다.",
+    outcome: "CS AI Agent를 개발해 2026년 7월 QA 환경에 배포하고, 2026년 9월 운영 환경에 도입했습니다. 조회와 접수 초안·등록 절차를 설명한 사용 매뉴얼을 작성해 현업 사용을 지원했습니다.",
     flow: ["자연어 요청", "권한 내 조회", "접수 초안", "확인 후 접수"],
   },
   {
@@ -115,7 +115,7 @@ export const projects: Project[] = [
   },
 ];
 export const career = [
-  { period: "2023.11 — 현재", company: "DB Inc.", role: "백엔드 개발 · PM", body: "수리엔 백엔드 이관·운영, 배포 자동화, CS AI Agent 개발·QA 배포. 현재 전동공구사 A/S 플랫폼의 DB·API·화면 개발과 고객사 요구사항 협의 담당." },
+  { period: "2023.11 — 현재", company: "DB Inc.", role: "백엔드 개발 · PM", body: "수리엔 백엔드 이관·운영, 배포 자동화, CS AI Agent 개발·운영 도입. 현재 전동공구사 A/S 플랫폼의 DB·API·화면 개발과 고객사 요구사항 협의 담당." },
   { period: "2021.05 — 2023.11", company: "교육지대(주)", role: "서버 개발자", note: "주식회사 링커 → 플랫비 주식회사 → 교육지대(주) 법인 합병 승계, 연속 재직", body: "입시 정보·멘토링 서비스 백엔드와 링커 통합회원·Q&A, Spring Batch 통합, 스카이탭 독립 결제 서버와 Inicis·Apple 연동, 회원·로그인 기능, Prometheus·Grafana·Pinpoint 모니터링 구축." },
 ];
 export type Skill = { name: string; where?: string };
@@ -153,10 +153,9 @@ export const capabilities: { title: string; caption: string; skills: Skill[] }[]
     { name: "Inicis · Apple 결제 API", where: "스카이탭" },
   ] },
 ];
-// Result heading by delivery stage: in-progress and QA-only work are not presented as outcomes.
+// Result heading by delivery stage: in-progress work is not presented as an outcome.
 export function resultLabel(p: Project): { en: string; ko: string } {
   if (p.status.endsWith("중")) return { en: "CURRENT SCOPE", ko: "현재 범위" };
-  if (p.status.includes("QA")) return { en: "QA SCOPE", ko: "QA 배포 범위" };
   return { en: "RESULT", ko: "성과" };
 }
 // Reviewed public facts, shared by the site and its assistant.

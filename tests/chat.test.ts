@@ -53,7 +53,7 @@ test("corpus only includes reviewed public projects", () => {
     ),
   );
   assert.match(instructions, /NOT 편도훈/);
-  assert.match(publicKnowledge, /CS AI Agent를 개발·도입/);
+  assert.match(publicKnowledge, /2026년 9월 운영 환경에 도입/);
   assert.equal(answerSchema.additionalProperties, false);
 });
 test("route rejects cross-origin and malformed requests without calling OpenAI", async () => {
