@@ -1,8 +1,9 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import { setMotionPaused, useMotion } from "@/lib/motion";
 
 export function Orbit() {
-  const [paused, setPaused] = useState(false);
+  const { paused } = useMotion();
   const phaseRef = useRef(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
@@ -103,7 +104,7 @@ export function Orbit() {
     }} onPointerLeave={(event) => {
       event.currentTarget.style.setProperty("--orbit-yaw", "0deg");
       event.currentTarget.style.setProperty("--orbit-tilt", "0deg");
-    }}><button className="motion-toggle" aria-pressed={paused} onClick={() => setPaused(!paused)}>{paused ? "움직임 재생 ↗" : "움직임 멈추기 Ⅱ"}</button><div className="orbit-scene" aria-hidden="true">
+    }}><button className="motion-toggle" onClick={() => setMotionPaused(!paused)}>{paused ? "움직임 재생 ↗" : "움직임 멈추기 Ⅱ"}</button><div className="orbit-scene" aria-hidden="true">
       <div className="orbit-grid" />
       <div className="orbit-halo" />
       <canvas ref={canvasRef} />

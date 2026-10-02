@@ -160,3 +160,9 @@ export function resultLabel(p: Project): { en: string; ko: string } {
 }
 // Reviewed public facts, shared by the site and its assistant.
 export const publicKnowledge = JSON.stringify({ profile, career, projects });
+// Example exchange on the home page, quoted from the jira-harness project text.
+const harness = projects.find((p) => p.id === "harness")!;
+export const assistantPreview = {
+  question: "jira-harness는 어떤 문제를 해결하나요?",
+  answer: [harness.challenge, harness.decisions.find((d) => d.title.includes("Git tree"))!.body].join(" "),
+};

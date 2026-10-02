@@ -3,6 +3,7 @@ import { projects } from "@/data/portfolio";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Menu, X } from "./icons";
+import { MotionToggle } from "./motion-toggle";
 export function Nav() {
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -22,6 +23,7 @@ export function Nav() {
         d<span>h</span>
         <i />
       </Link>
+      <MotionToggle />
       <button
         ref={toggleRef}
         type="button"

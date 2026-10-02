@@ -13,6 +13,8 @@ import {
   Cpu,
   Network,
   ShieldCheck,
+  Pause,
+  Play,
 } from "lucide-react";
 export {
   ArrowUpRight,
@@ -29,4 +31,6 @@ export {
   Cpu,
   Network,
   ShieldCheck,
+  Pause,
+  Play,
 };
