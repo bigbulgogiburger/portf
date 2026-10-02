@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ViewTransition } from "react";
 import { projects, profile, resultLabel } from "@/data/portfolio";
 import { Nav } from "@/components/nav";
 import { ProjectVisual } from "@/components/project-visual";
@@ -70,7 +71,9 @@ export default async function ProjectPage({
             <ArrowUpRight size={18} />
           </a>
         )}
-        <ProjectVisual id={p.id} eager />
+        <ViewTransition name={`project-${p.id}`} share="morph" default="none">
+          <ProjectVisual id={p.id} eager />
+        </ViewTransition>
         <p className="visual-caption">
           {["harness", "service-agent"].includes(p.id) ? "핵심 동작 흐름" : "서비스 화면"}
         </p>

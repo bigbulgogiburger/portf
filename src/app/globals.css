@@ -2471,7 +2471,7 @@ h1,h2,h3 { font-weight:600; }
 .case-result>p.metric-label { font-size:14px; color:#c5dea8; }
 .case-flow span { font-size:13px; }
 @media(prefers-reduced-motion:no-preference) {
- .hero-copy { animation:hero-arrive .9s cubic-bezier(.16,1,.3,1) both; }
+ .hero-copy>:not(h1) { animation:hero-arrive .9s cubic-bezier(.16,1,.3,1) both; }
  .orbit-stage { animation:hero-arrive 1.3s cubic-bezier(.16,1,.3,1) both; }
  .will-reveal { transform:translateY(36px); transition:opacity .85s ease,transform .85s cubic-bezier(.16,1,.3,1); }
  .will-reveal.revealed { transform:none; }
@@ -2691,4 +2691,90 @@ h1,h2,h3 { font-weight:600; }
  .skill-list:not(.open) .skill-extra { display:none; }
  .skill-more { display:inline-flex; align-items:center; min-height:44px; margin-top:12px; padding:0; font-size:14px; color:var(--lime); background:none; border:0; }
  .nav-links.open { box-shadow:0 0 0 100vmax #0009; }
+}
+
+/* Motion: explanatory motion, site-wide pause and card-to-case transitions. */
+.hero h1 .hero-line { display:block; margin-top:0; color:var(--text); }
+.hero h1 .hero-line>span { display:inline-block; color:inherit; }
+.hero h1 .hero-line+.hero-line { margin-top:10px; color:var(--lime); }
+.proof-bars { display:grid; gap:6px; max-width:240px; margin-top:12px; }
+.proof-bars>span { display:grid; grid-template-columns:28px minmax(0,1fr); align-items:center; gap:8px; font:10px/1 var(--mono); color:var(--muted); }
+.proof-bars b { position:relative; height:4px; border-radius:2px; background:#ffffff12; overflow:hidden; }
+.proof-bars b::after { content:""; position:absolute; inset:0; border-radius:inherit; background:#69745e; transform-origin:left; }
+.proof-bars>span+span b::after { background:var(--lime); transform:scaleX(.1667); }
+.process-steps>div>strong { transition:border-color .35s,background-color .35s,color .35s,box-shadow .35s; }
+.process-steps[data-playing]>div>strong.is-done { border-color:#d1f58a70; }
+.process-steps>div>strong.is-run { border-color:var(--lime); color:#fff; box-shadow:0 0 0 3px #d1f58a22,0 0 22px #d1f58a2e; }
+.process-steps>div>strong.is-fail,.process-steps>div>strong.is-wait { border-color:#e2b36f; background:#e2b36f17; color:#f2d3a2; }
+.process-steps>div:last-child>strong.is-idle { border-color:#ffffff2a; background:#ffffff09; color:#e6e9df; }
+.trace-wire { position:relative; display:flex; flex-shrink:0; overflow:hidden; }
+.trace-wire svg { transition:color .35s; }
+.process-steps[data-playing] .trace-wire.is-done svg { color:var(--lime); }
+.trace-wire i { position:absolute; inset:0; transform:translateX(calc(-100% - 8px)); }
+.trace-wire i::after { content:""; position:absolute; right:0; top:50%; width:6px; height:6px; margin-top:-3px; border-radius:50%; background:var(--lime); box-shadow:0 0 8px 2px #d1f58a99; }
+.process-art>.trace-log { min-height:1.6em; margin:-8px 0 6px; font:12px/1.6 var(--mono); color:#d9dccf; transition:color .3s; }
+.process-art>.trace-log.is-alert { color:#f2d3a2; }
+.process-art>.trace-log.is-pass { color:var(--lime); }
+.agent-side { display:grid; gap:20px; min-width:0; }
+.answer-preview { margin:0; padding:18px 20px 20px; border:1px solid var(--line); border-radius:8px; background:var(--surface); }
+.answer-preview figcaption { font:10px/1.6 var(--mono); letter-spacing:.08em; color:var(--muted); }
+.answer-preview .chat-message { font-size:13px; }
+.answer-preview .assistant { position:relative; }
+.answer-preview .chat-thinking { position:absolute; top:28px; left:12px; margin:0; }
+.answer-preview .is-streaming>span { opacity:0; }
+.answer-preview .is-streaming>span.on { opacity:1; animation:word-in 80ms ease-out; }
+.motion-switch { display:grid; place-items:center; width:40px; height:40px; margin:0 22px 0 auto; padding:0; color:var(--muted); background:transparent; border:1px solid #464d3e; border-radius:50%; transition:color .2s,border-color .2s; }
+.motion-switch:hover,.motion-switch[aria-pressed="true"] { color:var(--lime); border-color:var(--lime); }
+.project-card>* { transition:opacity .3s; }
+@media(hover:hover) {
+ .project-grid:has(.project-card:hover) .project-card:not(:hover,:focus-visible)>.project-art-wrap { opacity:.45; }
+ .project-grid:has(.project-card:hover) .project-card:not(:hover,:focus-visible)>.project-copy { opacity:.7; }
+}
+.project-grid:has(.project-card:focus-visible) .project-card:not(:hover,:focus-visible)>.project-art-wrap { opacity:.45; }
+.project-grid:has(.project-card:focus-visible) .project-card:not(:hover,:focus-visible)>.project-copy { opacity:.7; }
+::view-transition { pointer-events:none; }
+.site-header { view-transition-name:site-header; }
+::view-transition-group(site-header) { animation:none; z-index:100; }
+::view-transition-old(site-header) { display:none; }
+::view-transition-new(site-header) { animation:none; }
+::view-transition-group(.morph) { animation-duration:.45s; animation-timing-function:cubic-bezier(.16,1,.3,1); }
+::view-transition-image-pair(.morph) { animation-name:morph-blur; }
+@media(prefers-reduced-motion:no-preference) {
+ .hero h1 .hero-line { clip-path:inset(-25% -5% -.08em -5%); }
+ .hero h1 .hero-line>span { animation:line-rise .85s cubic-bezier(.16,1,.3,1) both; }
+ .hero h1 .hero-line+.hero-line>span { animation-delay:.09s; }
+ .hero-copy>.hero-stack { animation-delay:.12s; }
+ .hero-copy>.hero-actions { animation-delay:.18s; }
+ .hero-copy>.hero-signature { animation-delay:.24s; }
+ .proof-grid.revealed .proof-bars b::after { animation:bar-race 1.6s .35s linear both; }
+ .proof-grid.revealed .proof-bars>span+span b::after { animation-duration:.27s; }
+ .process-steps>div>strong.is-fail { animation:trace-shake .42s ease-in-out; }
+ .process-steps>div>strong.is-wait { animation:trace-wait 1.2s ease-in-out infinite; }
+ .trace-wire.is-run i { animation:trace-packet .5s cubic-bezier(.45,0,.55,1) forwards; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .motion-switch { display:none; }
+ ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*) { animation-duration:0s !important; animation-delay:0s !important; }
+}
+/* Zero duration rather than animation:none, so resuming does not replay finished entrances. */
+html[data-motion="paused"] .hero-copy>*,html[data-motion="paused"] .hero h1 .hero-line>span,html[data-motion="paused"] .orbit-stage,html[data-motion="paused"] .proof-grid.revealed .proof-bars b::after { animation-duration:0s; animation-delay:0s; }
+html[data-motion="paused"] .will-reveal { opacity:1; transform:none; transition:none; }
+html[data-motion="paused"]::view-transition-group(*),html[data-motion="paused"]::view-transition-old(*),html[data-motion="paused"]::view-transition-new(*) { animation-duration:0s !important; animation-delay:0s !important; }
+@keyframes line-rise { from { transform:translateY(105%); } }
+@keyframes bar-race { from { transform:scaleX(0); } }
+@keyframes trace-packet { to { transform:translateX(8px); } }
+@keyframes trace-shake { 20% { transform:translateX(-3px); } 40% { transform:translateX(3px); } 60% { transform:translateX(-2px); } 80% { transform:translateX(2px); } }
+@keyframes trace-wait { 50% { box-shadow:0 0 0 4px #e2b36f26; } }
+@keyframes word-in { from { opacity:.4; } }
+@keyframes morph-blur { 30% { filter:blur(3px); } }
+@media(max-width:760px) {
+ .hero h1 .hero-line+.hero-line { margin-top:4px; }
+ .process-steps .trace-wire { align-self:center; transform:rotate(90deg); }
+ .process-steps .trace-wire svg { transform:none; }
+ .process-art>.trace-log { margin-top:-6px; }
+ .agent-side { margin-top:28px; }
+ .agent-side .agent-prompts { margin-top:0; }
+}
+@media(max-width:480px) {
+ .motion-switch { width:44px; height:44px; margin-right:6px; }
 }
