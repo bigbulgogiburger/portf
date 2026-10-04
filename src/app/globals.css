@@ -2759,6 +2759,7 @@ h1,h2,h3 { font-weight:600; }
 /* Zero duration rather than animation:none, so resuming does not replay finished entrances. */
 html[data-motion="paused"] .hero-copy>*,html[data-motion="paused"] .hero h1 .hero-line>span,html[data-motion="paused"] .orbit-stage,html[data-motion="paused"] .proof-grid.revealed .proof-bars b::after { animation-duration:0s; animation-delay:0s; }
 html[data-motion="paused"] .will-reveal { opacity:1; transform:none; transition:none; }
+html[data-motion="paused"] .project-card,html[data-motion="paused"] .project-card * { transition-duration:0s; transition-delay:0s; }
 html[data-motion="paused"]::view-transition-group(*),html[data-motion="paused"]::view-transition-old(*),html[data-motion="paused"]::view-transition-new(*) { animation-duration:0s !important; animation-delay:0s !important; }
 @keyframes line-rise { from { transform:translateY(105%); } }
 @keyframes bar-race { from { transform:scaleX(0); } }
