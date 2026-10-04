@@ -2,7 +2,7 @@
 import { useState } from "react";
 import type { Skill } from "@/data/portfolio";
 
-// Mobile shows the first few skills per group; desktop CSS always shows all.
+// Shows the first few skills per group (those with a named project come first).
 const VISIBLE = 5;
 export function SkillList({ skills }: { skills: Skill[] }) {
   const [open, setOpen] = useState(false);

@@ -6,7 +6,7 @@ import { traces, type TraceId } from "@/lib/trace";
 
 // Plays the diagram once each time it scrolls into view (or on hover) and
 // otherwise rests on the static design, which is also what the server renders.
-export function ProcessTrace({ id }: { id: TraceId }) {
+export function ProcessTrace({ id, controls = false }: { id: TraceId; controls?: boolean }) {
   const trace = traces[id];
   const rest = trace.frames.length - 1;
   const ref = useRef<HTMLDivElement>(null);
@@ -49,6 +49,11 @@ export function ProcessTrace({ id }: { id: TraceId }) {
       <div className="process-heading">
         {trace.title}
         <span>{trace.subtitle}</span>
+        {controls && allowed && (
+          <button type="button" className="replay-button" onClick={() => setReplay((n) => n + 1)}>
+            흐름 다시 보기
+          </button>
+        )}
       </div>
       <div className="process-steps" data-playing={frame !== rest || undefined}>
         {trace.steps.map((step, i) => (
