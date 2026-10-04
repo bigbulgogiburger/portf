@@ -9,5 +9,5 @@ const screens: Record<string, {file:string; alt:string}> = {
 export function ProjectVisual({id, eager=false}:{id:string; eager?:boolean}) {
   const screen=screens[id];
   if(screen) return <div className={`project-art product-screen screen-${id}`}><Image src={`/projects/${screen.file}.png`} alt={screen.alt} loading={eager ? "eager" : "lazy"} fill sizes="(max-width: 760px) 90vw, 600px" style={{objectFit:"contain"}} /></div>;
-  return <ProcessTrace id={id === "harness" ? "harness" : "service-agent"} />;
+  return <ProcessTrace id={id === "harness" ? "harness" : "service-agent"} controls={eager} />;
 }

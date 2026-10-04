@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { Sparkles, X, Send, ArrowUpRight } from "./icons";
+import { useMotion } from "@/lib/motion";
 
 type Message = { role: "user" | "assistant"; content: string };
 type Source = { id: string; title: string };
@@ -36,6 +37,7 @@ export function Chat() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [launcherHidden, setLauncherHidden] = useState(false);
+  const { allowed } = useMotion();
   const inputRef = useRef<HTMLInputElement>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const historyRef = useRef<HTMLDivElement>(null);
@@ -50,27 +52,34 @@ export function Chat() {
     } else dialogRef.current?.close();
   }, [open]);
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     historyRef.current?.scrollTo({
       top: historyRef.current.scrollHeight,
-      behavior: reduce.matches ? "auto" : "smooth",
+      behavior: allowed ? "smooth" : "auto",
     });
-  }, [messages, busy, error]);
-  // Hide the launcher while the home chat section or contact is on screen.
+  }, [messages, busy, error, allowed]);
+  // Hide the launcher while the home chat section or contact is on screen,
+  // and while a project card's open button passes under its corner.
   useEffect(() => {
-    const targets = ["assistant", "contact"]
+    const sections = ["assistant", "contact"]
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => !!el);
-    if (!targets.length) return;
+    const buttons = document.querySelectorAll(".project-open");
+    if (!sections.length && !buttons.length) return;
     const visible = new Set<Element>();
-    const observer = new IntersectionObserver((entries) => {
+    const track = (entries: IntersectionObserverEntry[]) => {
       for (const e of entries)
         if (e.isIntersecting) visible.add(e.target);
         else visible.delete(e.target);
       setLauncherHidden(visible.size > 0);
-    });
-    targets.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    };
+    const sectionObserver = new IntersectionObserver(track);
+    const cornerObserver = new IntersectionObserver(track, { rootMargin: "-80% 0px 0px -70%" });
+    sections.forEach((el) => sectionObserver.observe(el));
+    buttons.forEach((el) => cornerObserver.observe(el));
+    return () => {
+      sectionObserver.disconnect();
+      cornerObserver.disconnect();
+    };
   }, []);
   function close() {
     setOpen(false);

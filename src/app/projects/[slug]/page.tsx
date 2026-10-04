@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
-import { projects, profile, resultLabel } from "@/data/portfolio";
+import { problemLead, projects, profile, resultLabel } from "@/data/portfolio";
+import { retryPath } from "@/lib/retry-path";
 import { Nav } from "@/components/nav";
 import { ProjectVisual } from "@/components/project-visual";
 import { Chat } from "@/components/chat";
+import { RetryPath } from "@/components/retry-path";
 import { ArrowRight, ArrowUpRight, Github } from "@/components/icons";
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.id }));
@@ -71,6 +73,27 @@ export default async function ProjectPage({
             <ArrowUpRight size={18} />
           </a>
         )}
+        <section className="case-brief" aria-label="한눈에 보기">
+          <div>
+            <span>문제</span>
+            <p>{problemLead(p)}</p>
+          </div>
+          <div>
+            <span>설계와 구현</span>
+            <ol>
+              {p.decisions.map((d, i) => (
+                <li key={d.title}>
+                  <a href={`#decision-${i + 1}`}>{d.title}</a>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div>
+            <span>{resultLabel(p).ko}</span>
+            <p className="case-brief-metric">{p.metric}</p>
+            <p>{p.metricLabel}</p>
+          </div>
+        </section>
         <ViewTransition name={`project-${p.id}`} share="morph" default="none">
           <ProjectVisual id={p.id} eager />
         </ViewTransition>
@@ -87,11 +110,12 @@ export default async function ProjectPage({
           <h2>설계와 구현</h2>
           <div className="decisions">
             {p.decisions.map((d, i) => (
-              <article key={d.title}>
+              <article key={d.title} id={`decision-${i + 1}`}>
                 <span>0{i + 1}</span>
                 <div>
                   <h3>{d.title}</h3>
                   <p>{d.body}</p>
+                  {p.id === "payments" && d.title === retryPath.decision && <RetryPath />}
                 </div>
               </article>
             ))}

@@ -10,6 +10,8 @@ export type Project = {
   tags: string[]; accent: string; metric: string; metricLabel: string;
   challenge: string; decisions: { title: string; body: string }[];
   outcome: string; flow: string[]; github?: string;
+  // Title of the decision shown on the home card.
+  highlight: string;
 };
 export const projects: Project[] = [
   {
@@ -28,6 +30,7 @@ export const projects: Project[] = [
     ],
     outcome: "요구사항 검토, 도메인·DB 설계, 서버·화면 개발과 QA·배포를 담당하고 있습니다. 도메인별 개발 가이드와 검증 기록을 남기며 추가 요구사항을 반영하고 있습니다. 정산 데이터 보관 방식은 고객사와 협의한 설계 기준입니다.",
     flow: ["요구사항 협의", "도메인·권한 설계", "DB·API·화면", "QA·배포"],
+    highlight: "정산 생성 시점의 금액 보관",
   },
   {
     id: "harness", number: "02", category: "오픈소스 · AI CODING",
@@ -44,6 +47,7 @@ export const projects: Project[] = [
     ],
     outcome: "Claude Code 플러그인을 MIT 라이선스로 공개했습니다. 검증 기록과 커밋 대상의 코드 상태를 대조해, 차단 모드에서 검증 미실행·실패·코드 변경을 감지하면 커밋을 막습니다.",
     flow: ["구현", "테스트·리뷰", "tree ID 기록", "커밋 대상 대조"],
+    highlight: "계획·구현·검증 절차를 워크플로로 구성",
     github: "https://github.com/bigbulgogiburger/jira-harness",
   },
   {
@@ -62,6 +66,7 @@ export const projects: Project[] = [
     ],
     outcome: "CS AI Agent를 개발해 2026년 7월 QA 환경에 배포하고, 2026년 9월 운영 환경에 도입해 현업이 실제 업무에 사용하고 있습니다. 조회와 접수 초안·등록 절차를 설명한 사용 매뉴얼도 작성했습니다.",
     flow: ["자연어 요청", "권한 내 조회", "접수 초안", "확인 후 접수"],
+    highlight: "소속 그룹의 데이터 범위 검사",
   },
   {
     id: "platform-operations", number: "04", category: "백엔드 이관·운영 개선",
@@ -79,6 +84,7 @@ export const projects: Project[] = [
     ],
     outcome: "백엔드 API 약 50개를 Spring Boot로 이관하고, 배포 작업을 약 1시간에서 약 10분으로 단축했습니다. Flutter 앱의 Play Store·TestFlight 배포와 Vue·React 화면 유지보수도 담당했습니다.",
     flow: ["GitLab", "Jenkins 빌드", "Docker 이미지", "배포·모니터링"],
+    highlight: "엑셀 대량 업로드의 비동기·병렬 처리",
   },
   {
     id: "payments", number: "05", category: "결제 연동·장애 분석",
@@ -96,6 +102,7 @@ export const projects: Project[] = [
     ],
     outcome: "서비스 본체와 API로 연동하는 결제 서버를 운영하며, Spring AOP 자기 호출로 동작하지 않던 Apple 환불 검증 재시도를 복구했습니다. 이후 교육지대에서는 회원 연동과 운영 모니터링을 추가로 담당했습니다.",
     flow: ["환불 Webhook", "호출 Bean", "AOP Proxy", "검증 Bean", "DB 반영"],
+    highlight: "@Retryable이 실행되지 않는 원인 추적",
   },
   {
     id: "membership", number: "06", category: "회원 연동·배치",
@@ -112,6 +119,7 @@ export const projects: Project[] = [
     ],
     outcome: "통합회원 약 1만 명 전환 완료, 기존 회원 DB 스키마 변경 없는 Q&A 구현, 스케줄러 22개의 배치 서버 통합을 수행했습니다. 각 작업은 링커 재직과 합병 이후의 서비스 담당 기간에 걸쳐 진행했습니다.",
     flow: ["회원 변경", "AWS SNS", "서비스별 구독", "자체 DB 반영"],
+    highlight: "스케줄러 22개를 Batch 서버 1대로",
   },
 ];
 export const career = [
@@ -123,13 +131,13 @@ export const capabilities: { title: string; caption: string; skills: Skill[] }[]
   { title: "Backend", caption: "A/S 도메인 · 회원·결제 연동", skills: [
     { name: "Java · Spring Boot", where: "A/S 플랫폼 · 수리엔 · 스카이탭" },
     { name: "JPA · QueryDSL", where: "A/S 플랫폼 · 수리엔 이관" },
-    { name: "MyBatis · Spring Security" },
     { name: "Spring Retry · AOP", where: "스카이탭 결제" },
     { name: "Spring Batch", where: "링커 스케줄러 통합" },
     { name: "MySQL", where: "A/S 플랫폼 · 수리엔 · 링커" },
-    { name: "PostgreSQL" },
     { name: "Redis", where: "링커 통합 Q&A" },
     { name: "MongoDB → MySQL", where: "수리엔 데이터 이관" },
+    { name: "MyBatis · Spring Security" },
+    { name: "PostgreSQL" },
   ] },
   { title: "Applied AI", caption: "CS Agent · 개발 결과 검증", skills: [
     { name: "Python · FastAPI", where: "CS AI Agent" },
@@ -157,6 +165,10 @@ export const capabilities: { title: string; caption: string; skills: Skill[] }[]
 export function resultLabel(p: Project): { en: string; ko: string } {
   if (p.status.endsWith("중")) return { en: "CURRENT SCOPE", ko: "현재 범위" };
   return { en: "RESULT", ko: "성과" };
+}
+// Opening sentence of the challenge, shown in the case-study summary.
+export function problemLead(p: Project): string {
+  return p.challenge.match(/^.*?다\./)?.[0] ?? p.challenge;
 }
 // Reviewed public facts, shared by the site and its assistant.
 export const publicKnowledge = JSON.stringify({ profile, career, projects });
