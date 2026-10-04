@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState, type CSSProperties } from "react";
+import { ArrowRight } from "./icons";
 import { useInView, useMotion } from "@/lib/motion";
 import { retryPath } from "@/lib/retry-path";
 
@@ -42,23 +43,44 @@ export function RetryPath() {
       <div className="retry-panels" key={run}>
         {(["before", "after"] as const).map((side) => {
           const s = retryPath[side];
+          const lane = (
+            <div className="retry-lane" style={{ "--n": s.nodes.length } as CSSProperties}>
+              {s.nodes.map((node, i) => (
+                <Fragment key={node}>
+                  {i > 0 && <ArrowRight size={16} aria-hidden="true" />}
+                  <span className={node === "AOP Proxy" ? "retry-node is-proxy" : "retry-node"}>
+                    {node.split(" · ")[0]}
+                    {node.includes(" · ") && <small> {node.split(" · ")[1]}</small>}
+                  </span>
+                </Fragment>
+              ))}
+              <span className="retry-run" aria-hidden="true">
+                <i />
+              </span>
+            </div>
+          );
           return (
             <div key={side} className={`retry-panel is-${side}`}>
               <p className="retry-tag">{s.tag}</p>
-              <div className="retry-track">
-                {s.nodes.map((node, i) => (
-                  <span key={node} className={i === 1 ? "retry-node is-proxy" : "retry-node"}>
-                    {node}
-                    {side === "before" && i === 1 && <small>거치지 않음</small>}
+              {side === "before" ? (
+                <div className="retry-track">
+                  <span className="retry-node is-proxy">
+                    AOP Proxy<small>거치지 않음</small>
                   </span>
-                ))}
-                <span className="retry-link">
-                  <span>{s.link}</span>
-                </span>
-                <span className="retry-run" aria-hidden="true">
-                  <i />
-                </span>
-              </div>
+                  <div className="retry-bean">
+                    <span className="retry-bean-label">{retryPath.before.bean}</span>
+                    {lane}
+                    <p className="retry-link">{s.link}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="retry-track">
+                  <div className="retry-flow">
+                    {lane}
+                    <p className="retry-link">{s.link}</p>
+                  </div>
+                </div>
+              )}
               <p className="retry-status">
                 {side === "before" ? "✕ " : "✓ "}
                 {s.status}

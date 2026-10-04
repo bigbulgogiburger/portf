@@ -4,7 +4,8 @@ export const retryPath = {
   label: "Apple 환불 검증 재시도의 호출 구조 전후 비교",
   before: {
     tag: "이전",
-    nodes: ["호출 코드", "AOP Proxy", "검증 로직 · @Retryable"],
+    bean: "동일 Bean",
+    nodes: ["호출 메서드", "this.검증 메서드 · @Retryable"],
     link: "같은 객체 내부 호출",
     status: "재시도 미실행",
     note: "같은 객체 내부 호출로 Spring AOP 프록시를 거치지 않는 문제",
