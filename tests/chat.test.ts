@@ -48,7 +48,7 @@ test("corpus only includes reviewed public projects", () => {
   assert.equal(projects.length, 6);
   assert.equal(new Set(projects.map((p) => p.id)).size, projects.length);
   assert.ok(
-    !/DeWalt|010[. -]?5189|4,100|149건|525 MD/i.test(
+    !/DeWalt|디월트|Stanley|스탠리|010[. -]?5189|4,100|149건|525 MD/i.test(
       publicKnowledge,
     ),
   );

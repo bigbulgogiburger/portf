@@ -16,7 +16,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     id: "field-service", number: "01", category: "업무 시스템 설계·구현",
-    title: "전동공구 A/S 관리 플랫폼", subtitle: "Stanley CS · DB Inc.",
+    title: "전동공구 A/S 관리 플랫폼", subtitle: "글로벌 전동공구 브랜드 · DB Inc.",
     summary: "고객사와 업무 용어·권한·정산 규칙을 협의하고, 접수부터 정산까지의 DB·API·화면을 개발하고 있습니다.",
     role: "요구사항 협의 · 도메인·DB 설계 · 백엔드·화면·QA·배포 1인 담당",
     period: "DB Inc. 재직 중", status: "개발·검증 중",
