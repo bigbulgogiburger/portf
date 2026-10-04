@@ -58,7 +58,7 @@ export function useInView(ref: RefObject<Element | null>, threshold: number) {
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting),
+      ([entry]) => setInView(entry.isIntersecting && entry.intersectionRatio >= threshold),
       { threshold },
     );
     observer.observe(el);
