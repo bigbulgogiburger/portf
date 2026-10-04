@@ -3,10 +3,12 @@ import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
 import { problemLead, projects, profile, resultLabel } from "@/data/portfolio";
 import { retryPath } from "@/lib/retry-path";
+import { uploadFlow } from "@/lib/upload-flow";
 import { Nav } from "@/components/nav";
 import { ProjectVisual } from "@/components/project-visual";
 import { Chat } from "@/components/chat";
 import { RetryPath } from "@/components/retry-path";
+import { UploadFlow } from "@/components/upload-flow";
 import { ArrowRight, ArrowUpRight, Github } from "@/components/icons";
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.id }));
@@ -115,7 +117,8 @@ export default async function ProjectPage({
                 <div>
                   <h3>{d.title}</h3>
                   <p>{d.body}</p>
-                  {p.id === "payments" && d.title === retryPath.decision && <RetryPath />}
+                  {d.title === retryPath.decision && <RetryPath />}
+                  {d.title === uploadFlow.decision && <UploadFlow />}
                 </div>
               </article>
             ))}

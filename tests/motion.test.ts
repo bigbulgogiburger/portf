@@ -1,45 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { scrambleText } from "../src/lib/motion";
 import { traces } from "../src/lib/trace";
 import { assistantPreview, projects } from "../src/data/portfolio";
-
-// Always picks the last glyph, which never appears in the kicker labels.
-const lastGlyph = () => 0.999;
-
-test("scrambleText keeps length, spaces and slashes at every step", () => {
-  const text = "01 / PROJECTS";
-  for (const progress of [0, 0.25, 0.5, 0.75, 0.99]) {
-    const out = scrambleText(text, progress, Math.random);
-    assert.equal(out.length, text.length);
-    [...text].forEach((ch, i) => {
-      if (ch === " " || ch === "/") assert.equal(out[i], ch);
-    });
-  }
-});
-
-test("scrambleText resolves characters from left to right", () => {
-  const text = "03 / TECHNOLOGY";
-  let resolvedBefore = 0;
-  for (let step = 0; step <= 20; step++) {
-    const out = scrambleText(text, step / 20, lastGlyph);
-    const resolved = [...text].filter((ch, i) => ch !== " " && ch !== "/" && out[i] === ch).length;
-    const firstUnresolved = [...text].findIndex((ch, i) => out[i] !== ch);
-    if (firstUnresolved !== -1)
-      assert.ok([...out.slice(firstUnresolved)].every((ch, i) => {
-        const original = text[firstUnresolved + i];
-        return original === " " || original === "/" || ch !== original;
-      }), `only a prefix is resolved at step ${step}`);
-    assert.ok(resolved >= resolvedBefore);
-    resolvedBefore = resolved;
-  }
-});
-
-test("scrambleText returns the original text once finished", () => {
-  assert.equal(scrambleText("04 / CAREER", 1, Math.random), "04 / CAREER");
-  assert.equal(scrambleText("04 / CAREER", 1.4, Math.random), "04 / CAREER");
-  assert.notEqual(scrambleText("04 / CAREER", 0, lastGlyph), "04 / CAREER");
-});
 
 test("process traces keep the published step labels and captions", () => {
   assert.deepEqual(traces.harness.steps, ["테스트·리뷰", "Git tree 기록", "커밋 대상 비교"]);

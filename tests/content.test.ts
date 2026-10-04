@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { problemLead, projects } from "../src/data/portfolio";
 import { retryPath } from "../src/lib/retry-path";
+import { uploadFlow, uploadSlots } from "../src/lib/upload-flow";
 
 test("each home-card highlight is one of the project's published decisions", () => {
   for (const p of projects) {
@@ -28,4 +29,25 @@ test("retry path notes quote the payments decision it illustrates", () => {
   for (const node of ["AOP Proxy", "호출 Bean", "검증 Bean"]) {
     assert.ok(payments.flow.includes(node), node);
   }
+});
+
+test("upload flow notes quote the platform decision and respect the pool size", () => {
+  const platform = projects.find((p) => p.id === "platform-operations")!;
+  const decision = platform.decisions.find((d) => d.title === uploadFlow.decision);
+  assert.ok(decision);
+  assert.ok(decision.body.includes(uploadFlow.before.note));
+  assert.ok(decision.body.includes(uploadFlow.after.note));
+  assert.ok(decision.body.includes("행별 성공·실패와 사유를 반환"));
+  const after = uploadSlots("after");
+  for (const slot of new Set(after)) {
+    assert.ok(after.filter((s) => s === slot).length <= uploadFlow.pool);
+  }
+  assert.ok(Math.max(...after) < Math.max(...uploadSlots("before")));
+});
+
+test("upload flow summary matches the illustrated slots", () => {
+  assert.equal(uploadFlow.rows.length, 4);
+  assert.equal(uploadFlow.pool, 2);
+  assert.deepEqual(uploadSlots("after"), [0, 0, 1, 1]);
+  assert.ok(uploadFlow.summary.includes("스레드 2개"));
 });
