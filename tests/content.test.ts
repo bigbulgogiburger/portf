@@ -44,3 +44,10 @@ test("upload flow notes quote the platform decision and respect the pool size", 
   }
   assert.ok(Math.max(...after) < Math.max(...uploadSlots("before")));
 });
+
+test("upload flow summary matches the illustrated slots", () => {
+  assert.equal(uploadFlow.rows.length, 4);
+  assert.equal(uploadFlow.pool, 2);
+  assert.deepEqual(uploadSlots("after"), [0, 0, 1, 1]);
+  assert.ok(uploadFlow.summary.includes("스레드 2개"));
+});

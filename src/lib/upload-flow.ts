@@ -5,6 +5,9 @@ export const uploadFlow = {
   label: "엑셀 대량 업로드의 직렬 처리와 스레드 풀 병렬 처리 비교",
   rows: ["1행", "2행", "3행", "4행"],
   pool: 2,
+  // Read by screen readers as the figure description; also shown under it.
+  summary: "이전에는 1행부터 4행까지 한 행씩 차례로 처리합니다. 변경 후에는 스레드 2개가 1·2행을 동시에 처리하고, 먼저 끝난 스레드가 3·4행을 이어서 처리합니다.",
+  assumption: "응답 대기 시간이 모두 같다고 가정한 개념도이며, 행·스레드 수와 처리 시간은 실측값이 아닙니다.",
   before: {
     tag: "이전 · 직렬 처리",
     bar: "응답 대기",

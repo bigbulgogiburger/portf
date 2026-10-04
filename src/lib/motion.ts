@@ -1,4 +1,4 @@
-import { useEffect, useState, useSyncExternalStore, type RefObject } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type RefObject } from "react";
 
 const STORAGE_KEY = "portfolio-motion";
 const CHANGE_EVENT = "portfolio-motion:change";
@@ -51,14 +51,22 @@ export function useMotion() {
     allowed: useSyncExternalStore(subscribe, isAllowed, onServer),
   };
 }
+// True once `threshold` of the element is visible, or, for elements taller
+// than the viewport, once they cover that share of the viewport height.
 export function useInView(ref: RefObject<Element | null>, threshold: number) {
   const [inView, setInView] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setInView(entry.isIntersecting && entry.intersectionRatio >= threshold),
-      { threshold },
+      ([entry]) => {
+        const root = entry.rootBounds?.height ?? window.innerHeight;
+        setInView(
+          entry.isIntersecting &&
+            (entry.intersectionRatio >= threshold || entry.intersectionRect.height >= root * threshold),
+        );
+      },
+      { threshold: Array.from({ length: 11 }, (_, i) => i / 10) },
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -66,14 +74,16 @@ export function useInView(ref: RefObject<Element | null>, threshold: number) {
   return inView;
 }
 // Plays a CSS-choreographed figure once each time it scrolls into view;
-// `replay` restarts it. The figure animates only while `playing` is true.
+// `replay` restarts it even when little of the figure is on screen.
 export function usePlayback(ref: RefObject<Element | null>, ms: number) {
   const { allowed } = useMotion();
   const inView = useInView(ref, 0.6);
+  const forced = useRef(false);
   const [run, setRun] = useState(0);
   const [playing, setPlaying] = useState(false);
   useEffect(() => {
-    if (!allowed || !inView) return;
+    if (!allowed || (!inView && !forced.current)) return;
+    forced.current = false;
     const start = window.setTimeout(() => setPlaying(true), 0);
     const end = window.setTimeout(() => setPlaying(false), ms);
     return () => {
@@ -82,5 +92,9 @@ export function usePlayback(ref: RefObject<Element | null>, ms: number) {
       setPlaying(false);
     };
   }, [allowed, inView, run, ms]);
-  return { allowed, playing, run, replay: () => setRun((n) => n + 1) };
+  const replay = () => {
+    forced.current = true;
+    setRun((n) => n + 1);
+  };
+  return { allowed, playing, run, replay };
 }

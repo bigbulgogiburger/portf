@@ -1,5 +1,5 @@
 "use client";
-import { useRef, type CSSProperties } from "react";
+import { useId, useRef, type CSSProperties } from "react";
 import { usePlayback } from "@/lib/motion";
 import { uploadFlow, uploadSlots } from "@/lib/upload-flow";
 
@@ -12,15 +12,17 @@ export function UploadFlow() {
   const ref = useRef<HTMLElement>(null);
   const { allowed, playing, run, replay } = usePlayback(ref, PLAY_MS);
   const units = uploadFlow.rows.length;
+  const descId = useId();
   return (
     <figure
       ref={ref}
       className="upload-flow"
       data-playing={playing || undefined}
       aria-label={uploadFlow.label}
+      aria-describedby={descId}
     >
       <figcaption>
-        <span>처리 구조 전후 · 행·스레드 수는 설명용</span>
+        <span>처리 구조 전후 · 개념도</span>
         {allowed && (
           <button type="button" className="replay-button" onClick={replay}>
             흐름 다시 보기
@@ -54,7 +56,9 @@ export function UploadFlow() {
             </div>
           );
         })}
-        <p className="upload-axis">가로축은 시간, 막대는 행별 외부 API 응답 대기</p>
+        <p className="upload-axis" id={descId}>
+          {uploadFlow.summary} 가로축은 시간, 막대는 행별 외부 API 응답 대기입니다. {uploadFlow.assumption}
+        </p>
       </div>
     </figure>
   );
