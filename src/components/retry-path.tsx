@@ -1,7 +1,7 @@
 "use client";
-import { Fragment, useEffect, useRef, useState, type CSSProperties } from "react";
+import { Fragment, useRef, type CSSProperties } from "react";
 import { ArrowRight } from "./icons";
-import { useInView, useMotion } from "@/lib/motion";
+import { usePlayback } from "@/lib/motion";
 import { retryPath } from "@/lib/retry-path";
 
 // Matches the last keyframe in the .retry-path block of globals.css.
@@ -11,20 +11,7 @@ const PLAY_MS = 4400;
 // each path once per view so the proxy bypass is visible, not just described.
 export function RetryPath() {
   const ref = useRef<HTMLElement>(null);
-  const { allowed } = useMotion();
-  const inView = useInView(ref, 0.6);
-  const [run, setRun] = useState(0);
-  const [playing, setPlaying] = useState(false);
-  useEffect(() => {
-    if (!allowed || !inView) return;
-    const start = window.setTimeout(() => setPlaying(true), 0);
-    const end = window.setTimeout(() => setPlaying(false), PLAY_MS);
-    return () => {
-      clearTimeout(start);
-      clearTimeout(end);
-      setPlaying(false);
-    };
-  }, [allowed, inView, run]);
+  const { allowed, playing, run, replay } = usePlayback(ref, PLAY_MS);
   return (
     <figure
       ref={ref}
@@ -35,7 +22,7 @@ export function RetryPath() {
       <figcaption>
         <span>호출 구조 전후 · 이해를 돕기 위한 개념도</span>
         {allowed && (
-          <button type="button" className="replay-button" onClick={() => setRun((n) => n + 1)}>
+          <button type="button" className="replay-button" onClick={replay}>
             흐름 다시 보기
           </button>
         )}

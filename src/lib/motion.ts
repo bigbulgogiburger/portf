@@ -3,7 +3,6 @@ import { useEffect, useState, useSyncExternalStore, type RefObject } from "react
 const STORAGE_KEY = "portfolio-motion";
 const CHANGE_EVENT = "portfolio-motion:change";
 const REDUCE = "(prefers-reduced-motion: reduce)";
-const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#*<>";
 
 let paused: boolean | null = null;
 function isPaused() {
@@ -66,14 +65,22 @@ export function useInView(ref: RefObject<Element | null>, threshold: number) {
   }, [ref, threshold]);
   return inView;
 }
-// Resolves left to right; spaces and slashes never scramble so the label keeps its shape.
-export function scrambleText(text: string, progress: number, random: () => number) {
-  if (progress >= 1) return text;
-  return [...text]
-    .map((ch, i) =>
-      ch === " " || ch === "/" || progress >= 0.25 + (0.75 * i) / text.length
-        ? ch
-        : GLYPHS[Math.floor(random() * GLYPHS.length)],
-    )
-    .join("");
+// Plays a CSS-choreographed figure once each time it scrolls into view;
+// `replay` restarts it. The figure animates only while `playing` is true.
+export function usePlayback(ref: RefObject<Element | null>, ms: number) {
+  const { allowed } = useMotion();
+  const inView = useInView(ref, 0.6);
+  const [run, setRun] = useState(0);
+  const [playing, setPlaying] = useState(false);
+  useEffect(() => {
+    if (!allowed || !inView) return;
+    const start = window.setTimeout(() => setPlaying(true), 0);
+    const end = window.setTimeout(() => setPlaying(false), ms);
+    return () => {
+      clearTimeout(start);
+      clearTimeout(end);
+      setPlaying(false);
+    };
+  }, [allowed, inView, run, ms]);
+  return { allowed, playing, run, replay: () => setRun((n) => n + 1) };
 }
