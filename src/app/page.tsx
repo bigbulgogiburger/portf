@@ -25,7 +25,7 @@ export default function Home() {
           <div className="hero-content">
             <div className="hero-copy">
               <h1 id="hero-title"><span className="hero-role">편도훈 · Java·Spring 백엔드 개발자</span>{" "}<span className="hero-line"><span>설계에서 배포까지,</span></span>{" "}<span className="hero-line"><span>그다음의 운영까지.</span></span></h1>
-              <p className="hero-description">2021년 5월부터 만 {careerYears()}년, 결제·회원·A/S 서비스를 개발해 왔습니다.<br />현재 DB Inc.에서 백엔드 개발·PM을 맡고,<br className="mobile-break" /> CS AI Agent를 운영 환경에 도입했습니다.</p>
+              <p className="hero-description">2021년 5월부터 만 {careerYears()}년, 결제·회원·A/S 서비스를 개발해 왔습니다.<br />현재 DB Inc.에서 백엔드 개발·PM을 맡고,<br className="mobile-break" /> <span className="nowrap">CS AI Agent를</span> 운영 환경에 도입했습니다.</p>
               <p className="hero-stack">Java · Spring Boot · JPA · MySQL · Redis · AWS · LLM API</p>
               <div className="hero-actions">
                 <a className="button primary" href="#work">프로젝트 살펴보기 <ArrowUpRight size={19} /></a>
