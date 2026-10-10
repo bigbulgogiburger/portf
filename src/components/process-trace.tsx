@@ -4,6 +4,12 @@ import { ArrowRight } from "./icons";
 import { useInView, useMotion } from "@/lib/motion";
 import { traces, type TraceId } from "@/lib/trace";
 
+const art: Record<TraceId, string> = {
+  harness: "harness-art",
+  "service-agent": "agent-art",
+  payments: "payments-art",
+};
+
 // Plays the diagram once each time it scrolls into view (or on hover) and
 // otherwise rests on the static design, which is also what the server renders.
 export function ProcessTrace({ id, controls = false }: { id: TraceId; controls?: boolean }) {
@@ -40,7 +46,7 @@ export function ProcessTrace({ id, controls = false }: { id: TraceId; controls?:
   return (
     <div
       ref={ref}
-      className={`project-art process-art ${id === "harness" ? "harness-art" : "agent-art"}`}
+      className={`project-art process-art ${art[id]}`}
       aria-label={trace.label}
       onPointerEnter={(e) => {
         if (e.pointerType === "mouse" && !playing.current) setReplay((n) => n + 1);

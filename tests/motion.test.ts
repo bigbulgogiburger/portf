@@ -42,6 +42,14 @@ test("harness trace blocks a changed commit, re-verifies, then passes", () => {
   assert.equal(frames.findIndex((f) => f.nodes[2] === "pass"), frames.length - 1);
 });
 
+test("payments trace bypasses the proxy, then passes through it after the fix", () => {
+  const frames = traces.payments.frames;
+  const bypass = frames.findIndex((f) => f.nodes[1] === "fail");
+  assert.ok(bypass > 0, "shows the bypassed proxy");
+  assert.ok(frames.slice(bypass + 1).some((f) => f.nodes[1] === "run"), "calls through the proxy after the fix");
+  assert.equal(frames.findIndex((f) => f.nodes[2] === "pass"), frames.length - 1);
+});
+
 test("service agent trace waits for the user before the ticket is created", () => {
   const states = traces["service-agent"].frames.map((f) => f.nodes[2]);
   const wait = states.indexOf("wait");

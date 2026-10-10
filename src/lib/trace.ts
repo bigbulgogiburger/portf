@@ -21,7 +21,7 @@ const frame = (
   hold: number,
 ): TraceFrame => ({ nodes, wires, log, hold });
 
-// Step-by-step playback of the two process diagrams. Logs follow the published
+// Step-by-step playback of the process diagrams. Logs follow the published
 // project text; the last frame is the static diagram shown without motion.
 export const traces = {
   harness: {
@@ -56,6 +56,23 @@ export const traces = {
       frame(["done", "done", "idle"], ["done", "run"], "▸ 초안 카드 표시", 550),
       frame(["done", "done", "wait"], ["done", "done"], "… 사용자 확인 대기", 1500),
       frame(["done", "done", "pass"], ["done", "done"], "✓ [등록] 후 접수 생성", 2200),
+    ],
+  },
+  payments: {
+    title: "스카이탭 결제",
+    subtitle: "Apple 환불 검증 재시도",
+    label: "Apple 환불 검증 재시도의 호출 구조 변경 흐름",
+    steps: ["호출 Bean", "AOP Proxy", "검증 Bean"],
+    caption: "검증 로직을 별도 Bean으로 분리해 프록시 경유 호출",
+    frames: [
+      frame(["run", "idle", "idle"], ["idle", "idle"], "▸ 환불 Webhook 수신 · 검증 메서드 호출", 800),
+      frame(["done", "fail", "idle"], ["idle", "idle"], "✕ 같은 객체 내부 호출 · 프록시 미경유 · 재시도 미실행", 1600),
+      frame(["done", "fail", "idle"], ["idle", "idle"], "▸ 테스트 코드로 재현해 원인 확인", 900),
+      frame(["run", "idle", "idle"], ["idle", "idle"], "↻ 검증 로직을 별도 Bean으로 분리", 900),
+      frame(["done", "idle", "idle"], ["run", "idle"], "▸ 프록시 경유 호출", 550),
+      frame(["done", "run", "idle"], ["done", "idle"], "▸ @Retryable 재시도 적용", 700),
+      frame(["done", "done", "idle"], ["done", "run"], "▸ Apple Verify API 검증", 600),
+      frame(["done", "done", "pass"], ["done", "done"], "✓ 재시도와 환불 상태 동기화 동작", 2200),
     ],
   },
 } satisfies Record<string, Trace>;

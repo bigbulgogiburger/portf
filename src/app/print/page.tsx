@@ -1,6 +1,6 @@
 import Script from "next/script";
 import Link from "next/link";
-import { profile, projects, career, capabilities, resultLabel } from "@/data/portfolio";
+import { profile, projects, career, capabilities, resultLabel, education, certifications } from "@/data/portfolio";
 export const metadata = {
   title: "공개용 포트폴리오",
   robots: { index: false, follow: false },
@@ -51,6 +51,12 @@ export default function Print() {
             <p>{c.body}</p>
           </div>
         ))}
+        <h3>학력·자격</h3>
+        <p>
+          {education.school} {education.major} · {education.period}
+          <br />
+          {certifications.map((c) => `${c.name} (${c.date})`).join(" · ")}
+        </p>
       </section>
       {projects.map((p) => (
         <section className="print-sheet" key={p.id}>

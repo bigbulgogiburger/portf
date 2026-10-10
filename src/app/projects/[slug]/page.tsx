@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ViewTransition } from "react";
-import { problemLead, projects, profile, resultLabel } from "@/data/portfolio";
+import { projects, profile, resultLabel } from "@/data/portfolio";
 import { retryPath } from "@/lib/retry-path";
 import { uploadFlow } from "@/lib/upload-flow";
 import { Nav } from "@/components/nav";
-import { ProjectVisual } from "@/components/project-visual";
+import { ProjectVisual, ServiceContext, visualCaption } from "@/components/project-visual";
 import { Chat } from "@/components/chat";
 import { RetryPath } from "@/components/retry-path";
 import { UploadFlow } from "@/components/upload-flow";
@@ -78,7 +78,7 @@ export default async function ProjectPage({
         <section className="case-brief" aria-label="한눈에 보기">
           <div>
             <span>문제</span>
-            <p>{problemLead(p)}</p>
+            <p>{p.problem}</p>
           </div>
           <div>
             <span>설계와 구현</span>
@@ -99,9 +99,8 @@ export default async function ProjectPage({
         <ViewTransition name={`project-${p.id}`} share="morph" default="none">
           <ProjectVisual id={p.id} eager />
         </ViewTransition>
-        <p className="visual-caption">
-          {["harness", "service-agent"].includes(p.id) ? "핵심 동작 흐름" : "서비스 화면"}
-        </p>
+        <p className="visual-caption">{visualCaption(p.id)}</p>
+        <ServiceContext id={p.id} />
         <section className="case-section">
           <span className="eyebrow">01 / CHALLENGE</span>
           <h2>문제와 제약</h2>
