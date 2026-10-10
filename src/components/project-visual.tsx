@@ -12,7 +12,7 @@ const dashboardNote = "테스트 데이터 · 고객사 정보 가림";
 // Other service screens only give context on case pages.
 const contexts: Record<string, Screen> = {
   payments: {file:"skytab-1",alt:"스카이탭 학생·선생님 수업 화면",caption:"서비스 맥락 · 학생과 선생님이 사용하는 스카이탭 수업 화면"},
-  membership: {file:"linker-1",alt:"링커 모바일 서비스 화면",caption:"서비스 맥락 · 링커 모바일 앱 화면"},
+  membership: {file:"linker-app",alt:"링커 모바일 서비스 화면",caption:"서비스 맥락 · 링커 모바일 앱 화면"},
 };
 const traceIds: Record<string, TraceId> = {payments:"payments",harness:"harness","service-agent":"service-agent"};
 export function visualCaption(id: string): string {
