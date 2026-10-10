@@ -1,6 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { problemLead, projects } from "../src/data/portfolio";
+import { careerYears, projects } from "../src/data/portfolio";
+import { migration } from "../src/lib/migration";
+import { fanout } from "../src/lib/fanout";
 import { retryPath } from "../src/lib/retry-path";
 import { uploadFlow, uploadSlots } from "../src/lib/upload-flow";
 
@@ -10,12 +12,40 @@ test("each home-card highlight is one of the project's published decisions", () 
   }
 });
 
-test("problemLead is the opening sentence of the published challenge", () => {
+test("each case summary states its problem in one short sentence", () => {
   for (const p of projects) {
-    const lead = problemLead(p);
-    assert.ok(p.challenge.startsWith(lead), p.id);
-    assert.ok(lead.endsWith("다."), p.id);
+    assert.ok(p.problem.length <= 60, p.id);
+    assert.equal(p.problem.match(/다\./g)?.length, 1, p.id);
+    assert.ok(p.problem.endsWith("다."), p.id);
   }
+});
+
+test("project numbers follow the display order", () => {
+  projects.forEach((p, i) => assert.equal(p.number, String(i + 1).padStart(2, "0"), p.id));
+});
+
+test("careerYears counts whole years since the first month", () => {
+  assert.equal(careerYears(new Date(2026, 9, 9)), 5);
+  assert.equal(careerYears(new Date(2027, 3, 30)), 5);
+  assert.equal(careerYears(new Date(2027, 4, 1)), 6);
+});
+
+test("migration sketch only names technology from the platform case", () => {
+  const platform = projects.find((p) => p.id === "platform-operations")!;
+  const published = [platform.summary, platform.challenge, ...platform.decisions.flatMap((d) => [d.title, d.body])].join(" ");
+  const cells = migration.rows.flatMap((r) => [r.before, r.after]).join(" ");
+  for (const word of cells.match(/[A-Za-z][A-Za-z.]*/g) ?? []) assert.ok(published.includes(word), word);
+  assert.ok(published.includes("약 50개") && published.includes("기존 React 화면과 연동"));
+});
+
+test("fan-out sketch quotes the membership case", () => {
+  const membership = projects.find((p) => p.id === "membership")!;
+  const published = [membership.problem, ...membership.flow, ...membership.decisions.map((d) => d.body)].join(" ");
+  for (const text of [fanout.source.name, fanout.source.detail, fanout.topic.name])
+    assert.ok(published.includes(text), text);
+  // The caption keeps the duplicate guard without claiming an order the case text does not state.
+  for (const text of ["자체 DB", "DB 플래그로 중복 처리"])
+    assert.ok(fanout.caption.includes(text) && published.includes(text), text);
 });
 
 test("retry path notes quote the payments decision it illustrates", () => {
