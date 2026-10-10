@@ -2307,7 +2307,7 @@ i {
 }
 
 /* Motion edition: restored olive palette, editorial type and asymmetric work. */
-:root { --bg:#10130f; --surface:#1a2017; --text:#f1f2e9; --muted:#acb4a4; --line:#343d2e; --lime:#d1f58a; --font:"DM Sans Variable",var(--pretendard),sans-serif; }
+:root { --bg:#10130f; --surface:#1a2017; --text:#f1f2e9; --muted:#acb4a4; --line:#343d2e; --lime:#d1f58a; --font:"DM Sans Variable",var(--portf-sans),sans-serif; }
 body { font-size:16px; }
 h1,h2,h3,p { word-break:keep-all; overflow-wrap:break-word; }
 h1,h2,h3 { font-weight:600; }

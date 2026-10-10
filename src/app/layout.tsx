@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "@fontsource-variable/dm-sans";
 import localFont from "next/font/local";
-const pretendard = localFont({ src: "../../public/fonts/PretendardVariable.woff2", variable: "--pretendard", display: "swap", weight: "100 900" });
+// Renamed subset of Pretendard Variable (OFL Reserved Font Name); rebuild with scripts/subset-font.py.
+const portfSans = localFont({ src: "../../public/fonts/PortfSansVariable.woff2", variable: "--portf-sans", display: "swap", weight: "100 900" });
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ko" className={pretendard.variable} data-scroll-behavior="smooth">
+    <html lang="ko" className={portfSans.variable} data-scroll-behavior="smooth">
       <body>{children}</body>
     </html>
   );
