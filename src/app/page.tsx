@@ -8,7 +8,7 @@ import { ProjectVisual } from "@/components/project-visual";
 import { Chat, ChatPrompts } from "@/components/chat";
 import { SkillList } from "@/components/skill-list";
 import { AnswerPreview } from "@/components/answer-preview";
-import { ArrowUpRight, Github, Download, Mail } from "@/components/icons";
+import { ArrowUpRight, Github, Mail } from "@/components/icons";
 
 // Daily regeneration keeps the years-of-experience line current between deploys.
 export const revalidate = 86400;
@@ -29,7 +29,6 @@ export default function Home() {
               <p className="hero-stack">Java · Spring Boot · JPA · MySQL · Redis · AWS · LLM API</p>
               <div className="hero-actions">
                 <a className="button primary" href="#work">프로젝트 살펴보기 <ArrowUpRight size={19} /></a>
-                <a className="text-link" href="/dohoon-portfolio.pdf" download><Download size={17} /> PDF 다운로드</a>
               </div>
             </div>
             <Orbit />
@@ -64,7 +63,7 @@ export default function Home() {
         </section>
         <section className="career-section container" id="experience" data-reveal>
           <div className="section-kicker"><span>03 / CAREER</span><span>2021.05 – 현재</span></div>
-          <div className="career-grid"><div><h2>경력</h2><p className="muted">교육지대(주) 경력은 주식회사 링커 → 플랫비 주식회사 → 교육지대(주)로 이어진 법인 합병에 따른 소속 변경, 연속 재직(2021.05~2023.11)입니다. 같은 기간 링커 서비스 개발을 계속 담당했습니다.</p><dl className="career-extra"><div><dt>학력</dt><dd>{education.school} {education.major} · {education.period}</dd></div><div><dt>자격</dt><dd>{certifications.map((c) => `${c.name} (${c.date})`).join(" · ")}</dd></div></dl><a className="text-link" href="/dohoon-portfolio.pdf" download><Download size={16}/> 포트폴리오 PDF</a></div><div className="career-list">{career.map((c,i)=><article key={c.company}><div className="career-date"><i className={i===0?"current":""}/>{c.period}</div><h3>{c.company}<span>{c.role}</span></h3><p>{c.body}</p></article>)}</div></div>
+          <div className="career-grid"><div><h2>경력</h2><p className="muted">교육지대(주) 경력은 주식회사 링커 → 플랫비 주식회사 → 교육지대(주)로 이어진 법인 합병에 따른 소속 변경, 연속 재직(2021.05~2023.11)입니다. 같은 기간 링커 서비스 개발을 계속 담당했습니다.</p><dl className="career-extra"><div><dt>학력</dt><dd>{education.school} {education.major} · {education.period}</dd></div><div><dt>자격</dt><dd>{certifications.map((c) => `${c.name} (${c.date})`).join(" · ")}</dd></div></dl></div><div className="career-list">{career.map((c,i)=><article key={c.company}><div className="career-date"><i className={i===0?"current":""}/>{c.period}</div><h3>{c.company}<span>{c.role}</span></h3><p>{c.body}</p></article>)}</div></div>
         </section>
         <section className="capability-section container" data-reveal>
           <div className="section-kicker"><span>04 / TECHNOLOGY</span><span>실무에 사용한 기술</span></div>
@@ -74,7 +73,7 @@ export default function Home() {
         <section className="agent-section container" id="assistant" data-reveal>
           <div className="agent-promo"><div className="eyebrow">PORTFOLIO ASSISTANT</div><h2>경력·프로젝트 질문</h2><p>공개된 프로젝트 본문을 바탕으로 답변합니다. 담당 역할과 구현 내용은 각 프로젝트에서도 확인할 수 있습니다.</p><a className="text-link" href="#contact">이메일로 문의 <ArrowUpRight size={18}/></a></div><div className="agent-side"><AnswerPreview question={assistantPreview.question} answer={assistantPreview.answer}/><ChatPrompts/></div>
         </section>
-        <section className="contact-section" id="contact"><div className="container"><div className="section-kicker"><span>05 / CONTACT</span><span>편도훈</span></div><h2><span className="display-en">Let’s build<span className="lime">.</span></span><span className="contact-invitation">채용·협업 문의를 기다립니다.</span></h2><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email}<ArrowUpRight/></a><div className="contact-links"><a href={profile.github} target="_blank" rel="noreferrer"><Github size={17}/> GitHub</a><a href="/dohoon-portfolio.pdf" download><Download size={17}/> 포트폴리오 PDF</a><a href={`mailto:${profile.email}`}><Mail size={17}/> 이메일</a></div></div></section>
+        <section className="contact-section" id="contact"><div className="container"><div className="section-kicker"><span>05 / CONTACT</span><span>편도훈</span></div><h2><span className="display-en">Let’s build<span className="lime">.</span></span><span className="contact-invitation">채용·협업 문의를 기다립니다.</span></h2><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email}<ArrowUpRight/></a><div className="contact-links"><a href={profile.github} target="_blank" rel="noreferrer"><Github size={17}/> GitHub</a><a href={`mailto:${profile.email}`}><Mail size={17}/> 이메일</a></div></div></section>
       </main>
       <footer className="container footer"><span>© 2026 DOHOON PYUN</span><a href="/privacy">AI 이용 안내</a><a href="#main">맨 위로 ↑</a></footer>
       <Chat/>
