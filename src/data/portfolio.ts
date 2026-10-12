@@ -38,7 +38,7 @@ export const projects: Project[] = [
       { title: "서버별 수작업을 배포 파이프라인으로", body: "형상관리를 SVN에서 GitLab으로 옮기고, Jenkins·Docker로 빌드·이미지 생성·배포를 자동화했습니다. 서버 2대는 1대를 먼저 배포해 헬스체크를 통과하면 나머지 1대를 배포하는 순차 무중단 방식이며, Jenkins 전환도 1대에서 먼저 검증한 뒤 전체에 적용했습니다. AWS ALB 뒤 Nginx 멀티서버를 운영하고 Prometheus·Grafana 모니터링을 구성했습니다." },
       { title: "엑셀 대량 업로드의 비동기·병렬 처리", body: "엑셀 대량 업로드는 행마다 외부 API 응답을 기다린 뒤 다음 행을 처리하는 직렬 구조라 대기 시간이 행 수만큼 누적됐습니다. CompletableFuture로 행별 처리를 비동기 작업으로 나누고 ExecutorService의 스레드 풀에서 병렬 실행했습니다. 동시 실행 수는 스레드 풀로 제한했습니다. 모든 작업의 결과를 모아 행별 성공·실패와 사유를 반환했습니다." },
     ],
-    outcome: "백엔드 API 약 50개를 Spring Boot로 이관해 외주 의존을 없애고, 배포 작업을 약 1시간에서 약 10분으로 단축했습니다. Flutter 앱의 Play Store·TestFlight 배포와 Vue·React 화면 유지보수도 담당했습니다. 별도 기업 홈페이지는 React.js·Tailwind CSS로 신규 구축(2025.12)하고 2026.08 전면 개편했으며, 어드민 연동과 배포까지 맡았습니다.",
+    outcome: "Next.js 백엔드 API 약 50개를 Spring Boot로 이관하고, 배포 작업을 약 1시간에서 약 10분으로 단축했습니다. Flutter 앱의 Play Store·TestFlight 배포와 Vue·React 화면 유지보수도 담당했습니다. 별도 기업 홈페이지는 React.js·Tailwind CSS로 신규 구축(2025.12)하고 2026.08 전면 개편했으며, 어드민 연동과 배포까지 맡았습니다.",
     flow: ["GitLab", "Jenkins 빌드", "Docker 이미지", "배포·모니터링"],
     highlight: "엑셀 대량 업로드의 비동기·병렬 처리",
   },
