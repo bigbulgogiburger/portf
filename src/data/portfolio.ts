@@ -66,7 +66,7 @@ export const projects: Project[] = [
     title: "전동공구 A/S 관리 플랫폼", subtitle: "글로벌 전동공구 브랜드 · DB Inc.",
     problem: "같은 ‘고객’으로 불리던 조직·수리 접수자·거래처의 데이터와 권한을 구분해야 했습니다.",
     summary: "고객사와 업무 주체·권한·정산 규칙을 협의하고, 접수부터 정산까지의 DB·API·화면을 개발하고 있습니다.",
-    role: "요구사항 협의(수리엔 담당자와 함께) · 도메인·DB 설계부터 백엔드·화면·QA·배포까지 1인 담당",
+    role: "도메인·DB·API·화면 개발 담당 · 고객사 협의는 수리엔 담당자와 함께 · 개발·QA 진행 중",
     period: "2026.05 – 현재", status: "개발·검증 중",
     tags: ["Java 21", "Spring Boot 3.3", "JPA · QueryDSL", "MySQL", "Vue 3"], accent: "cyan",
     metric: "업무 주체·권한·정산 기준 설계", metricLabel: "고객사와 협의한 설계 기준 · 개발·검증 중",
@@ -76,7 +76,7 @@ export const projects: Project[] = [
       { title: "접수·수리·정산의 상태와 API 구현", body: "접수부터 배정, 진단·견적, 승인·입금·자재, 수리, 완료, 정산까지 단계별 처리 주체와 예외 조건을 검토했습니다. 업무 흐름을 상태 모델로 설계하고 Java·Spring 서버와 Vue 화면으로 구현하고 있습니다." },
       { title: "정산 생성 시점의 금액 보관", body: "정산 이후 부품 단가나 모델명이 바뀌어도 과거 정산 내역은 유지돼야 했습니다. 고객사 담당자와 화면을 보며 협의해 수리 건과 금액을 별도 정산 테이블에 보관하고, 원본 수리 데이터와 독립적으로 관리하는 설계에 합의했습니다. 본사 SAP 업로드용 CSV 규격도 함께 협의했습니다." },
     ],
-    outcome: "정산 시점 데이터의 별도 보관 방식과 본사 SAP 업로드용 CSV 규격을 고객사와 협의했습니다. 도메인·DB 설계, 서버·화면 개발과 QA·배포를 담당하며, 도메인별 개발 가이드와 검증 기록을 남기고 추가 요구사항을 반영하고 있습니다. 개발에는 직접 만든 jira-harness를 사용합니다.",
+    outcome: "정산 시점 데이터의 별도 보관 방식과 본사 SAP 업로드용 CSV 규격을 고객사와 협의했습니다. 도메인·DB·API·화면 개발을 맡아 개발·QA를 진행하며, 도메인별 개발 가이드와 검증 기록을 남기고 추가 요구사항을 반영하고 있습니다. 개발에는 직접 만든 jira-harness를 사용합니다.",
     flow: ["접수", "배정", "진단·견적", "승인·입금·자재", "수리", "완료", "정산"],
     highlight: "정산 생성 시점의 금액 보관",
   },
@@ -140,7 +140,7 @@ export const projects: Project[] = [
 ];
 export const career = [
   { period: "2023.11 — 현재", company: "DB Inc.", role: "백엔드 개발 · PM", body: "수리엔 백엔드 이관·운영, 배포 자동화, React.js 기업 홈페이지 구축·개편, CS AI Agent 개발·운영 도입. 현재 전동공구 A/S 플랫폼의 DB·API·화면 개발과 고객사 요구사항 협의(수리엔 담당자와 함께) 담당." },
-  { period: "2021.05 — 2023.11", company: "교육지대(주)", role: "서버 개발자", note: "주식회사 링커 → 플랫비 주식회사 → 교육지대(주) 법인 합병 승계, 연속 재직", body: "입시 정보·멘토링 서비스 백엔드와 링커 통합회원·Q&A, Spring Batch 통합, 스카이탭 독립 결제 서버와 Inicis·Apple 연동, 회원·로그인 기능, Prometheus·Grafana·Pinpoint 모니터링 구축." },
+  { period: "2021.05 — 2023.11", company: "교육지대(주)", role: "서버 개발자", note: "주식회사 링커 → 플랫비 주식회사 → 교육지대(주) 법인 합병에 따른 소속 변경, 연속 재직", body: "입시 정보·멘토링 서비스 백엔드와 링커 통합회원·Q&A, Spring Batch 통합, 스카이탭 독립 결제 서버와 Inicis·Apple 연동, 회원·로그인 기능, Prometheus·Grafana·Pinpoint 모니터링 구축." },
 ];
 export const education = { school: "경희대학교", major: "유전공학과 학사", period: "2009.03 – 2014.02" };
 export const certifications = [
