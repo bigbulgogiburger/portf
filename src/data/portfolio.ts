@@ -119,22 +119,23 @@ export const projects: Project[] = [
     highlight: "소속 그룹의 데이터 범위 검사",
   },
   {
-    id: "harness", number: "06", category: "개발 도구 · AI CODING",
+    id: "harness", number: "06", category: "오픈소스 · AI CODING",
     title: "jira-harness", subtitle: "Claude Code 개발·검증 플러그인",
     problem: "검증 후 코드가 바뀌어도 이전 테스트·리뷰 결과로 커밋될 수 있었습니다.",
     summary: "차단 모드에서는 검증 기록과 커밋 대상을 대조해, 검증 이후 코드가 바뀌면 커밋을 막고 재검증하게 합니다.",
-    role: "플러그인 설계·개발", period: "2026", status: "사용 중",
+    role: "플러그인 설계·개발 · MIT 라이선스 공개", period: "2026", status: "공개",
     tags: ["Claude Code hooks", "JavaScript", "Node.js", "Git"], accent: "violet",
-    metric: "전동공구 A/S 개발에 사용 중", metricLabel: "직접 만든 개발 도구",
+    metric: "전동공구 A/S 개발에 사용 중", metricLabel: "개인 오픈소스 · MIT 라이선스 공개",
     challenge: "AI가 코드를 수정한 뒤 이전 테스트·리뷰 결과를 그대로 사용하면 현재 변경분이 검증되지 않은 채 커밋될 수 있습니다. 검증 기록과 코드 상태를 함께 확인할 장치가 필요했습니다.",
     decisions: [
       { title: "계획·구현·검증 절차를 워크플로로 구성", body: "Jira 이슈의 계획과 구현, 리뷰·검증 흐름을 Claude Code 플러그인으로 구성했습니다. 모델은 계획·구현·리뷰를, 스크립트는 상태와 검증 결과의 JSON 기록을, 훅은 커밋·푸시 직전 판정을 맡도록 역할을 나눴습니다." },
       { title: "검증 시점의 Git tree ID 기록", body: "테스트·리뷰 시점의 Git tree ID와 검증 결과·로그 SHA-256·리뷰 기록을 저장하고, Claude Code의 PreToolUse 훅에서 커밋 대상과 대조합니다. 차단 모드에서 검증 미실행·실패 또는 검증 이후 코드 변경을 감지하면 커밋을 막고 재검증하도록 구성했습니다." },
-      { title: "프로젝트별 검증 명령과 정책 분리", body: "프로젝트의 빌드·테스트 명령과 브랜치 정책을 설정으로 분리하고, push에는 전체 빌드·테스트를 요구합니다. 차단 범위는 프로젝트 설정과 브랜치 정책을 따르며 문서 변경은 예외로 둡니다." },
+      { title: "프로젝트별 검증 명령과 정책 분리", body: "프로젝트의 빌드·테스트 명령과 브랜치 정책을 설정으로 분리하고, push에는 전체 빌드·테스트를 요구합니다. 차단 범위는 프로젝트 설정과 브랜치 정책을 따르며 문서 변경은 예외로 둡니다. 차단 조건과 예외는 공개 저장소의 코드와 문서에서 확인할 수 있습니다." },
     ],
-    outcome: "직접 만든 Claude Code 플러그인을 현재 전동공구 A/S 플랫폼 개발에 사용하고 있습니다. 검증 기록과 커밋 대상의 코드 상태를 대조해, 차단 모드에서 검증 미실행·실패·코드 변경을 감지하면 커밋을 막습니다.",
+    outcome: "Claude Code 플러그인을 MIT 라이선스로 공개하고, 현재 전동공구 A/S 플랫폼 개발에 사용하고 있습니다. 검증 기록과 커밋 대상의 코드 상태를 대조해, 차단 모드에서 검증 미실행·실패·코드 변경을 감지하면 커밋을 막습니다.",
     flow: ["구현", "테스트·리뷰", "tree ID 기록", "커밋 대상 대조"],
     highlight: "검증 시점의 Git tree ID 기록",
+    github: "https://github.com/bigbulgogiburger/jira-harness",
   },
 ];
 export const career = [
