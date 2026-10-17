@@ -8,6 +8,7 @@ import { ProjectVisual } from "@/components/project-visual";
 import { Chat, ChatPrompts } from "@/components/chat";
 import { SkillList } from "@/components/skill-list";
 import { AnswerPreview } from "@/components/answer-preview";
+import { CopyEmail } from "@/components/copy-email";
 import { ArrowUpRight, Github, Mail } from "@/components/icons";
 
 // Daily regeneration keeps the years-of-experience line current between deploys.
@@ -73,7 +74,7 @@ export default function Home() {
         <section className="agent-section container" id="assistant" data-reveal>
           <div className="agent-promo"><div className="eyebrow">PORTFOLIO ASSISTANT</div><h2>경력·프로젝트 질문</h2><p>공개된 프로젝트 본문을 바탕으로 답변합니다. 담당 역할과 구현 내용은 각 프로젝트에서도 확인할 수 있습니다.</p><a className="text-link" href="#contact">이메일로 문의 <ArrowUpRight size={18}/></a></div><div className="agent-side"><AnswerPreview question={assistantPreview.question} answer={assistantPreview.answer}/><ChatPrompts/></div>
         </section>
-        <section className="contact-section" id="contact"><div className="container"><div className="section-kicker"><span>05 / CONTACT</span><span>편도훈</span></div><h2><span className="display-en">Let’s build<span className="lime">.</span></span><span className="contact-invitation">채용·협업 문의를 기다립니다.</span></h2><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email}<ArrowUpRight/></a><div className="contact-links"><a href={profile.github} target="_blank" rel="noreferrer"><Github size={17}/> GitHub</a><a href={`mailto:${profile.email}`}><Mail size={17}/> 이메일</a></div></div></section>
+        <section className="contact-section" id="contact"><div className="container"><div className="section-kicker"><span>05 / CONTACT</span><span>편도훈</span></div><h2><span className="display-en">Let’s build<span className="lime">.</span></span><span className="contact-invitation">채용·협업 문의를 기다립니다.</span></h2><div className="contact-email-row"><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email}<ArrowUpRight/></a><CopyEmail email={profile.email}/></div><div className="contact-links"><a href={profile.github} target="_blank" rel="noreferrer"><Github size={17}/> GitHub</a><a href={`mailto:${profile.email}`}><Mail size={17}/> 이메일</a></div></div></section>
       </main>
       <footer className="container footer"><span>© 2026 DOHOON PYUN</span><a href="/privacy">AI 이용 안내</a><a href="#main">맨 위로 ↑</a></footer>
       <Chat/>
