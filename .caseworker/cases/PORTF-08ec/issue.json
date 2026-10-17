@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "key": "PORTF-08ec",
+  "title": "[Portfolio] 벤치마킹 기반 사례 서술·인터랙션 개선",
+  "type": "epic",
+  "status": "open",
+  "parent": null,
+  "labels": [
+    "react",
+    "frontend",
+    "benchmark-1017"
+  ],
+  "assignee": null,
+  "branch": null,
+  "created_at": "2026-10-17T02:56:16.964Z",
+  "updated_at": "2026-10-17T02:56:16.964Z",
+  "closed_at": null
+}

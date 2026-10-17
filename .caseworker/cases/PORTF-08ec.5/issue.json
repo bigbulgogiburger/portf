@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "key": "PORTF-08ec.5",
+  "title": "[사례] 상세 페이지 읽기 진행 표시",
+  "type": "task",
+  "status": "in_progress",
+  "parent": "PORTF-08ec",
+  "labels": [
+    "react",
+    "frontend",
+    "feature",
+    "priority-low",
+    "benchmark-1017"
+  ],
+  "assignee": null,
+  "branch": "feat/PORTF-08ec.1-08ec.2-08ec.3-08ec.4-08ec.5",
+  "created_at": "2026-10-17T02:56:17.305Z",
+  "updated_at": "2026-10-17T02:58:37.798Z",
+  "closed_at": null
+}

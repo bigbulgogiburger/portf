@@ -1,0 +1,71 @@
+{
+  "version": 4,
+  "mode": "auto",
+  "tracker": "local",
+  "trackers": {
+    "local": {
+      "dir": ".caseworker",
+      "counter": "hash",
+      "key_body": "(?:[0-9a-f]{4,6}(?:\\.\\d+)*|\\d+)",
+      "start_status": "in_progress",
+      "done_status": "review"
+    }
+  },
+  "issue_prefix": "PORTF",
+  "branch_pattern": "^(feat|fix)/(?<keys>PORTF-(?:[0-9a-f]{4,6}(?:\\.\\d+)*|\\d+)(?:-(?:[0-9a-f]{4,6}(?:\\.\\d+)*|\\d+))*)(?:-[a-z0-9]+)*$",
+  "default_branch": "main",
+  "branch_template": "feat/{keys}",
+  "shell": "auto",
+  "runtime_dir": ".claude/runtime",
+  "stacks": {
+    "npm": {
+      "dir": ".",
+      "compile": "npm run typecheck",
+      "lint": "npm run lint",
+      "build": "npm run build",
+      "test": "npm run test",
+      "extra": []
+    }
+  },
+  "docs_only_paths": [
+    "docs/**",
+    "**/*.md"
+  ],
+  "fingerprint_exclude": [
+    ".claude/runtime/**",
+    "**/*.draft"
+  ],
+  "protected": [
+    ".claude/harness.json"
+  ],
+  "review": {
+    "codex": true,
+    "codex_via": "exec",
+    "codex_timeout": 2400,
+    "lanes_max": 4,
+    "lanes_when": "codex_gap",
+    "lane_model": "sonnet",
+    "rounds_max": 2,
+    "code_review": false
+  },
+  "models": {
+    "orchestrate": "inherit",
+    "design": "opus",
+    "recon": "sonnet",
+    "implement": "opus",
+    "verify": "sonnet"
+  },
+  "wiki": {
+    "index": "docs/INDEX.md",
+    "log": "docs/LOG.md",
+    "schema": "docs/INDEX-SCHEMA.md",
+    "dev_guide": "docs/{KEY}-dev-guide.md",
+    "synthesis_dir": null,
+    "max_pages_per_closure": 3,
+    "claude_md_max_lines": 150
+  },
+  "gate": {
+    "timeout_s": 1800,
+    "commit_budget_s": 180
+  }
+}

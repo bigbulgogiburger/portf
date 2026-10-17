@@ -17,7 +17,8 @@ export type Project = {
   problem: string;
   summary: string; role: string; period: string; status: string;
   tags: string[]; accent: string; metric: string; metricLabel: string;
-  challenge: string; decisions: { title: string; body: string }[];
+  // alternative/rejectedBecause: an option the owner confirmed they weighed and dropped.
+  challenge: string; decisions: { title: string; body: string; alternative?: string; rejectedBecause?: string }[];
   outcome: string; flow: string[]; github?: string;
   // Title of the decision shown on the home card.
   highlight: string;
@@ -34,7 +35,9 @@ export const projects: Project[] = [
     metric: "약 1시간 → 약 10분", metricLabel: "서버 2대 기준 · 수동 배포 약 1시간 → Jenkins 파이프라인 약 10분 (배포 기록·작업 체감)",
     challenge: "외주에서 인계한 Next.js·MongoDB 서버를 내부에서 유지보수해야 했습니다. 사내에서는 이미 Spring Boot를 쓰고 있었고 백엔드 개발자는 2명이라, 별도 스택을 계속 유지하기 어려웠습니다. 배포 때마다 SVN checkout, 파일 이동, deploy.sh 실행을 서버별로 반복하는 작업도 개선이 필요했습니다.",
     decisions: [
-      { title: "React 화면을 유지하며 백엔드 이관", body: "백엔드를 Spring Boot·MySQL로 통일하기로 하고 Next.js 백엔드 API 약 50개를 이관했습니다. MongoDB 모델은 MySQL 기반 JPA Entity로 재설계하고 기존 React 화면과 연동했습니다. Internal·External·Bypass 호출 경로와 인증을 나누고, Java 11→21·Spring Boot 2.7→3.3으로 버전을 올렸습니다." },
+      { title: "React 화면을 유지하며 백엔드 이관", body: "백엔드를 Spring Boot·MySQL로 통일하기로 하고 Next.js 백엔드 API 약 50개를 이관했습니다. MongoDB 모델은 MySQL 기반 JPA Entity로 재설계하고 기존 React 화면과 연동했습니다. Internal·External·Bypass 호출 경로와 인증을 나누고, Java 11→21·Spring Boot 2.7→3.3으로 버전을 올렸습니다.",
+        alternative: "외주 Next.js·MongoDB 백엔드 유지",
+        rejectedBecause: "사내에서는 이미 Spring Boot를 쓰고 있었고 백엔드 개발자는 2명이라, 별도 스택을 계속 유지하기 어려웠습니다." },
       { title: "서버별 수작업을 배포 파이프라인으로", body: "형상관리를 SVN에서 GitLab으로 옮기고, Jenkins·Docker로 빌드·이미지 생성·배포를 자동화했습니다. 서버 2대는 1대를 먼저 배포해 헬스체크를 통과하면 나머지 1대를 배포하는 순차 무중단 방식이며, Jenkins 전환도 1대에서 먼저 검증한 뒤 전체에 적용했습니다. AWS ALB 뒤 Nginx 멀티서버를 운영하고 Prometheus·Grafana 모니터링을 구성했습니다." },
       { title: "엑셀 대량 업로드의 비동기·병렬 처리", body: "엑셀 대량 업로드는 행마다 외부 API 응답을 기다린 뒤 다음 행을 처리하는 직렬 구조라 대기 시간이 행 수만큼 누적됐습니다. CompletableFuture로 행별 처리를 비동기 작업으로 나누고 ExecutorService의 스레드 풀에서 병렬 실행했습니다. 동시 실행 수는 스레드 풀로 제한했습니다. 모든 작업의 결과를 모아 행별 성공·실패와 사유를 반환했습니다." },
     ],
@@ -54,7 +57,7 @@ export const projects: Project[] = [
     challenge: "기존 서비스와 기술 스택이 다른 결제 기능을 개발해야 했습니다. 서버 간 요청과 사용자 요청의 인증을 분리하고, Apple 환불 결과를 서비스 DB에 반영해야 했습니다.",
     decisions: [
       { title: "Internal·External 인증 경로 분리", body: "플랫비에서 독립 결제 서버를 개발했습니다(2022.02~11). 서버 간 요청은 헤더 토큰으로, 사용자 요청은 통합회원 서버를 통해 검증하고 Inicis·Apple 결제를 연동했습니다." },
-      { title: "@Retryable이 실행되지 않는 원인 추적", body: "Apple Verify API 재시도가 같은 객체 내부 호출로 Spring AOP 프록시를 거치지 않는 문제를 테스트 코드로 재현해 확인했습니다(2022.06~08). 검증 로직을 별도 Bean으로 분리해 프록시 경유 호출로 바꾸고 재시도와 환불 상태 동기화가 동작하도록 수정했습니다." },
+      { title: "@Retryable이 실행되지 않는 원인 추적", body: "증상: Apple Verify API 재시도가 실행되지 않았습니다. 재현: 테스트 코드로 재현해 확인했습니다(2022.06~08). 원인: 같은 객체 내부 호출로 Spring AOP 프록시를 거치지 않는 문제였습니다. 수정: 검증 로직을 별도 Bean으로 분리해 프록시 경유 호출로 바꾸고 재시도와 환불 상태 동기화가 동작하도록 수정했습니다." },
       { title: "회원 연동과 운영 모니터링", body: "교육지대에서는 족보닷컴 통합회원 체계에 맞춰 스카이탭 가입·로그인·결제를 연결했습니다(2023.02~06). Actuator·Micrometer·Prometheus·Grafana로 지표를 수집·시각화하고 Pinpoint로 호출 경로와 병목을 추적하도록 구성했습니다(2023.03~05)." },
     ],
     outcome: "서비스 본체와 API로 연동하는 결제 서버를 운영하며, Spring AOP 자기 호출로 동작하지 않던 Apple 환불 검증 재시도를 복구했습니다. 이후 교육지대에서는 회원 연동과 운영 모니터링을 추가로 담당했습니다.",

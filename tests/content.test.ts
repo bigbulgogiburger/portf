@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { careerYears, projects } from "../src/data/portfolio";
+import { careerYears, projects, publicKnowledge } from "../src/data/portfolio";
 import { migration } from "../src/lib/migration";
 import { fanout } from "../src/lib/fanout";
 import { retryPath } from "../src/lib/retry-path";
@@ -59,6 +59,29 @@ test("retry path notes quote the payments decision it illustrates", () => {
   for (const node of ["AOP Proxy", "호출 Bean", "검증 Bean"]) {
     assert.ok(payments.flow.includes(node), node);
   }
+});
+
+test("retry decision reads symptom, reproduction, cause, fix in order", () => {
+  const payments = projects.find((p) => p.id === "payments")!;
+  const body = payments.decisions.find((d) => d.title === retryPath.decision)!.body;
+  const steps = ["증상:", "재현:", "원인:", "수정:"].map((s) => body.indexOf(s));
+  assert.ok(steps.every((at, i) => at >= 0 && (i === 0 || at > steps[i - 1])), String(steps));
+  for (const word of ["재발 방지", "가설"]) assert.ok(!body.includes(word), word);
+  assert.ok(publicKnowledge.includes(body));
+});
+
+test("decision alternative appears only on the platform migration decision", () => {
+  const withAlternative = projects.flatMap((p) =>
+    p.decisions.filter((d) => d.alternative || d.rejectedBecause).map((d) => `${p.id}/${d.title}`),
+  );
+  assert.deepEqual(withAlternative, ["platform-operations/React 화면을 유지하며 백엔드 이관"]);
+});
+
+test("decision alternative reason quotes the case challenge and reaches the assistant", () => {
+  const platform = projects.find((p) => p.id === "platform-operations")!;
+  const decision = platform.decisions.find((d) => d.alternative)!;
+  assert.ok(decision.rejectedBecause && platform.challenge.includes(decision.rejectedBecause));
+  assert.ok(publicKnowledge.includes(decision.alternative!) && publicKnowledge.includes(decision.rejectedBecause));
 });
 
 test("upload flow notes quote the platform decision and respect the pool size", () => {

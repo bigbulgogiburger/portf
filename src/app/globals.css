@@ -2918,3 +2918,26 @@ html[data-motion="paused"] .project-art,html[data-motion="paused"] .project-art 
  .service-context .project-art { height:220px; }
  .project-card .project-art.fanout-art,.case-page>.project-art.fanout-art { min-height:300px; padding:28px 16px; }
 }
+
+/* Case polish (PORTF-08ec): rejected alternative, email copy button, reading progress. */
+.decision-alternative { display:grid; gap:6px; margin:16px 0 0; padding:14px 16px; border:1px solid var(--line); border-radius:10px; background:var(--surface); font-size:14px; line-height:1.7; }
+.decision-alternative>div { display:grid; grid-template-columns:112px minmax(0,1fr); gap:12px; }
+.decision-alternative dt { font:11px/2.1 var(--mono); letter-spacing:.04em; color:var(--muted); }
+.decision-alternative dd { margin:0; color:#c7d0be; overflow-wrap:anywhere; }
+.contact-email-row { display:flex; flex-wrap:wrap; align-items:center; gap:16px 24px; margin-top:37px; }
+.contact-email-row>.contact-email { margin-top:0; }
+.copy-email { min-height:44px; min-width:64px; white-space:nowrap; padding:0 16px; font:500 13px/1 var(--font); color:var(--lime); background:transparent; border:1px solid #4f5946; border-radius:22px; cursor:pointer; }
+.copy-email:hover { border-color:var(--lime); }
+.case-contact .copy-email { margin-left:14px; vertical-align:middle; }
+/* animation-timeline: scroll() — Chrome/Edge 115+, Safari 26+, Firefox 161+, Samsung 23+ (caniuse 2026-10-17, 87.84%). */
+.read-progress { display:none; }
+@supports (animation-timeline: scroll()) {
+ @media (prefers-reduced-motion: no-preference) {
+  .read-progress { display:block; position:fixed; inset:0 0 auto 0; height:3px; z-index:11; pointer-events:none; background:var(--accent, var(--lime)); transform-origin:0 50%; transform:scaleX(0); animation:read-progress linear both; animation-timeline:scroll(root block); }
+ }
+}
+@keyframes read-progress { to { transform:scaleX(1); } }
+html[data-motion="paused"] .read-progress { display:none; }
+@media(max-width:760px) {
+ .decision-alternative>div { grid-template-columns:1fr; gap:2px; }
+}

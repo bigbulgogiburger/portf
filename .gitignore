@@ -10,3 +10,6 @@ playwright-report/
 .playwright-cli/
 output/playwright/
 output/pdf/
+.claude/harness.env.local
+.claude/runtime/
+.loop/session.local.json

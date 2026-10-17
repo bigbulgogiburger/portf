@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "key": "PORTF-08ec.3",
+  "title": "[결제 사례] @Retryable 원인 추적을 회고 순서로 재서술",
+  "type": "task",
+  "status": "in_progress",
+  "parent": "PORTF-08ec",
+  "labels": [
+    "react",
+    "frontend",
+    "content",
+    "benchmark-1017"
+  ],
+  "assignee": null,
+  "branch": "feat/PORTF-08ec.1-08ec.2-08ec.3-08ec.4-08ec.5",
+  "created_at": "2026-10-17T02:56:17.170Z",
+  "updated_at": "2026-10-17T02:58:37.798Z",
+  "closed_at": null
+}

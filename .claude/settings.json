@@ -1,0 +1,14 @@
+{
+  "extraKnownMarketplaces": {
+    "caseworker": {
+      "source": {
+        "source": "github",
+        "repo": "bigbulgogiburger/caseworker"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "caseworker@caseworker": true,
+    "jira-harness@bigbulgogiburger": false
+  }
+}

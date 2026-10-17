@@ -7,6 +7,7 @@ import { uploadFlow } from "@/lib/upload-flow";
 import { Nav } from "@/components/nav";
 import { ProjectVisual, ServiceContext, visualCaption } from "@/components/project-visual";
 import { Chat } from "@/components/chat";
+import { CopyEmail } from "@/components/copy-email";
 import { RetryPath } from "@/components/retry-path";
 import { UploadFlow } from "@/components/upload-flow";
 import { ArrowRight, ArrowUpRight, Github } from "@/components/icons";
@@ -38,6 +39,7 @@ export default async function ProjectPage({
       </a>
       <Nav />
       <main id="main" className={`case-page container accent-${p.accent}`}>
+        <div className="read-progress" aria-hidden="true" />
         <Link href="/#work" className="text-link back-link">
           ← 모든 프로젝트
         </Link>
@@ -116,6 +118,20 @@ export default async function ProjectPage({
                 <div>
                   <h3>{d.title}</h3>
                   <p>{d.body}</p>
+                  {d.alternative && (
+                    <dl className="decision-alternative">
+                      <div>
+                        <dt>검토한 대안</dt>
+                        <dd>{d.alternative}</dd>
+                      </div>
+                      {d.rejectedBecause && (
+                        <div>
+                          <dt>고르지 않은 이유</dt>
+                          <dd>{d.rejectedBecause}</dd>
+                        </div>
+                      )}
+                    </dl>
+                  )}
                   {d.title === retryPath.decision && <RetryPath />}
                   {d.title === uploadFlow.decision && <UploadFlow />}
                 </div>
@@ -157,6 +173,7 @@ export default async function ProjectPage({
           <a className="text-link" href={`mailto:${profile.email}`}>
             {profile.email} <ArrowUpRight size={18} />
           </a>
+          <CopyEmail email={profile.email} />
         </div>
       </main>
       <Chat />
