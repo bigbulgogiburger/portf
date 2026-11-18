@@ -68,5 +68,22 @@ def main(source: str) -> None:
     print(f"{OUT.relative_to(ROOT)}: {OUT.stat().st_size / 1024:.0f} KB")
 
 
+def build_page_subset() -> None:
+    # Keep the full local face available for free-form chat and future content.
+    font = TTFont(OUT, recalcTimestamp=False)
+    text = "".join(path.read_text(encoding="utf-8") for path in (ROOT / "src").rglob("*")
+                   if path.suffix in {".ts", ".tsx", ".css"})
+    options = subset.Options()
+    options.name_IDs = ["*"]
+    options.name_languages = ["*"]
+    page = subset.Subsetter(options)
+    page.populate(text=text)
+    page.subset(font)
+    font.flavor = "woff2"
+    font.save(OUT.with_name("PortfSansPage.woff2"))
+
+
 if __name__ == "__main__":
-    main(sys.argv[1])
+    if len(sys.argv) > 1:
+        main(sys.argv[1])
+    build_page_subset()

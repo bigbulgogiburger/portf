@@ -1,6 +1,6 @@
 export const profile = {
   name: "편도훈", englishName: "DOHOON PYUN",
-  headline: "Java·Spring 백엔드 개발자",
+  headline: "백엔드 × AI Native 개발자",
   email: "dohoon321@gmail.com", github: "https://github.com/bigbulgogiburger",
   description: "2021년 5월부터 결제·회원·A/S 서비스를 개발해 왔습니다. 현재 DB Inc.에서 백엔드 개발과 PM을 맡고 있으며, CS AI Agent와 AI Coding 검증 도구를 개발했습니다.",
   // First month of backend work (YYYY-MM), for the years-of-experience line.
@@ -19,13 +19,32 @@ export type Project = {
   tags: string[]; accent: string; metric: string; metricLabel: string;
   // alternative/rejectedBecause: an option the owner confirmed they weighed and dropped.
   challenge: string; decisions: { title: string; body: string; alternative?: string; rejectedBecause?: string }[];
-  outcome: string; flow: string[]; github?: string;
+  outcome: string; flow: string[]; github?: string; successor?: { label: string; url: string };
   // Title of the decision shown on the home card.
   highlight: string;
 };
 export const projects: Project[] = [
   {
-    id: "platform-operations", number: "01", category: "백엔드 이관·운영 개선",
+    id: "field-service", number: "01", category: "업무 시스템 설계·구현",
+    title: "전동공구 A/S 관리 플랫폼", subtitle: "글로벌 전동공구 브랜드 · DB Inc.",
+    problem: "같은 ‘고객’으로 불리던 조직·수리 접수자·거래처의 데이터와 권한을 구분해야 했습니다.",
+    summary: "고객사와 업무 주체·권한·정산 규칙을 협의하고, 접수부터 정산까지의 DB·API·화면을 개발하고 있습니다.",
+    role: "도메인·DB·API·화면 개발 담당 · 고객사 협의는 수리엔 담당자와 함께 · 개발·QA 진행 중",
+    period: "2026.05 – 현재", status: "개발·검증 중",
+    tags: ["Java 21", "Spring Boot 3.3", "JPA · QueryDSL", "MySQL", "Vue 3"], accent: "cyan",
+    metric: "업무 주체·권한·정산 기준 설계", metricLabel: "고객사와 협의한 설계 기준 · 개발·검증 중",
+    challenge: "화면 와이어프레임을 실제 A/S 업무 시스템으로 옮겨야 했습니다. 같은 ‘고객’이라는 표현에 시스템을 쓰는 조직, 수리를 맡기는 사람, B2B 거래 주체가 섞여 있었습니다. 데이터 모델과 조회·수정 권한부터 구분해야 했습니다.",
+    decisions: [
+      { title: "고객사·수리 고객·B2B 거래처 구분", body: "고객사는 시스템 사용 조직, 고객은 수리 접수자, 거래처는 B2B 거래 주체로 정의했습니다. 각 주체의 데이터와 역할별 접근 범위를 나누고 백엔드 권한 검사에 반영했습니다." },
+      { title: "접수·수리·정산의 상태와 API 구현", body: "접수부터 배정, 진단·견적, 승인·입금·자재, 수리, 완료, 정산까지 단계별 처리 주체와 예외 조건을 검토했습니다. 업무 흐름을 상태 모델로 설계하고 Java·Spring 서버와 Vue 화면으로 구현하고 있습니다." },
+      { title: "정산 생성 시점의 금액 보관", body: "정산 이후 부품 단가나 모델명이 바뀌어도 과거 정산 내역은 유지돼야 했습니다. 고객사 담당자와 화면을 보며 협의해 수리 건과 금액을 별도 정산 테이블에 보관하고, 원본 수리 데이터와 독립적으로 관리하는 설계에 합의했습니다. 본사 SAP 업로드용 CSV 규격도 함께 협의했습니다." },
+    ],
+    outcome: "정산 시점 데이터의 별도 보관 방식과 본사 SAP 업로드용 CSV 규격을 고객사와 협의했습니다. 도메인·DB·API·화면 개발을 맡아 개발·QA를 진행하며, 도메인별 개발 가이드와 검증 기록을 남기고 추가 요구사항을 반영하고 있습니다. AI Native 개발에는 직접 만든 jira-harness를 사용합니다. 차단 모드에서는 검증 기록과 커밋 대상을 대조해, 검증 뒤 코드가 바뀌면 커밋을 막고 재검증합니다.",
+    flow: ["접수", "배정", "진단·견적", "승인·입금·자재", "수리", "완료", "정산"],
+    highlight: "정산 생성 시점의 금액 보관",
+  },
+  {
+    id: "platform-operations", number: "02", category: "백엔드 이관·운영 개선",
     title: "수리엔 API 이관과 배포 자동화", subtitle: "수리 매칭 플랫폼 · DB Inc.",
     problem: "외주 백엔드를 내부에서 유지보수하고 서버별 수작업 배포를 줄여야 했습니다.",
     summary: "React 화면을 유지하며 Next.js·MongoDB 백엔드를 Spring Boot·MySQL로 이관했습니다.",
@@ -46,7 +65,7 @@ export const projects: Project[] = [
     highlight: "엑셀 대량 업로드의 비동기·병렬 처리",
   },
   {
-    id: "payments", number: "02", category: "결제 연동·장애 분석",
+    id: "payments", number: "03", category: "결제 연동·장애 분석",
     title: "스카이탭 결제·Apple 환불 연동", subtitle: "1:1 태블릿 과외 · 독립 결제 서버와 Spring AOP 오류 수정",
     problem: "Apple 환불 검증에서 재시도가 실행되지 않아 호출 구조를 확인해야 했습니다.",
     summary: "기술 스택이 다른 결제 기능을 독립 서버로 개발하고, 호출 주체별로 인증 경로를 나눴습니다.",
@@ -63,25 +82,6 @@ export const projects: Project[] = [
     outcome: "서비스 본체와 API로 연동하는 결제 서버를 운영하며, Spring AOP 자기 호출로 동작하지 않던 Apple 환불 검증 재시도를 복구했습니다. 이후 교육지대에서는 회원 연동과 운영 모니터링을 추가로 담당했습니다.",
     flow: ["환불 Webhook", "호출 Bean", "AOP Proxy", "검증 Bean", "DB 반영"],
     highlight: "@Retryable이 실행되지 않는 원인 추적",
-  },
-  {
-    id: "field-service", number: "03", category: "업무 시스템 설계·구현",
-    title: "전동공구 A/S 관리 플랫폼", subtitle: "글로벌 전동공구 브랜드 · DB Inc.",
-    problem: "같은 ‘고객’으로 불리던 조직·수리 접수자·거래처의 데이터와 권한을 구분해야 했습니다.",
-    summary: "고객사와 업무 주체·권한·정산 규칙을 협의하고, 접수부터 정산까지의 DB·API·화면을 개발하고 있습니다.",
-    role: "도메인·DB·API·화면 개발 담당 · 고객사 협의는 수리엔 담당자와 함께 · 개발·QA 진행 중",
-    period: "2026.05 – 현재", status: "개발·검증 중",
-    tags: ["Java 21", "Spring Boot 3.3", "JPA · QueryDSL", "MySQL", "Vue 3"], accent: "cyan",
-    metric: "업무 주체·권한·정산 기준 설계", metricLabel: "고객사와 협의한 설계 기준 · 개발·검증 중",
-    challenge: "화면 와이어프레임을 실제 A/S 업무 시스템으로 옮겨야 했습니다. 같은 ‘고객’이라는 표현에 시스템을 쓰는 조직, 수리를 맡기는 사람, B2B 거래 주체가 섞여 있었습니다. 데이터 모델과 조회·수정 권한부터 구분해야 했습니다.",
-    decisions: [
-      { title: "고객사·수리 고객·B2B 거래처 구분", body: "고객사는 시스템 사용 조직, 고객은 수리 접수자, 거래처는 B2B 거래 주체로 정의했습니다. 각 주체의 데이터와 역할별 접근 범위를 나누고 백엔드 권한 검사에 반영했습니다." },
-      { title: "접수·수리·정산의 상태와 API 구현", body: "접수부터 배정, 진단·견적, 승인·입금·자재, 수리, 완료, 정산까지 단계별 처리 주체와 예외 조건을 검토했습니다. 업무 흐름을 상태 모델로 설계하고 Java·Spring 서버와 Vue 화면으로 구현하고 있습니다." },
-      { title: "정산 생성 시점의 금액 보관", body: "정산 이후 부품 단가나 모델명이 바뀌어도 과거 정산 내역은 유지돼야 했습니다. 고객사 담당자와 화면을 보며 협의해 수리 건과 금액을 별도 정산 테이블에 보관하고, 원본 수리 데이터와 독립적으로 관리하는 설계에 합의했습니다. 본사 SAP 업로드용 CSV 규격도 함께 협의했습니다." },
-    ],
-    outcome: "정산 시점 데이터의 별도 보관 방식과 본사 SAP 업로드용 CSV 규격을 고객사와 협의했습니다. 도메인·DB·API·화면 개발을 맡아 개발·QA를 진행하며, 도메인별 개발 가이드와 검증 기록을 남기고 추가 요구사항을 반영하고 있습니다. 개발에는 직접 만든 jira-harness를 사용합니다.",
-    flow: ["접수", "배정", "진단·견적", "승인·입금·자재", "수리", "완료", "정산"],
-    highlight: "정산 생성 시점의 금액 보관",
   },
   {
     id: "membership", number: "04", category: "회원 연동·배치",
@@ -139,6 +139,7 @@ export const projects: Project[] = [
     flow: ["구현", "테스트·리뷰", "tree ID 기록", "커밋 대상 대조"],
     highlight: "검증 시점의 Git tree ID 기록",
     github: "https://github.com/bigbulgogiburger/jira-harness",
+    successor: { label: "후속 도구 caseworker로 이어짐", url: "https://github.com/bigbulgogiburger/caseworker" },
   },
 ];
 export const career = [

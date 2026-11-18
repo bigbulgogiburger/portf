@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { ViewTransition } from "react";
 import { profile, projects, career, capabilities, assistantPreview, education, certifications } from "@/data/portfolio";
-import { Orbit } from "@/components/orbit";
+import { GateTunnel } from "@/components/gate-tunnel";
+import { PointCloud } from "@/components/point-cloud";
+import { CareerTimeline } from "@/components/career-timeline";
+import { EvidenceMatrix } from "@/components/evidence-matrix";
+import { DotField } from "@/components/dot-field";
+import type { FigureId } from "@/lib/cloud";
 import { Reveal } from "@/components/reveal";
 import { Nav } from "@/components/nav";
 import { ProjectVisual } from "@/components/project-visual";
@@ -21,19 +26,22 @@ export default function Home() {
       <Nav />
       <Reveal />
       <main id="main">
-        <section className="hero container" aria-labelledby="hero-title">
-          <div className="hero-meta"><span><i className="status-dot" /> BACKEND ENGINEER × AI BUILDER</span><span>PORTFOLIO / 2026</span></div>
-          <div className="hero-content">
-            <div className="hero-copy">
-              <h1 id="hero-title"><span className="hero-role">편도훈 · Java·Spring 백엔드 개발자</span>{" "}<span className="hero-line"><span>설계에서 배포까지,</span></span>{" "}<span className="hero-line"><span>그다음의 운영까지.</span></span></h1>
-              <p className="hero-description">2021년 5월부터 결제·회원·A/S 서비스를 개발해 왔습니다.<br />현재 DB Inc.에서 백엔드 개발·PM을 맡고,<br className="mobile-break" /> <span className="nowrap">CS AI Agent를</span> 운영 환경에 도입했습니다.</p>
+        <section className="hero hero3 container" aria-labelledby="hero-title">
+          <div className="hero-meta"><span><i className="status-dot" /> BACKEND × AI NATIVE</span><span>PORTFOLIO / 2026</span></div>
+          <div className="hero3-top">
+            <h1 id="hero-title"><span className="hero-role">{profile.name} · {profile.headline}</span>{" "}<span className="hero-line"><span><b>Java·Spring으로</b> <b>업무 시스템을 만들고,</b></span></span>{" "}<span className="hero-line"><span><b>AI 개발을</b> <b>검증 절차로 통제합니다.</b></span></span></h1>
+            <div className="hero3-side">
+              <p className="hero-description">2021년 5월부터 결제·회원·A/S 서비스를 개발해 왔습니다. 현재 DB Inc.에서 <span className="nowrap">백엔드 개발·PM을</span> 맡고, <span className="nowrap">CS AI Agent를</span> 운영 환경에 도입했습니다.</p>
               <p className="hero-stack">Java · Spring Boot · JPA · MySQL · Redis · AWS · LLM API</p>
               <div className="hero-actions">
                 <a className="button primary" href="#work">프로젝트 살펴보기 <ArrowUpRight size={19} /></a>
               </div>
             </div>
-            <Orbit />
           </div>
+          <figure className="hero3-figure">
+            <GateTunnel />
+            <figcaption><span>개발·검증 절차</span><span><Link href="/projects/field-service">전동공구 A/S 플랫폼</Link> 개발에 직접 만든 <Link href="/projects/harness">jira-harness</Link>를 사용합니다.</span></figcaption>
+          </figure>
           <div className="proof-grid" data-reveal>
             <Link href="/projects/platform-operations"><span className="proof-number"><small>약</small> 50<span>개 API</span></span><p>Next.js → Spring Boot 이관</p></Link>
             <Link href="/projects/platform-operations"><span className="proof-number"><small>약</small> 1시간 <span>→</span> <small>약</small> 10분</span><span className="proof-bars" aria-hidden="true"><span>이전<b /></span><span>현재<b /></span></span><p>배포 자동화 · 서버 2대 기준</p></Link>
@@ -48,6 +56,7 @@ export default function Home() {
               <Link key={p.id} href={`/projects/${p.id}`} className={`project-card accent-${p.accent}`} aria-labelledby={`project-${p.id}-title`} data-reveal>
                 <div className="project-art-wrap"><ViewTransition name={`project-${p.id}`} share="morph" default="none"><ProjectVisual id={p.id} /></ViewTransition><span className="project-index">{p.number} / {String(projects.length).padStart(2,"0")}</span><span className="project-open"><ArrowUpRight size={24} /></span></div>
                 <div className="project-copy">
+                  <PointCloud id={p.id as FigureId} className="project-emblem" />
                   <div className="project-label"><span className="eyebrow">{p.category}</span><span className="project-status">{p.status}</span></div>
                   <h3 id={`project-${p.id}-title`}>{p.title}</h3><p className="project-subtitle">{p.subtitle}</p><p className="project-summary">{p.summary}</p>
                   <p className="project-evidence">{p.metric}</p>
@@ -65,16 +74,18 @@ export default function Home() {
         <section className="career-section container" id="experience" data-reveal>
           <div className="section-kicker"><span>03 / CAREER</span><span>2021.05 – 현재</span></div>
           <div className="career-grid"><div><h2>경력</h2><p className="muted">교육지대(주) 경력은 주식회사 링커 → 플랫비 주식회사 → 교육지대(주)로 이어진 법인 합병에 따른 소속 변경, 연속 재직(2021.05~2023.11)입니다. 같은 기간 링커 서비스 개발을 계속 담당했습니다.</p><dl className="career-extra"><div><dt>학력</dt><dd>{education.school} {education.major} · {education.period}</dd></div><div><dt>자격</dt><dd>{certifications.map((c) => `${c.name} (${c.date})`).join(" · ")}</dd></div></dl></div><div className="career-list">{career.map((c,i)=><article key={c.company}><div className="career-date"><i className={i===0?"current":""}/>{c.period}</div><h3>{c.company}<span>{c.role}</span></h3><p>{c.body}</p></article>)}</div></div>
+          <CareerTimeline />
         </section>
         <section className="capability-section container" data-reveal>
           <div className="section-kicker"><span>04 / TECHNOLOGY</span><span>실무에 사용한 기술</span></div>
-          <div className="section-heading"><h2>기술과 적용 경험</h2></div>
+          <div className="section-heading"><h2>기술과 적용 경험</h2><p>점이 켜진 칸은 그 기술을 쓴 프로젝트입니다.<br />누르면 해당 결정으로 이동합니다.</p></div>
+          <EvidenceMatrix />
           <div className="capability-grid">{capabilities.map((c,i)=><div key={c.title}><span className="capability-number">0{i+1}</span><h3>{c.title}</h3><p>{c.caption}</p><SkillList skills={c.skills}/></div>)}</div>
         </section>
         <section className="agent-section container" id="assistant" data-reveal>
           <div className="agent-promo"><div className="eyebrow">PORTFOLIO ASSISTANT</div><h2>경력·프로젝트 질문</h2><p>공개된 프로젝트 본문을 바탕으로 답변합니다. 담당 역할과 구현 내용은 각 프로젝트에서도 확인할 수 있습니다.</p><a className="text-link" href="#contact">이메일로 문의 <ArrowUpRight size={18}/></a></div><div className="agent-side"><AnswerPreview question={assistantPreview.question} answer={assistantPreview.answer}/><ChatPrompts/></div>
         </section>
-        <section className="contact-section" id="contact"><div className="container"><div className="section-kicker"><span>05 / CONTACT</span><span>편도훈</span></div><h2><span className="display-en">Let’s build<span className="lime">.</span></span><span className="contact-invitation">채용·협업 문의를 기다립니다.</span></h2><div className="contact-email-row"><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email}<ArrowUpRight/></a><CopyEmail email={profile.email}/></div><div className="contact-links"><a href={profile.github} target="_blank" rel="noreferrer"><Github size={17}/> GitHub</a><a href={`mailto:${profile.email}`}><Mail size={17}/> 이메일</a></div></div></section>
+        <section className="contact-section" id="contact"><DotField /><div className="container"><div className="section-kicker"><span>05 / CONTACT</span><span>편도훈</span></div><h2><span className="display-en">Let’s build<span className="lime">.</span></span><span className="contact-invitation">채용·협업 문의를 기다립니다.</span></h2><div className="contact-email-row"><a className="contact-email" href={`mailto:${profile.email}`}>{profile.email}<ArrowUpRight/></a><CopyEmail email={profile.email}/></div><div className="contact-links"><a href={profile.github} target="_blank" rel="noreferrer"><Github size={17}/> GitHub</a><a href={`mailto:${profile.email}`}><Mail size={17}/> 이메일</a></div></div></section>
       </main>
       <footer className="container footer"><span>© 2026 DOHOON PYUN</span><a href="/privacy">AI 이용 안내</a><a href="#main">맨 위로 ↑</a></footer>
       <Chat/>
