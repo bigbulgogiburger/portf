@@ -24,7 +24,7 @@
 .hero3 .proof-grid { margin-top: 44px; }
 
 .gate-stage { position: relative; height: clamp(250px, 26vw, 370px); isolation: isolate; }
-.gate-stage::before { content: ""; position: absolute; inset: 0 -4%; z-index: -1; background-image: linear-gradient(#838f6110 1px, transparent 1px), linear-gradient(90deg, #838f6110 1px, transparent 1px); background-size: 44px 44px; mask-image: radial-gradient(ellipse 62% 70% at 55% 45%, black, transparent 78%); }
+.gate-stage::before { content: ""; position: absolute; inset: 0; z-index: -1; background-image: linear-gradient(#838f6110 1px, transparent 1px), linear-gradient(90deg, #838f6110 1px, transparent 1px); background-size: 44px 44px; mask-image: radial-gradient(ellipse 62% 70% at 55% 45%, black, transparent 78%); }
 .gate-stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .gate-labels { position: absolute; inset: 0; margin: 0; padding: 0; list-style: none; pointer-events: none; }
 .gate-labels li { position: absolute; top: 0; left: 0; display: flex; align-items: baseline; gap: 7px; white-space: nowrap; font-size: 13px; font-weight: 500; letter-spacing: -0.02em; color: #7d8574; transform-origin: 50% 0; transition: color 0.35s; }
@@ -40,14 +40,7 @@
 .gate-log[data-tone="retry"] { color: var(--text); }
 .gate-stage .replay-button { position: absolute; top: 0; right: 0; pointer-events: auto; }
 
-/* Case figure next to each card title */
-.project-copy { position: relative; }
 .point-cloud { display: block; }
-.project-emblem { position: absolute; top: 34px; right: -6px; width: 150px; height: 104px; pointer-events: none; }
-.project-card .project-copy h3, .project-card .project-subtitle { padding-right: 142px; }
-.project-card .project-copy h3 { text-wrap: balance; }
-.project-card:first-child .project-emblem { top: 50px; width: 164px; height: 114px; }
-.project-card:first-child .project-copy h3 { font-size: 33px; }
 .project-card:first-child .project-copy h3, .project-card:first-child .project-subtitle { padding-right: 150px; }
 
 /* Career timeline: one dot per month */
@@ -140,8 +133,6 @@ html[data-motion="paused"] .tl .tl-span { clip-path: none; transition: none; }
   .gate-labels li span { display: none; }
   .gate-log { max-width: calc(100% - 124px); font-size: 11px; line-height: 1.5; }
   .gate-stage .replay-button { top: auto; bottom: 0; }
-  .project-emblem, .project-card:first-child .project-emblem { top: 30px; width: 108px; height: 76px; }
-  .project-card .project-copy h3, .project-card .project-subtitle, .project-card:first-child .project-copy h3, .project-card:first-child .project-subtitle { padding-right: 104px; }
   .tl { margin-top: 48px; }
   .tl-row { grid-template-columns: 1fr; row-gap: 2px; padding: 10px 0 6px; }
   .tl-head { display: none; }
@@ -238,4 +229,67 @@ html[data-motion="paused"] .tl .tl-span { clip-path: none; transition: none; }
 .dot-field { position: absolute; top: 50%; right: -4%; width: min(56%, 820px); height: 440px; transform: translateY(-46%); pointer-events: none; mask-image: linear-gradient(90deg, transparent, black 28%); }
 @media (max-width: 900px) {
   .dot-field { display: none; }
+}
+
+/* Scenes: one case per screen. On wide screens a single field of dots stays
+   fixed on the right and regroups into each case's figure as the page scrolls. */
+.chapter { display: flex; align-items: flex-end; gap: 22px; margin-bottom: 54px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.chapter-no { font-size: clamp(76px, 10vw, 150px); font-weight: 700; line-height: 0.86; letter-spacing: -0.07em; color: transparent; background: radial-gradient(circle at center, var(--lime) 0 1.3px, transparent 1.7px) 0 0 / 6px 6px; -webkit-background-clip: text; background-clip: text; }
+.chapter-name { padding-bottom: 4px; font-size: clamp(22px, 2.3vw, 34px); font-weight: 500; letter-spacing: -0.04em; }
+.chapter-note { margin-left: auto; padding-bottom: 9px; font-size: 13px; color: var(--muted); }
+.scenes { position: relative; padding: 120px 0 30px; }
+.scene-stage { position: fixed; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
+.scenes > .container { position: relative; z-index: 1; }
+.scene-index { display: flex; flex-wrap: wrap; gap: 6px 28px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; color: var(--muted); }
+.scene-index a { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; }
+.scene-index a span { font-family: var(--font); font-size: 14px; letter-spacing: -0.02em; color: var(--text); transition: color 0.2s; }
+.scene-index a:hover span { color: var(--c); }
+.scene-index i, .scene-no i { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--c); }
+.scene { display: flex; align-items: center; min-height: 94vh; scroll-margin-top: 40px; }
+.scene-copy { display: block; width: min(580px, 46%); color: inherit; }
+.scene-no { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; color: var(--c); }
+.scene-no em { margin-left: 8px; font-family: var(--font); font-size: 12px; font-style: normal; letter-spacing: 0; color: var(--muted); }
+.scene h3 { margin: 18px 0 0; font-size: clamp(32px, 3.9vw, 58px); font-weight: 600; line-height: 1.14; letter-spacing: -0.05em; text-wrap: balance; }
+.scene-subtitle { margin-top: 12px; font-size: 15px; color: var(--c); }
+.scene-summary { margin-top: 20px; font-size: 17px; line-height: 1.72; color: #d5dacb; }
+.scene-metric { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; color: var(--c); }
+.scene-open { display: inline-flex; align-items: center; gap: 8px; margin-top: 28px; padding: 11px 18px; border: 1px solid color-mix(in srgb, var(--c) 55%, transparent); border-radius: 30px; font-size: 14px; color: var(--c); transition: background 0.25s, color 0.25s; }
+.scene-copy:hover .scene-open, .scene-copy:focus-visible .scene-open { background: var(--c); color: #10120f; }
+.scene-figure { display: none; }
+
+/* Full-height opening: headline, then the tunnel under it, then the intro line
+   and the numbers closing the first screen. */
+@media (min-width: 1000px) {
+  .hero3 { display: grid; grid-template-rows: auto 1fr auto auto; min-height: max(740px, calc(100svh - 90px)); }
+  .hero3 .hero-meta { display: none; }
+  .hero3 .hero3-top { display: contents; }
+  .hero3 h1 { position: relative; z-index: 2; padding-top: 34px; font-size: clamp(44px, 5vw, 78px); line-height: 1.12; letter-spacing: -0.055em; pointer-events: none; }
+  .hero3-figure { display: flex; flex-direction: column; min-height: 0; margin-top: -120px; }
+  .hero3-figure .gate-stage { flex: 1; height: auto; min-height: 340px; }
+  .hero3-side { order: 3; margin-top: 18px; }
+  .hero3 .proof-grid { order: 4; margin-top: 18px; padding: 14px 0 18px; border-bottom: 0; }
+  .hero3 .proof-grid > a { display: flex; align-items: baseline; flex-wrap: wrap; gap: 0 14px; }
+  .hero3 .proof-number { font-size: 26px; line-height: 1.3; }
+  .hero3 .proof-number > span { font-size: 14px; }
+  .hero3 .proof-grid p { margin-top: 0; font-size: 13px; }
+  .hero3 .proof-bars { display: none; }
+  .intro-grid { display: block; }
+}
+/* Room for the chat button, which sits over the last number on wide screens. */
+@media (min-width: 1280px) {
+  .hero3 .proof-grid { padding-right: 210px; }
+  .intro-grid h2 { font-size: clamp(40px, 5vw, 76px); line-height: 1.14; letter-spacing: -0.055em; }
+  .intro-grid > div { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; max-width: 980px; margin: 54px 0 0 auto; }
+  .intro-grid > div > p + p { margin-top: 0; }
+}
+@media (max-width: 999px) {
+  .scene-stage { display: none; }
+  .scenes { padding-top: 84px; }
+  .chapter { gap: 14px; margin-bottom: 34px; }
+  .chapter-note { display: none; }
+  .scene-index { margin-bottom: 30px; }
+  .scene { display: block; min-height: 0; padding: 30px 0 54px; border-top: 1px solid var(--line); }
+  .scene-copy { width: auto; }
+  .scene-figure { display: block; width: 100%; height: 210px; margin-bottom: 10px; }
+  .scene-summary { font-size: 16px; }
 }

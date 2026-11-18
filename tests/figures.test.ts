@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { projects } from "../src/data/portfolio";
-import { figure, figureIds, settled } from "../src/lib/cloud";
+import { figure, figureColor, figureIds, resample, scenePose, settled } from "../src/lib/cloud";
 import { COMMIT, STORY_MS, gateFrame, gateNames, restFrame } from "../src/lib/gates";
 import { traces } from "../src/lib/trace";
 import { span, timeline } from "../src/lib/timeline";
@@ -106,4 +106,30 @@ test("decision figures quote the decision they sit under", async () => {
   const draft = text(draftFigure.decision);
   for (const quoted of [`${draftFigure.minutes}분`, draftFigure.draft, ...draftFigure.outcomes.flatMap((o) => [o.when, o.then])])
     assert.ok(draft.includes(quoted), quoted);
+});
+
+test("scene dots: every figure is redrawn with the same number of dots, inside its own bounds", () => {
+  for (const id of figureIds) {
+    const source = figure(id);
+    const dots = resample(id, 1100);
+    assert.equal(dots.length, 1100);
+    assert.match(figureColor[id], /^\d+,\d+,\d+$/);
+    for (const axis of ["x", "y", "z"] as const) {
+      const low = Math.min(...source.map((p) => p[axis]));
+      const high = Math.max(...source.map((p) => p[axis]));
+      assert.ok(dots.every((p) => p[axis] >= low - 1e-9 && p[axis] <= high + 1e-9), `${id} ${axis}`);
+    }
+    // The first dot of each figure is kept exactly, so the highlighted parts stay where the figure put them.
+    assert.deepEqual([dots[0].x, dots[0].y, dots[0].z], [source[0].x, source[0].y, source[0].z]);
+  }
+});
+
+test("scene dots: the stage holds its pose across every scene boundary", () => {
+  for (let scene = 1; scene < figureIds.length; scene++) {
+    const before = scenePose(scene - 1e-6);
+    const after = scenePose(scene + 1e-6);
+    assert.ok(Math.abs(before.yaw - after.yaw) < 1e-4 && Math.abs(before.lift - after.lift) < 1e-3, `scene ${scene}`);
+  }
+  // Never head-on, where rings facing the flow would collapse into lines.
+  for (let p = 0; p <= figureIds.length; p += 0.05) assert.ok(scenePose(p).yaw < -0.5);
 });

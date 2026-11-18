@@ -168,3 +168,45 @@ export function settled(p: number, u: number): number {
   const t = Math.min(1, Math.max(0, (p - u) / 0.3));
   return t * t * (3 - 2 * t);
 }
+
+// Signature colour of each case as "r,g,b", shared by its figure and its scene.
+export const figureColor: Record<FigureId, string> = {
+  "field-service": "126,231,214",
+  "platform-operations": "146,186,255",
+  payments: "255,190,120",
+  membership: "255,160,200",
+  "service-agent": "209,245,138",
+  harness: "188,168,255",
+};
+
+// The figure spread over exactly `count` dots, so every scene can be drawn
+// with the same particles. Extra dots fill the gap to the next dot of the same
+// stroke (a ring, a line, a lattice edge); where the next dot is far away they
+// stack on the dot they repeat.
+const NEIGHBOUR = 0.33;
+const spread = new Map<string, CloudPoint[]>();
+export function resample(id: FigureId, count: number): CloudPoint[] {
+  const key = `${id}:${count}`;
+  let points = spread.get(key);
+  if (!points) {
+    const source = figure(id);
+    points = Array.from({ length: count }, (_, i) => {
+      const at = (i * source.length) / count;
+      const p = source[Math.floor(at)];
+      const q = source[(Math.floor(at) + 1) % source.length];
+      const near = Math.hypot(q.x - p.x, q.y - p.y, q.z - p.z) < NEIGHBOUR;
+      const t = near ? at % 1 : 0;
+      return { x: p.x + (q.x - p.x) * t, y: p.y + (q.y - p.y) * t, z: p.z + (q.z - p.z) * t, u: p.u, tone: p.tone };
+    });
+    spread.set(key, points);
+  }
+  return points;
+}
+
+// Camera sway of the scene stage for a scroll position counted in scenes
+// (2.5 = halfway through the third case). Every whole number gives the same
+// pose, so crossing from one scene into the next never jumps.
+export function scenePose(position: number): { yaw: number; lift: number } {
+  const sway = Math.sin(position * TAU);
+  return { yaw: -0.8 + sway * 0.16, lift: sway * 20 };
+}

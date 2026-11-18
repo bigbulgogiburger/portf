@@ -1,10 +1,9 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { figure, settled, type FigureId } from "@/lib/cloud";
+import { figure, figureColor, settled, type FigureId } from "@/lib/cloud";
 import { useMotion } from "@/lib/motion";
 
-const LIME = "209,245,138";
-const DIM = "150,176,122";
+const DIM = "150,160,140";
 // Seconds for the highlight to cross the figure, and the rest before the next pass.
 const SWEEP = 2.6;
 const REST = 2.2;
@@ -19,6 +18,7 @@ export function PointCloud({ id, className = "" }: { id: FigureId; className?: s
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
     const points = figure(id);
+    const bright = figureColor[id];
     let width = 0;
     let height = 0;
     let frame = 0;
@@ -54,7 +54,7 @@ export function PointCloud({ id, className = "" }: { id: FigureId; className?: s
         const d = p - pt.u;
         const glow = allowed ? Math.exp(-(d * d) / 0.012) : 0;
         const alpha = Math.min(1, (pt.tone ? 0.42 : 0.2) + near * (pt.tone ? 0.5 : 0.3) + glow * 0.7);
-        ctx.fillStyle = `rgba(${pt.tone || glow > 0.3 ? LIME : DIM},${alpha})`;
+        ctx.fillStyle = `rgba(${pt.tone || glow > 0.3 ? bright : DIM},${alpha})`;
         ctx.beginPath();
         ctx.arc(width / 2 + xx * scale * k, height / 2 - yy * scale * k, (pt.tone ? 1.15 : 0.9) * k + glow * 0.9, 0, Math.PI * 2);
         ctx.fill();
