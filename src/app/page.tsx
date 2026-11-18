@@ -67,6 +67,7 @@ export default function Home() {
           <SceneStage ids={sceneIds} />
           <div className="container">
             <Chapter no="01" name="Projects" note="설계 판단과 구현 결과" />
+            <h2 className="sr-only">주요 프로젝트</h2>
             <nav className="scene-index" aria-label="프로젝트 목차">
               {projects.map((p) => <a key={p.id} href={`#case-${p.id}`} style={tint(p.id)}><i />{p.number}<span>{shortNames[p.id]}</span></a>)}
             </nav>
