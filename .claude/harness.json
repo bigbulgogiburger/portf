@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "mode": "auto",
+  "mode": "off",
   "tracker": "local",
   "trackers": {
     "local": {

@@ -8,7 +8,7 @@
     }
   },
   "enabledPlugins": {
-    "caseworker@caseworker": true,
+    "caseworker@caseworker": false,
     "jira-harness@bigbulgogiburger": false
   }
 }

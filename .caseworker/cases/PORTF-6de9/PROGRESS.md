@@ -2,3 +2,4 @@
 
 - 2026-11-18T21:19:19.714Z 생성 (story)
 - 2026-11-18T21:19:28.185Z 상태 open → in_progress (브랜치 feat/PORTF-6de9)
+- 2026-11-18T22:38:19.546Z 상태 in_progress → review (브랜치 feat/PORTF-6de9)
