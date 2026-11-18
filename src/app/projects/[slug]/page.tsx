@@ -11,6 +11,10 @@ import { CopyEmail } from "@/components/copy-email";
 import { RetryPath } from "@/components/retry-path";
 import { UploadFlow } from "@/components/upload-flow";
 import { ArrowRight, ArrowUpRight, Github } from "@/components/icons";
+import { PointCloud } from "@/components/point-cloud";
+import { DecisionLink } from "@/components/decision-link";
+import { DecisionFigure } from "@/components/decision-figure";
+import type { FigureId } from "@/lib/cloud";
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.id }));
 }
@@ -49,6 +53,7 @@ export default async function ProjectPage({
           </span>
           <span>{p.period} · {p.status}</span>
         </div>
+        <PointCloud id={p.id as FigureId} className="case-emblem" />
         <h1>{p.title}</h1>
         <p className="case-subtitle">{p.subtitle}</p>
         <p className="case-intro">{p.summary}</p>
@@ -75,6 +80,11 @@ export default async function ProjectPage({
           >
             <Github size={18} /> GitHub에서 코드·검증 정책 확인{" "}
             <ArrowUpRight size={18} />
+          </a>
+        )}
+        {p.successor && (
+          <a className="text-link case-successor" href={p.successor.url} target="_blank" rel="noreferrer">
+            {p.successor.label} <ArrowUpRight size={16} />
           </a>
         )}
         <section className="case-brief" aria-label="한눈에 보기">
@@ -118,6 +128,7 @@ export default async function ProjectPage({
                 <div>
                   <h3>{d.title}</h3>
                   <p>{d.body}</p>
+                  <DecisionLink id={`decision-${i + 1}`} />
                   {d.alternative && (
                     <dl className="decision-alternative">
                       <div>
@@ -134,6 +145,7 @@ export default async function ProjectPage({
                   )}
                   {d.title === retryPath.decision && <RetryPath />}
                   {d.title === uploadFlow.decision && <UploadFlow />}
+                  <DecisionFigure title={d.title} />
                 </div>
               </article>
             ))}

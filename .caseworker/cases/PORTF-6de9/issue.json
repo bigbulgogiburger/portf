@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "key": "PORTF-6de9",
+  "title": "포트폴리오 재설계 v3 — 어두운 바탕과 기하 도형 모션 중심으로 Fable이 직접 구현",
+  "type": "story",
+  "status": "in_progress",
+  "parent": null,
+  "labels": [
+    "nextjs",
+    "frontend",
+    "feature"
+  ],
+  "assignee": null,
+  "branch": "feat/PORTF-6de9",
+  "created_at": "2026-11-18T21:19:19.714Z",
+  "updated_at": "2026-11-18T21:19:28.185Z",
+  "closed_at": null
+}

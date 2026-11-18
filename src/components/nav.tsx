@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Menu, X } from "./icons";
 import { MotionToggle } from "./motion-toggle";
+import { Find } from "./find";
+import { searchEntries } from "@/lib/evidence";
 export function Nav() {
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -23,6 +25,7 @@ export function Nav() {
         d<span>h</span>
         <i />
       </Link>
+      <Find entries={searchEntries} />
       <MotionToggle />
       <button
         ref={toggleRef}
