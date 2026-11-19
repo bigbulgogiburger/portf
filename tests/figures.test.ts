@@ -59,10 +59,15 @@ test("a code change after verification closes the commit gate until the work is 
     }
     if (blocked && f.tone === "retry" && f.lit[3] && f.lit[4]) reverified = true;
     if (f.lit[COMMIT]) assert.ok(reverified, "committed before re-verification");
+    // The record exists only once the review gate is passed, and the block always has a record and a later edit behind it.
+    if (f.record > 0) assert.ok(f.lit[4] || f.edited, `record before review at ${ms}ms`);
+    if (f.block > 0) assert.ok(f.record === 1 && f.edited, `blocked without a stale record at ${ms}ms`);
+    if (!f.edited) assert.equal(f.block, 0);
   }
   assert.ok(blocked && reverified);
   assert.equal(gateFrame(STORY_MS), restFrame);
   assert.ok(restFrame.lit.every(Boolean) && restFrame.signal === null && restFrame.block === 0);
+  assert.ok(restFrame.record === 1 && restFrame.edited);
 });
 
 test("timeline spans follow the published periods", () => {

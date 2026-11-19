@@ -37,7 +37,7 @@ type Add = (x: number, y: number, z: number, u: number, tone?: 0 | 1, from?: Clo
 
 // Ring in the y–z plane, i.e. facing along the flow (x) axis.
 function ring(add: Add, x: number, r: number, n: number, u: number, tone: 0 | 1 = 0, turn = 0) {
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i <= n; i++) {
     const a = (i / n) * TAU + turn;
     add(x, Math.cos(a) * r, Math.sin(a) * r, u, tone);
   }
@@ -50,32 +50,76 @@ function line(add: Add, a: [number, number, number], b: [number, number, number]
 }
 // Ends the current stroke (see CloudPoint.end).
 const cut = (add: Add) => add(NaN, 0, 0, 0);
-// Evenly spread dots on a small sphere.
-function ball(add: Add, c: [number, number, number], r: number, n: number, u: number, tone: 0 | 1 = 0) {
-  for (let i = 0; i < n; i++) {
-    const y = 1 - (2 * (i + 0.5)) / n;
-    const s = Math.sqrt(1 - y * y);
-    const a = i * 2.39996;
-    add(c[0] + Math.cos(a) * s * r, c[1] + y * r, c[2] + Math.sin(a) * s * r, u, tone);
+// Small ring in the y–z plane around any centre: a node.
+function loop(add: Add, c: [number, number, number], r: number, n: number, u: number, tone: 0 | 1 = 0) {
+  for (let i = 0; i <= n; i++) {
+    const a = (i / n) * TAU;
+    add(c[0], c[1] + Math.cos(a) * r, c[2] + Math.sin(a) * r, u, tone);
   }
+  cut(add);
+}
+// Ring lying flat (x–z plane) at height c[1].
+function disc(add: Add, c: [number, number, number], r: number, n: number, u: number, tone: 0 | 1 = 0) {
+  for (let i = 0; i <= n; i++) {
+    const a = (i / n) * TAU;
+    add(c[0] + Math.cos(a) * r, c[1], c[2] + Math.sin(a) * r, u, tone);
+  }
+  cut(add);
+}
+// A database: three flat rings stacked.
+function drum(add: Add, c: [number, number, number], r: number, u: number, tone: 0 | 1 = 0) {
+  for (const dy of [0.09, 0, -0.09]) disc(add, [c[0], c[1] + dy, c[2]], r, 20, u, tone);
+}
+// A sheet facing the flow (y–z plane): its outline and, inside, rows of the given lengths.
+function sheet(add: Add, x: number, h: number, w: number, u: number, tone: 0 | 1 = 0, rows: number[] = []) {
+  const corners: [number, number][] = [[h, -w], [h, w], [-h, w], [-h, -w]];
+  corners.forEach(([y, z], i) => {
+    const [ny, nz] = corners[(i + 1) % 4];
+    line(add, [x, y, z], [x, ny, nz], Math.max(4, Math.round(Math.hypot(ny - y, nz - z) / 0.06)), u, u, tone);
+  });
+  cut(add);
+  rows.forEach((length, k) => {
+    const y = h - 0.13 - k * 0.12;
+    line(add, [x, y, -w + 0.07], [x, y, -w + 0.07 + length], Math.max(3, Math.round(length / 0.06)), u, u, k === 0 ? tone : 0);
+    cut(add);
+  });
+}
+// A tick inside a ring at x, as wide as r.
+function tick(add: Add, x: number, r: number, u: number) {
+  line(add, [x, 0, -r * 0.45], [x, -r * 0.38, -r * 0.1], 4, u, u, 1);
+  line(add, [x, -r * 0.38, -r * 0.1], [x, r * 0.42, r * 0.5], 6, u, u, 1);
+  cut(add);
 }
 
 const builders: Record<FigureId, (add: Add) => void> = {
-  // Seven stages in a row, 접수 → 정산; the last one is filled in: the stored settlement.
+  // Three parties that shared the word "customer" enter one flow of seven stages,
+  // 접수 → 정산; the last stage fills in and leaves a settlement sheet that is kept.
   "field-service": (add) => {
+    [0.36, 0, -0.36].forEach((y, k) => {
+      loop(add, [-1.26, y, 0], 0.09, 12, 0, k === 1 ? 1 : 0);
+      line(add, [-1.17, y, 0], [-1.0, y * 0.2, 0], 5, 0.02, 0.06);
+      cut(add);
+    });
     const stages = 7;
     for (let i = 0; i < stages; i++) {
-      const x = -1 + (2 * i) / (stages - 1);
-      const u = i / (stages - 1);
+      const x = -0.9 + i * 0.25;
+      const u = 0.08 + (i / (stages - 1)) * 0.66;
       const last = i === stages - 1;
       ring(add, x, 0.5, 44, u, last ? 1 : 0, i * 0.2);
+      cut(add);
       if (last) {
         ring(add, x, 0.34, 30, u, 1);
+        cut(add);
         ring(add, x, 0.18, 16, u, 1);
-        add(x, 0, 0, u, 1);
+        cut(add);
       }
     }
-    line(add, [-1.2, 0, 0], [1.2, 0, 0], 49, 0, 1);
+    line(add, [-1.0, 0, 0], [0.6, 0, 0], 38, 0.06, 0.74);
+    cut(add);
+    line(add, [0.66, 0, 0], [0.88, 0, 0], 5, 0.8, 0.86, 1);
+    cut(add);
+    sheet(add, 0.98, 0.3, 0.22, 0.92, 1, [0.3, 0.2, 0.28]);
+    sheet(add, 1.13, 0.3, 0.22, 1);
   },
   // A report (speech bubble) is followed through three pages of the deployed source
   // to one line of code; the draft then passes the ring where a person confirms it
@@ -124,81 +168,144 @@ const builders: Record<FigureId, (add: Add) => void> = {
     cut(add);
     line(add, [1.12, -0.1, -0.12], [1.12, -0.1, 0.04], 4, 0.99, 0.99);
   },
-  // A loose cloud on the left, the same dots in an ordered lattice on the right:
-  // the backend moved onto one stack.
+  // The old backend, a tangle, goes through the four deploy stages (three frames,
+  // then the running box) and ends as ordered rows on one stack.
   "platform-operations": (add) => {
     const rand = seeded(7);
-    const loose = (): [number, number, number] => {
-      const a = rand() * TAU;
-      const b = Math.acos(2 * rand() - 1);
-      const r = 0.15 + rand() * 0.5;
-      return [-0.68 + Math.sin(b) * Math.cos(a) * r, Math.cos(b) * r * 1.15, Math.sin(b) * Math.sin(a) * r];
-    };
-    for (let i = 0; i < 70; i++) add(...loose(), rand() * 0.3, 0);
-    const n = 4;
-    for (let ix = 0; ix < n; ix++)
-      for (let iy = 0; iy < n; iy++)
-        for (let iz = 0; iz < n; iz++) {
-          const cell = (i: number) => (i / (n - 1) - 0.5) * 0.96;
-          add(0.6 + cell(ix), cell(iy), cell(iz), 0.3 + (ix / (n - 1)) * 0.5 + rand() * 0.2, 1, loose());
-        }
-    line(add, [-0.12, 0, 0], [0.04, 0, 0], 4, 0.3, 0.34);
+    const turns = [[1, 2, 3], [2, 3, 1], [3, 1, 2]];
+    turns.forEach((f, k) => {
+      const shift = [rand() * TAU, rand() * TAU, rand() * TAU];
+      for (let i = 0; i <= 70; i++) {
+        const t = (i / 70) * TAU;
+        add(-0.9 + Math.sin(f[0] * t + shift[0]) * 0.34, Math.sin(f[1] * t + shift[1]) * 0.4, Math.sin(f[2] * t + shift[2]) * 0.34, 0.02 + k * 0.07 + (i / 70) * 0.08, 0);
+      }
+      cut(add);
+    });
+    line(add, [-0.5, 0, 0], [0.5, 0, 0], 22, 0.3, 0.62);
+    cut(add);
+    [-0.32, -0.08, 0.16].forEach((x, k) => sheet(add, x, 0.15 + k * 0.02, 0.15 + k * 0.02, 0.36 + k * 0.09, 1));
+    const c = 0.86;
+    const h = 0.3;
+    for (const a of [-h, h])
+      for (const b of [-h, h]) {
+        line(add, [c - h, a, b], [c + h, a, b], 10, 0.68, 0.96);
+        cut(add);
+        line(add, [c + a, -h, b], [c + a, h, b], 10, 0.82 + a * 0.4, 0.82 + a * 0.4);
+        cut(add);
+        line(add, [c + a, b, -h], [c + a, b, h], 10, 0.82 + a * 0.4, 0.82 + a * 0.4);
+        cut(add);
+      }
+    const loose = (): [number, number, number] => [-0.9 + (rand() - 0.5) * 0.7, (rand() - 0.5) * 0.8, (rand() - 0.5) * 0.7];
+    for (const y of [0.16, 0, -0.16])
+      for (const z of [-0.16, 0, 0.16]) {
+        for (let i = 0; i < 5; i++) add(c - 0.18 + i * 0.09, y, z, 0.74 + i * 0.05, 1, loose());
+        cut(add);
+      }
   },
-  // A call that runs through the proxy ring, then comes round once more: the retry.
+  // A webhook reaches the calling bean. Through the proxy ring a failed check is
+  // tried again (the arcs) until it lands in the database; the dim path underneath
+  // goes round the proxy.
   payments: (add) => {
-    ring(add, -0.42, 0.5, 56, 0.3, 1);
-    ring(add, -0.42, 0.6, 40, 0.3, 0, 0.08);
-    line(add, [-1.2, 0, 0], [0.28, 0, 0], 40, 0, 0.5, 1);
-    for (let i = 0; i < 44; i++) {
-      const a = -Math.PI / 2 + (i / 44) * TAU;
-      add(0.28 + Math.cos(a) * 0.36, 0.36 + Math.sin(a) * 0.36, 0, 0.5 + (i / 44) * 0.36, 1);
+    loop(add, [-1.34, 0, 0], 0.07, 10, 0);
+    line(add, [-1.26, 0, 0], [-1.08, 0, 0], 4, 0.02, 0.06);
+    cut(add);
+    sheet(add, -1.0, 0.2, 0.2, 0.08, 0, [0.22]);
+    for (let i = 0; i <= 30; i++) {
+      const t = i / 30;
+      add(-1.0 + t * 1.5, -0.2 - Math.sin(t * Math.PI) * 0.52, 0, 0.12 + t * 0.4, 0);
+      if (i % 3 === 2) cut(add);
     }
-    line(add, [0.36, 0, 0], [1.2, 0, 0], 22, 0.86, 1, 1);
+    cut(add);
+    line(add, [-0.92, 0, 0], [0.5, 0, 0], 34, 0.1, 0.5, 1);
+    cut(add);
+    ring(add, -0.3, 0.44, 50, 0.3, 1);
+    cut(add);
+    ring(add, -0.3, 0.55, 40, 0.3, 0, 0.08);
+    cut(add);
+    [0.24, 0.4, 0.56].forEach((height, k) => {
+      const n = 14 + k * 5;
+      for (let i = 0; i <= n; i++) {
+        const a = (i / n) * Math.PI;
+        add(0.1 - Math.cos(a) * 0.4, Math.sin(a) * height, 0, 0.52 + k * 0.1 + (i / n) * 0.1, 1);
+      }
+      cut(add);
+    });
+    sheet(add, 0.5, 0.24, 0.22, 0.86, 1, [0.26, 0.18]);
+    line(add, [0.58, 0, 0], [0.84, 0, 0], 6, 0.9, 0.95, 1);
+    cut(add);
+    drum(add, [1.04, 0, 0], 0.17, 1, 1);
   },
-  // One change, published once, taken up by each subscribing service.
+  // One change in the member database is published once to the topic ring; each
+  // service subscribes and writes it into its own database.
   membership: (add) => {
-    ball(add, [-1, 0, 0], 0.17, 30, 0, 1);
-    line(add, [-0.8, 0, 0], [-0.34, 0, 0], 9, 0.08, 0.3);
-    ring(add, -0.24, 0.3, 34, 0.34, 1);
-    ring(add, -0.24, 0.16, 16, 0.34, 0);
-    for (let k = 0; k < 3; k++) {
-      const a = (k / 3) * TAU + Math.PI / 2;
-      const target: [number, number, number] = [0.92, Math.sin(a) * 0.66, Math.cos(a) * 0.66];
-      line(add, [-0.14, 0, 0], [target[0] - 0.16, target[1] * 0.88, target[2] * 0.88], 18, 0.4, 0.86);
-      ball(add, target, 0.16, 26, 0.94, 1);
+    drum(add, [-1.08, 0, 0], 0.21, 0, 1);
+    line(add, [-0.84, 0, 0], [-0.36, 0, 0], 9, 0.08, 0.26);
+    cut(add);
+    ring(add, -0.22, 0.3, 36, 0.32, 1);
+    cut(add);
+    ring(add, -0.22, 0.16, 18, 0.32);
+    cut(add);
+    for (const [y, z] of [[0.58, 0.14], [0, -0.18], [-0.58, 0.14]]) {
+      line(add, [-0.12, 0, 0], [0.32, y, z], 12, 0.4, 0.66);
+      cut(add);
+      loop(add, [0.4, y, z], 0.09, 12, 0.7, 1);
+      line(add, [0.5, y, z], [0.72, y, z], 5, 0.76, 0.86);
+      cut(add);
+      drum(add, [0.92, y, z], 0.16, 0.94, 1);
     }
   },
-  // Requests narrow through the permission gate; one draft waits behind it for a person.
+  // Requests narrow to the caller's own scope, read the data without changing it,
+  // and stop as a draft card until a person confirms.
   "service-agent": (add) => {
-    const steps = 9;
+    const steps = 8;
     for (let k = 0; k <= steps; k++) {
       const t = k / steps;
-      ring(add, -1.1 + t * 1.05, 0.82 - t * 0.5, Math.round(40 - t * 20), t * 0.48, 0, k * 0.3);
+      ring(add, -1.0 + t * 0.86, 0.72 - t * 0.42, Math.round(38 - t * 18), t * 0.42, 0, k * 0.3);
+      cut(add);
     }
-    ring(add, 0.06, 0.32, 40, 0.55, 1);
-    ring(add, 0.06, 0.4, 30, 0.55, 1, 0.1);
-    line(add, [0.14, 0, 0], [0.74, 0, 0], 11, 0.6, 0.82);
-    const s = 0.3;
-    const corners: [number, number][] = [[-s, -s], [s, -s], [s, s], [-s, s]];
-    corners.forEach(([y, z], i) => {
-      const [ny, nz] = corners[(i + 1) % 4];
-      line(add, [0.9, y, z], [0.9, ny, nz], 9, 0.94, 0.94, 1);
-    });
-    for (const y of [-0.12, 0, 0.12]) line(add, [0.9, y, -0.18], [0.9, y, 0.18], 5, 0.97, 0.97);
+    ring(add, 0, 0.3, 40, 0.5, 1);
+    cut(add);
+    ring(add, 0, 0.38, 30, 0.5, 1, 0.1);
+    cut(add);
+    line(add, [0, -0.44, 0], [0, -0.62, 0], 4, 0.52, 0.56);
+    cut(add);
+    drum(add, [0, -0.78, 0], 0.15, 0.58);
+    line(add, [0.08, 0, 0], [0.56, 0, 0], 9, 0.6, 0.78);
+    cut(add);
+    sheet(add, 0.68, 0.3, 0.24, 0.86, 1, [0.3, 0.2, 0.28]);
+    line(add, [0.76, 0, 0], [0.96, 0, 0], 4, 0.9, 0.94);
+    cut(add);
+    ring(add, 1.1, 0.17, 24, 0.97, 1);
+    cut(add);
+    tick(add, 1.1, 0.17, 0.98);
   },
-  // The tree that was verified and the tree about to be committed, set side by side.
+  // The tree that was verified and the tree about to be committed are compared node
+  // by node; only when they match does the work pass the ring into the commit line.
   harness: (add) => {
-    const n = 5;
-    for (let iy = 0; iy < n; iy++)
-      for (let iz = 0; iz < n; iz++) {
-        const y = (iy / (n - 1) - 0.5) * 1.1;
-        const z = (iz / (n - 1) - 0.5) * 1.1;
-        const row = iy / (n - 1);
-        add(-0.8, y, z, row * 0.28, 0);
-        add(0.8, y, z, 0.72 + row * 0.28, 1);
-        const corner = (iy === 0 || iy === n - 1) && (iz === 0 || iz === n - 1);
-        if (corner || (iy === 2 && iz === 2)) line(add, [-0.68, y, z], [0.68, y, z], 13, 0.34 + row * 0.1, 0.6 + row * 0.1);
+    const nodes: [number, number][] = [[0.44, 0], [0.1, -0.28], [0.1, 0.28], [-0.26, -0.42], [-0.26, -0.14], [-0.26, 0.14], [-0.26, 0.42]];
+    const edges = [[0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [2, 6]];
+    for (const [x, tone, u] of [[-1.02, 0, 0.02], [-0.42, 1, 0.4]] as const) {
+      for (const [a, b] of edges) {
+        line(add, [x, ...nodes[a]], [x, ...nodes[b]], 6, u, u + 0.1, tone);
+        cut(add);
       }
+      for (const [y, z] of nodes) loop(add, [x, y, z], 0.05, 8, u + 0.06, tone);
+    }
+    for (const [y, z] of nodes) {
+      line(add, [-0.94, y, z], [-0.5, y, z], 7, 0.16, 0.38);
+      cut(add);
+    }
+    line(add, [-0.32, 0, 0], [0.04, 0, 0], 7, 0.52, 0.66);
+    cut(add);
+    ring(add, 0.26, 0.3, 42, 0.74, 1);
+    cut(add);
+    tick(add, 0.26, 0.3, 0.78);
+    line(add, [0.36, 0, 0], [1.24, 0, 0], 18, 0.82, 1, 1);
+    cut(add);
+    for (const x of [0.66, 0.95, 1.24]) loop(add, [x, 0, 0], 0.08, 12, 0.86 + (x - 0.66) * 0.24, 1);
+    line(add, [0.66, 0, 0], [0.95, 0.3, 0], 7, 0.9, 0.94);
+    cut(add);
+    loop(add, [0.95, 0.3, 0], 0.07, 10, 0.95);
   },
 };
 

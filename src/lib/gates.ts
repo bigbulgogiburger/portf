@@ -5,6 +5,8 @@ export const gateNames = ["이슈", "계획", "구현", "테스트", "리뷰", "
 export const COMMIT = gateNames.length - 1;
 // Gates that hold the verification record; a code change makes it stale.
 const VERIFY = [3, 4];
+// Where committed work comes to rest, just past the commit gate.
+export const LANDING = 5.62;
 
 export type GateTone = "run" | "pass" | "alert" | "retry";
 export type GateFrame = {
@@ -15,6 +17,10 @@ export type GateFrame = {
   // 0 → 1: the code-change flash at the 구현 gate.
   change: number;
   lit: boolean[];
+  // 0 → 1: the verification record is stored (once the review gate is passed).
+  record: number;
+  // The code was changed after verification, so the commit target holds that change.
+  edited: boolean;
   log: string;
   tone: GateTone;
 };
@@ -27,7 +33,7 @@ const beats: Beat[] = [
   { until: 6300, from: 4.4, to: 4.66, log: "✕ 검증 이후 코드 변경 감지 · 커밋 차단", tone: "alert" },
   { until: 7300, from: 4.66, to: 2.7, log: "↻ 재검증 · 테스트·리뷰 다시 실행", tone: "retry" },
   { until: 8800, from: 2.7, to: 4.4, log: "↻ 재검증 · 테스트·리뷰 다시 실행", tone: "retry" },
-  { until: 10400, from: 4.4, to: 6.1, log: "✓ 검증 기록과 커밋 대상 일치 · 커밋 진행", tone: "pass" },
+  { until: 10400, from: 4.4, to: LANDING, log: "✓ 검증 기록과 커밋 대상 일치 · 커밋 진행", tone: "pass" },
 ];
 export const STORY_MS = beats[beats.length - 1].until;
 // What the figure shows without motion, and after the story has played.
@@ -36,6 +42,8 @@ export const restFrame: GateFrame = {
   block: 0,
   change: 0,
   lit: gateNames.map(() => true),
+  record: 1,
+  edited: true,
   log: beats[beats.length - 1].log,
   tone: "pass",
 };
@@ -65,5 +73,6 @@ export function gateFrame(ms: number): GateFrame {
     if (stale && VERIFY.includes(i)) return index >= 5 && signal >= i;
     return index >= 4 || signal >= i;
   });
-  return { signal, block, change, lit, log: beat.log, tone: beat.tone };
+  const record = ramp(ms, beats[1].until, beats[1].until + 400);
+  return { signal, block, change, lit, record, edited: stale, log: beat.log, tone: beat.tone };
 }
