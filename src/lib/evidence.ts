@@ -13,6 +13,7 @@ export const evidenceRows = [
 // Short case names for narrow columns; each is a name the skills list already uses.
 export const shortNames: Record<string, string> = {
   "field-service": "A/S 플랫폼",
+  "report-agent": "문제 보고 도우미",
   "platform-operations": "수리엔 이관",
   payments: "스카이탭 결제",
   membership: "링커 통합회원",

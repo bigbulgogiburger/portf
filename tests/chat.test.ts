@@ -45,10 +45,10 @@ test("local rate limiter caps requests and expires", () => {
   assert.equal(localRateLimit("unit-test", 61000), false);
 });
 test("corpus only includes reviewed public projects", () => {
-  assert.equal(projects.length, 6);
+  assert.equal(projects.length, 7);
   assert.equal(new Set(projects.map((p) => p.id)).size, projects.length);
   assert.ok(
-    !/DeWalt|디월트|Stanley|스탠리|010[. -]?5189|4,100|149건|525 MD/i.test(
+    !/DeWalt|디월트|Stanley|스탠리|010[. -]?5189|4,100|149건|525 MD|STD-\d|가전/i.test(
       publicKnowledge,
     ),
   );

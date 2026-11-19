@@ -14,7 +14,7 @@ const contexts: Record<string, Screen> = {
   payments: {file:"skytab-1",alt:"스카이탭 학생·선생님 수업 화면",caption:"서비스 맥락 · 학생과 선생님이 사용하는 스카이탭 수업 화면"},
   membership: {file:"linker-app",alt:"링커 모바일 서비스 화면",caption:"서비스 맥락 · 링커 모바일 앱 화면"},
 };
-const traceIds: Record<string, TraceId> = {payments:"payments",harness:"harness","service-agent":"service-agent"};
+const traceIds: Record<string, TraceId> = {payments:"payments",harness:"harness","service-agent":"service-agent","report-agent":"report-agent"};
 export function visualCaption(id: string): string {
   return id === "field-service" ? dashboard.caption : "핵심 흐름 · 이해를 돕기 위해 단순화한 개념도";
 }

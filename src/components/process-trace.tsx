@@ -8,6 +8,7 @@ const art: Record<TraceId, string> = {
   harness: "harness-art",
   "service-agent": "agent-art",
   payments: "payments-art",
+  "report-agent": "report-art",
 };
 
 // Plays the diagram once each time it scrolls into view (or on hover) and

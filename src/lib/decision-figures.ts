@@ -29,6 +29,14 @@ export const draftFigure = {
   ],
 } as const;
 
+export const toolsFigure = {
+  decision: "쓰기 도구가 없는 에이전트",
+  label: "에이전트는 읽기 전용 도구 9종만 쓰고, 이슈는 사람이 누르고 서버가 검증해야 만들어지는 그림",
+  agent: { name: "에이전트의 도구", count: 9, kind: "읽기 전용", missing: "이슈를 만드는 도구", status: "프롬프트 주입이 성공해도 이슈를 만들 방법이 없습니다" },
+  link: "초안",
+  issue: { name: "이슈 생성", rows: [["사람", "[이슈 만들기]"], ["서버", "확인 체크·대화 소유자·최신 초안"]], status: "검증해야 만들어집니다" },
+} as const;
+
 // Scattered start and gathered end position of each scheduler dot, in the figure's 640×220 box.
 export function batchDots() {
   let a = 22;
