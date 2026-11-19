@@ -316,3 +316,13 @@ html[data-motion="paused"] .tl .tl-span { clip-path: none; transition: none; }
 @media (max-width: 620px) {
   .hero3 .proof-grid { grid-template-columns: 1fr; }
 }
+.agent-shots { margin: 34px 0 0; }
+.agent-shots ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 0; padding: 22px; list-style: none; border: 1px solid var(--line); border-radius: 14px; background: radial-gradient(ellipse at 20% 0, #33241f, #1a1614); }
+.agent-shots li > span { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; font-size: 13px; font-weight: 500; color: var(--text); }
+.agent-shots li i { font: 10px var(--mono); font-style: normal; letter-spacing: 0.08em; color: var(--accent); }
+.agent-shots img { display: block; width: 100%; height: auto; border-radius: 10px; box-shadow: 0 14px 34px #0009; }
+.agent-shots figcaption { margin-top: 12px; font-size: 12px; text-align: center; color: var(--muted); }
+@media (max-width: 760px) {
+  .agent-shots ol { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 78%; gap: 14px; padding: 16px; overflow-x: auto; scroll-snap-type: x mandatory; }
+  .agent-shots li { scroll-snap-align: center; }
+}

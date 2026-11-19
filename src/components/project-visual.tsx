@@ -27,8 +27,18 @@ export function ProjectVisual({id, eager=false}:{id:string; eager?:boolean}) {
   if(id==="membership") return <FanoutArt controls={eager} />;
   return <ProcessTrace id={traceIds[id]} controls={eager} />;
 }
+// Screens of the report agent as it runs, cropped to its own panel so nothing of the client's system shows.
+const agentShots = [
+  {file:"report-agent-1",step:"되묻기",alt:"문제 보고 도우미가 부족한 정보를 선택지와 함께 한 번에 하나씩 되묻는 화면"},
+  {file:"report-agent-2",step:"소스 조사",alt:"문제 정리를 마치고 관련 화면과 코드를 살펴보는 중이라는 진행 표시가 보이는 화면"},
+  {file:"report-agent-3",step:"초안 · 사람 확인",alt:"심각도·이슈 유형·재현 순서·기대한 결과가 담긴 초안 카드와 이슈 만들기 버튼이 보이는 화면"},
+];
+function AgentShots() {
+  return <figure className="agent-shots"><ol>{agentShots.map((shot,i)=><li key={shot.file}><span><i>{String(i+1).padStart(2,"0")}</i>{shot.step}</span><Image src={`/projects/${shot.file}.png`} alt={shot.alt} width={398} height={638} sizes="(max-width: 760px) 78vw, 300px" /></li>)}</ol><figcaption>운영 중인 문제 보고 도우미 화면 · 고객사 정보가 보이지 않도록 도우미 창만 실었습니다</figcaption></figure>;
+}
 // Service screen shown under the case-study visual, when the project has one.
 export function ServiceContext({id}:{id:string}) {
+  if(id==="report-agent") return <AgentShots />;
   const screen=contexts[id];
   if(!screen) return null;
   return <figure className="service-context"><Screenshot screen={screen} className={`screen-${id}`} eager={false} /><figcaption>{screen.caption}</figcaption></figure>;

@@ -10,6 +10,8 @@ export type CloudPoint = {
   tone: 0 | 1;
   // Where the dot starts before the flow reaches it and settles it into place.
   from?: [number, number, number];
+  // Last dot of a stroke: the scene never fills the gap from it to the next dot.
+  end?: true;
 };
 export type FigureId =
   | "field-service"
@@ -46,6 +48,8 @@ function line(add: Add, a: [number, number, number], b: [number, number, number]
     add(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t, u0 + (u1 - u0) * t, tone);
   }
 }
+// Ends the current stroke (see CloudPoint.end).
+const cut = (add: Add) => add(NaN, 0, 0, 0);
 // Evenly spread dots on a small sphere.
 function ball(add: Add, c: [number, number, number], r: number, n: number, u: number, tone: 0 | 1 = 0) {
   for (let i = 0; i < n; i++) {
@@ -73,23 +77,52 @@ const builders: Record<FigureId, (add: Add) => void> = {
     }
     line(add, [-1.2, 0, 0], [1.2, 0, 0], 49, 0, 1);
   },
-  // A report comes in, a probe reads down through the sheets of the deployed source
-  // to one line, and the draft leaves through the ring where a person confirms it.
+  // A report (speech bubble) is followed through three pages of the deployed source
+  // to one line of code; the draft then passes the ring where a person confirms it
+  // and becomes an issue card.
   "report-agent": (add) => {
-    ball(add, [-1.16, 0, 0], 0.13, 22, 0);
-    line(add, [-0.98, 0, 0], [-0.64, 0, 0], 8, 0.05, 0.18);
-    const n = 7;
-    [-0.38, 0, 0.38].forEach((y, sheet) => {
-      for (let ix = 0; ix < n; ix++)
-        for (let iz = 0; iz < n; iz++) {
-          const found = sheet === 1 && iz === 3 && ix >= 2 && ix <= 5;
-          add(-0.5 + (ix / (n - 1)) * 0.92, y, (iz / (n - 1) - 0.5) * 0.92, 0.22 + (ix / (n - 1)) * 0.28, found ? 1 : 0);
-        }
+    const rand = seeded(11);
+    ring(add, -1.12, 0.2, 30, 0, 1);
+    cut(add);
+    line(add, [-1.12, 0.03, -0.09], [-1.12, 0.03, 0.09], 4, 0.02, 0.02, 1);
+    cut(add);
+    line(add, [-1.12, -0.19, 0.07], [-1.12, -0.31, 0.17], 3, 0.03, 0.03, 1);
+    cut(add);
+    const pages = [-0.52, -0.22, 0.08];
+    const rows = 9;
+    const hit = 4;
+    for (let r = 0; r < rows; r++)
+      pages.forEach((x, k) => {
+        const y = 0.44 - r * 0.11;
+        const found = k === pages.length - 1 && r === hit;
+        const indent = !found && rand() < 0.4 ? 0.14 : 0;
+        const length = found ? 0.72 : 0.3 + rand() * 0.46;
+        const u = 0.12 + k * 0.13 + r * 0.012;
+        line(add, [x, y, -0.44 + indent], [x, y, -0.44 + indent + length], Math.round(length / 0.07), u, u, found ? 1 : 0);
+        cut(add);
+      });
+    line(add, [-0.9, 0, 0], [pages[pages.length - 1], 0, 0], 20, 0.05, 0.5, 1);
+    cut(add);
+    line(add, [0.16, 0, 0], [0.42, 0, 0], 6, 0.56, 0.7);
+    cut(add);
+    ring(add, 0.64, 0.3, 44, 0.8, 1);
+    cut(add);
+    line(add, [0.64, 0, -0.13], [0.64, -0.11, -0.03], 4, 0.84, 0.84, 1);
+    line(add, [0.64, -0.11, -0.03], [0.64, 0.13, 0.15], 6, 0.84, 0.86, 1);
+    cut(add);
+    line(add, [0.74, 0, 0], [0.96, 0, 0], 5, 0.88, 0.92);
+    cut(add);
+    const card: [number, number][] = [[0.27, -0.2], [0.27, 0.2], [-0.27, 0.2], [-0.27, -0.2]];
+    card.forEach(([y, z], i) => {
+      const [ny, nz] = card[(i + 1) % 4];
+      line(add, [1.12, y, z], [1.12, ny, nz], i % 2 ? 9 : 7, 0.95, 0.95, 1);
     });
-    line(add, [-0.04, 0.66, 0], [-0.04, -0.66, 0], 20, 0.3, 0.52, 1);
-    line(add, [0.5, 0, 0], [0.78, 0, 0], 7, 0.6, 0.76);
-    ring(add, 0.9, 0.3, 42, 0.84, 1);
-    ball(add, [1.2, 0, 0], 0.09, 14, 1, 1);
+    cut(add);
+    line(add, [1.12, 0.15, -0.12], [1.12, 0.15, 0.1], 5, 0.97, 0.97, 1);
+    cut(add);
+    line(add, [1.12, 0.02, -0.12], [1.12, 0.02, 0.12], 5, 0.98, 0.98);
+    cut(add);
+    line(add, [1.12, -0.1, -0.12], [1.12, -0.1, 0.04], 4, 0.99, 0.99);
   },
   // A loose cloud on the left, the same dots in an ordered lattice on the right:
   // the backend moved onto one stack.
@@ -174,7 +207,11 @@ export function figure(id: FigureId): CloudPoint[] {
   let points = cache.get(id);
   if (!points) {
     const built: CloudPoint[] = [];
-    builders[id]((x, y, z, u, tone = 0, from) => built.push({ x, y, z, u, tone, from }));
+    builders[id]((x, y, z, u, tone = 0, from) => {
+      if (Number.isNaN(x)) {
+        if (built.length) built[built.length - 1].end = true;
+      } else built.push({ x, y, z, u, tone, from });
+    });
     points = built;
     cache.set(id, points);
   }
@@ -214,7 +251,7 @@ export function resample(id: FigureId, count: number): CloudPoint[] {
       const at = (i * source.length) / count;
       const p = source[Math.floor(at)];
       const q = source[(Math.floor(at) + 1) % source.length];
-      const near = Math.hypot(q.x - p.x, q.y - p.y, q.z - p.z) < NEIGHBOUR;
+      const near = !p.end && Math.hypot(q.x - p.x, q.y - p.y, q.z - p.z) < NEIGHBOUR;
       const t = near ? at % 1 : 0;
       return { x: p.x + (q.x - p.x) * t, y: p.y + (q.y - p.y) * t, z: p.z + (q.z - p.z) * t, u: p.u, tone: p.tone };
     });
