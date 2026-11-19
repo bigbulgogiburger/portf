@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { projects } from "../src/data/portfolio";
 import { figure, figureColor, figureIds, resample, scenePose, settled } from "../src/lib/cloud";
-import { COMMIT, STORY_MS, gateFrame, gateNames, restFrame } from "../src/lib/gates";
+import { COMMIT, HOLD_MS, STORY_MS, gateFrame, gateNames, restFrame, storyTime } from "../src/lib/gates";
 import { traces } from "../src/lib/trace";
 import { span, timeline } from "../src/lib/timeline";
 import { evidenceRows, searchEntries } from "../src/lib/evidence";
@@ -33,7 +33,7 @@ test("dots settle only after the flow reaches them", () => {
 });
 
 test("gate story follows the published order and log lines", () => {
-  assert.deepEqual([...gateNames], ["이슈", "계획", "구현", "리뷰", "테스트", "커밋"]);
+  assert.deepEqual([...gateNames], ["이슈", "계획", "구현", "테스트", "리뷰", "커밋"]);
   const harnessLogs: string[] = traces.harness.frames.map((f) => f.log);
   const logs = new Set<string>();
   for (let ms = 0; ms <= STORY_MS; ms += 50) logs.add(gateFrame(ms).log);
@@ -132,4 +132,28 @@ test("scene dots: the stage holds its pose across every scene boundary", () => {
   }
   // Never head-on, where rings facing the flow would collapse into lines.
   for (let p = 0; p <= figureIds.length; p += 0.05) assert.ok(scenePose(p).yaw < -0.5);
+});
+
+test("gate story: it holds the finished state, then starts over", () => {
+  assert.equal(gateFrame(storyTime(STORY_MS + HOLD_MS / 2)), restFrame);
+  assert.deepEqual(gateFrame(storyTime(STORY_MS + HOLD_MS + 500)), gateFrame(500));
+  assert.deepEqual(gateFrame(storyTime(3 * (STORY_MS + HOLD_MS) + 5000)), gateFrame(5000));
+});
+
+test("report agent: its figures quote the case text, and its claims keep to the approved wording", async () => {
+  const { toolsFigure } = await import("../src/lib/decision-figures");
+  const agent = projects.find((p) => p.id === "report-agent")!;
+  const decision = agent.decisions.find((d) => d.title === toolsFigure.decision)!;
+  for (const quoted of [`도구 ${toolsFigure.agent.count}종`, toolsFigure.agent.kind, toolsFigure.agent.missing, toolsFigure.agent.status, "[이슈 만들기]", "확인 체크·대화 소유자·최신 초안", toolsFigure.issue.status])
+    assert.ok(decision.body.includes(quoted), quoted);
+  assert.ok(traces["report-agent"].frames.at(-1)!.log.includes("[이슈 만들기]"));
+  // Built and run alone; the follow-up assistant is design only; no before/after improvement rate.
+  const text = JSON.stringify(agent);
+  assert.equal(agent.role, "단독 설계·구현·운영");
+  assert.match(agent.outcome, /AI 업무 도우미를 설계했습니다/);
+  assert.ok(!/AI 업무 도우미[^.]*구현/.test(text));
+  assert.ok(!/%|단축|혼자|1인/.test(text));
+  for (const figure of ["109건", "94건", "15건", "69건", "약 1.9일", "22건", "6회차", "$0.003~0.006"]) assert.ok(text.includes(figure), figure);
+  // "단독" belongs to this case only.
+  for (const p of projects) if (p.id !== "report-agent") assert.ok(!JSON.stringify(p).includes("단독"), p.id);
 });

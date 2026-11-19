@@ -1,10 +1,10 @@
 "use client";
 import { useRef, type CSSProperties, type ReactNode } from "react";
 import { usePlayback } from "@/lib/motion";
-import { batchDots, batchFigure, draftFigure, settlementFigure } from "@/lib/decision-figures";
+import { batchDots, batchFigure, draftFigure, settlementFigure, toolsFigure } from "@/lib/decision-figures";
 
 // Longest animation in each figure's block of v3.css.
-const PLAY_MS = { batch: 2600, settlement: 2600, draft: 3400 };
+const PLAY_MS = { batch: 2600, settlement: 2600, draft: 3400, tools: 2600 };
 
 function Frame({ kind, label, title, children }: { kind: keyof typeof PLAY_MS; label: string; title: string; children: ReactNode }) {
   const ref = useRef<HTMLElement>(null);
@@ -132,7 +132,49 @@ function Draft() {
   );
 }
 
+function Tools() {
+  const f = toolsFigure;
+  return (
+    <Frame kind="tools" label={f.label} title="도구 권한 · 개념도">
+      <div className="dfig-cols">
+        <div className="dfig-card is-agent">
+          <p className="dfig-name">{f.agent.name}</p>
+          <p className="dfig-row">
+            <span>{f.agent.kind}</span>
+            <span className="dfig-count" aria-hidden="true">
+              {Array.from({ length: f.agent.count }, (_, i) => (
+                <i key={i} style={{ "--i": i } as CSSProperties} />
+              ))}
+            </span>
+            <b>{f.agent.count}종</b>
+          </p>
+          <p className="dfig-row is-missing">
+            <span>{f.agent.missing}</span>
+            <span className="dfig-count" aria-hidden="true">
+              <i />
+            </span>
+            <b>없음</b>
+          </p>
+          <p className="dfig-status">{f.agent.status}</p>
+        </div>
+        <p className="dfig-link">{f.link}</p>
+        <div className="dfig-card is-snapshot">
+          <p className="dfig-name">{f.issue.name}</p>
+          {f.issue.rows.map(([who, what]) => (
+            <p key={who} className="dfig-row">
+              <span>{who}</span>
+              <b>{what}</b>
+            </p>
+          ))}
+          <p className="dfig-status">✓ {f.issue.status}</p>
+        </div>
+      </div>
+    </Frame>
+  );
+}
+
 const figures: Record<string, () => ReactNode> = {
+  [toolsFigure.decision]: Tools,
   [batchFigure.decision]: Batch,
   [settlementFigure.decision]: Settlement,
   [draftFigure.decision]: Draft,

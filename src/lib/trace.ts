@@ -24,6 +24,21 @@ const frame = (
 // Step-by-step playback of the process diagrams. Logs follow the published
 // project text; the last frame is the static diagram shown without motion.
 export const traces = {
+  "report-agent": {
+    title: "문제 보고 도우미",
+    subtitle: "제보에서 이슈 초안까지",
+    label: "제보를 구조화하고 소스를 조사해 초안을 만든 뒤 사람이 확인하는 흐름",
+    steps: ["제보 구조화", "소스 조사", "초안 · 사람 확인"],
+    caption: "도구 9종은 전부 읽기 전용 · 이슈는 사람이 눌러야 생성",
+    frames: [
+      frame(["run", "idle", "idle"], ["idle", "idle"], "▸ 제보를 화면·조작·실제·기대로 구조화", 900),
+      frame(["done", "idle", "idle"], ["run", "idle"], "▸ 라우트·API·오류 코드 색인 조회", 650),
+      frame(["done", "run", "idle"], ["done", "idle"], "▸ 배포 커밋의 소스를 줄 단위로 읽기", 900),
+      frame(["done", "done", "idle"], ["done", "run"], "✓ 의심 위치를 서버가 다시 확인 · 없는 줄은 버림", 800),
+      frame(["done", "done", "wait"], ["done", "done"], "… 초안 카드 · 사람 확인 대기", 1500),
+      frame(["done", "done", "pass"], ["done", "done"], "✓ [이슈 만들기] · Jira 이슈 생성", 2200),
+    ],
+  },
   harness: {
     title: "jira-harness",
     subtitle: "코드 검증 흐름",

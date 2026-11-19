@@ -38,7 +38,6 @@
 .gate-log[data-tone="pass"] { color: var(--lime); }
 .gate-log[data-tone="alert"] { color: var(--amber); }
 .gate-log[data-tone="retry"] { color: var(--text); }
-.gate-stage .replay-button { position: absolute; top: 0; right: 0; pointer-events: auto; }
 
 .point-cloud { display: block; }
 .project-card:first-child .project-copy h3, .project-card:first-child .project-subtitle { padding-right: 150px; }
@@ -75,7 +74,7 @@ html[data-motion="paused"] .tl .tl-span { clip-path: none; transition: none; }
 /* Evidence matrix */
 .matrix-wrap { margin: 0 0 70px; overflow-x: auto; }
 .matrix { width: 100%; min-width: 700px; border-collapse: collapse; }
-.matrix thead th { width: 14%; padding: 0 10px 16px 0; text-align: left; vertical-align: bottom; font-size: 14px; font-weight: 600; line-height: 1.45; letter-spacing: -0.03em; white-space: nowrap; }
+.matrix thead th { width: 12.4%; padding: 0 10px 16px 0; text-align: left; vertical-align: bottom; font-size: 14px; font-weight: 600; line-height: 1.45; letter-spacing: -0.03em; white-space: nowrap; }
 .matrix thead th a { display: block; color: var(--text); }
 .matrix thead th a:hover { color: var(--lime); }
 .matrix thead th span { display: block; margin-bottom: 4px; font-family: var(--mono); font-size: 10px; color: var(--lime); letter-spacing: 0.04em; }
@@ -131,8 +130,7 @@ html[data-motion="paused"] .tl .tl-span { clip-path: none; transition: none; }
   .gate-stage { height: 300px; }
   .gate-labels li { font-size: 11px; gap: 4px; }
   .gate-labels li span { display: none; }
-  .gate-log { max-width: calc(100% - 124px); font-size: 11px; line-height: 1.5; }
-  .gate-stage .replay-button { top: auto; bottom: 0; }
+  .gate-log { font-size: 11px; line-height: 1.5; }
   .tl { margin-top: 48px; }
   .tl-row { grid-template-columns: 1fr; row-gap: 2px; padding: 10px 0 6px; }
   .tl-head { display: none; }
@@ -195,6 +193,15 @@ html[data-motion="paused"] .tl .tl-span { clip-path: none; transition: none; }
 .dfig-timer b { display: block; font-size: 24px; letter-spacing: -0.04em; line-height: 1.2; }
 .dfig-outcomes { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
 .dfig-outcomes li { display: grid; gap: 2px; padding: 12px 14px; border: 1px solid #ffffff2a; border-radius: 8px; background: #1d2419; }
+.dfig-tools .dfig-row { grid-template-columns: minmax(5.2em, auto) 1fr auto; }
+.dfig-tools .is-snapshot .dfig-row { grid-template-columns: 3em 1fr; }
+.dfig-tools .dfig-row b { font-weight: 600; color: var(--text); }
+.dfig-count { display: flex; gap: 5px; }
+.dfig-count i { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--lime); }
+.dfig .is-missing { color: var(--muted); }
+.dfig .is-missing .dfig-count i { background: none; border: 1.5px dashed #6b7361; }
+.dfig .is-missing b { color: var(--amber); }
+.dfig-card.is-agent .dfig-status { color: var(--text); font-weight: 500; }
 .dfig-outcomes span { font-size: 12px; line-height: 1.5; color: #b8c2ad; }
 .dfig-outcomes b { font-size: 14px; font-weight: 600; line-height: 1.5; }
 .dfig-outcomes .is-pass { border-color: #d1f58a66; }
@@ -208,6 +215,9 @@ html[data-motion="paused"] .tl .tl-span { clip-path: none; transition: none; }
   .dfig-draft[data-playing] .dfig-timer circle { animation: dfig-tick 0.2s calc(0.4s + var(--i) * 45ms) both; }
   .dfig-draft[data-playing] .is-pass { animation: dfig-in 0.4s 0.6s both; }
   .dfig-draft[data-playing] .is-expire { animation: dfig-in 0.4s 2.9s both; }
+  .dfig-tools[data-playing] .dfig-count i { animation: dfig-in 0.3s calc(0.2s + var(--i, 9) * 90ms) both; }
+  .dfig-tools[data-playing] .is-agent .dfig-status { animation: dfig-in 0.4s 1.5s both; }
+  .dfig-tools[data-playing] .is-snapshot { animation: dfig-in 0.4s 2s both; }
 }
 @keyframes dfig-gather { from { transform: translate(var(--dx), var(--dy)); } }
 @keyframes dfig-change { 0%, 48% { color: var(--lime); background-size: 12px 12px; opacity: 1; } 58% { opacity: 0.15; } 68%, 100% { color: var(--amber); background-size: 16px 12px; opacity: 1; } }
@@ -292,4 +302,17 @@ html[data-motion="paused"] .tl .tl-span { clip-path: none; transition: none; }
   .scene-copy { width: auto; }
   .scene-figure { display: block; width: 100%; height: 210px; margin-bottom: 10px; }
   .scene-summary { font-size: 16px; }
+}
+
+/* Seventh case: its own accent and diagram backdrop. */
+.accent-coral { --accent: #ff8a6c; }
+.report-art { background: radial-gradient(ellipse at 20% 0, #4a3029, #261b18); }
+.hero3 .proof-grid { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 999px) {
+  .hero3 .proof-grid { grid-template-columns: repeat(2, 1fr); row-gap: 22px; }
+  .hero3 .proof-grid > a:nth-child(2n) { border-right: 0; }
+  .hero3 .proof-grid > a:nth-child(3) { padding-left: 0; }
+}
+@media (max-width: 620px) {
+  .hero3 .proof-grid { grid-template-columns: 1fr; }
 }

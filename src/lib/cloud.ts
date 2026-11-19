@@ -13,6 +13,7 @@ export type CloudPoint = {
 };
 export type FigureId =
   | "field-service"
+  | "report-agent"
   | "platform-operations"
   | "payments"
   | "membership"
@@ -71,6 +72,24 @@ const builders: Record<FigureId, (add: Add) => void> = {
       }
     }
     line(add, [-1.2, 0, 0], [1.2, 0, 0], 49, 0, 1);
+  },
+  // A report comes in, a probe reads down through the sheets of the deployed source
+  // to one line, and the draft leaves through the ring where a person confirms it.
+  "report-agent": (add) => {
+    ball(add, [-1.16, 0, 0], 0.13, 22, 0);
+    line(add, [-0.98, 0, 0], [-0.64, 0, 0], 8, 0.05, 0.18);
+    const n = 7;
+    [-0.38, 0, 0.38].forEach((y, sheet) => {
+      for (let ix = 0; ix < n; ix++)
+        for (let iz = 0; iz < n; iz++) {
+          const found = sheet === 1 && iz === 3 && ix >= 2 && ix <= 5;
+          add(-0.5 + (ix / (n - 1)) * 0.92, y, (iz / (n - 1) - 0.5) * 0.92, 0.22 + (ix / (n - 1)) * 0.28, found ? 1 : 0);
+        }
+    });
+    line(add, [-0.04, 0.66, 0], [-0.04, -0.66, 0], 20, 0.3, 0.52, 1);
+    line(add, [0.5, 0, 0], [0.78, 0, 0], 7, 0.6, 0.76);
+    ring(add, 0.9, 0.3, 42, 0.84, 1);
+    ball(add, [1.2, 0, 0], 0.09, 14, 1, 1);
   },
   // A loose cloud on the left, the same dots in an ordered lattice on the right:
   // the backend moved onto one stack.
@@ -172,6 +191,7 @@ export function settled(p: number, u: number): number {
 // Signature colour of each case as "r,g,b", shared by its figure and its scene.
 export const figureColor: Record<FigureId, string> = {
   "field-service": "126,231,214",
+  "report-agent": "255,138,108",
   "platform-operations": "146,186,255",
   payments: "255,190,120",
   membership: "255,160,200",

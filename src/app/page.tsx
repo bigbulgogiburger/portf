@@ -46,7 +46,7 @@ export default function Home() {
           <div className="hero3-top">
             <h1 id="hero-title"><span className="hero-role">{profile.name} · {profile.headline}</span>{" "}<span className="hero-line"><span><b>Java·Spring으로</b> <b>업무 시스템을 만들고,</b></span></span>{" "}<span className="hero-line"><span><b>AI 개발을</b> <b>검증 절차로 통제합니다.</b></span></span></h1>
             <div className="hero3-side">
-              <p className="hero-description">2021년 5월부터 결제·회원·A/S 서비스를 개발해 왔습니다. 현재 DB Inc.에서 <span className="nowrap">백엔드 개발·PM을</span> 맡고, <span className="nowrap">CS AI Agent를</span> 운영 환경에 도입했습니다.</p>
+              <p className="hero-description">2021년 5월부터 결제·회원·A/S 서비스를 개발해 왔습니다. 현재 DB Inc.에서 <span className="nowrap">백엔드 개발·PM을</span> 맡고, <span className="nowrap">CS AI Agent와</span> <span className="nowrap">문제 보고 도우미를</span> 운영 환경에 도입했습니다.</p>
               <p className="hero-stack">Java · Spring Boot · JPA · MySQL · Redis · AWS · LLM API</p>
               <div className="hero-actions">
                 <a className="button primary" href="#work">프로젝트 살펴보기 <ArrowUpRight size={19} /></a>
@@ -55,12 +55,13 @@ export default function Home() {
           </div>
           <figure className="hero3-figure">
             <GateTunnel />
-            <figcaption><span>개발·검증 절차</span><span><Link href="/projects/field-service">전동공구 A/S 플랫폼</Link> 개발에 직접 만든 <Link href="/projects/harness">jira-harness</Link>를 사용합니다.</span></figcaption>
+            <figcaption><span>개발·검증 절차</span><span><Link href="/projects/field-service">전동공구 A/S 플랫폼</Link>의 제보는 <Link href="/projects/report-agent">문제 보고 도우미</Link>가 이슈 초안으로 바꾸고, 이후 절차는 직접 만든 <Link href="/projects/harness">jira-harness</Link>가 잇습니다.</span></figcaption>
           </figure>
           <div className="proof-grid" data-reveal>
             <Link href="/projects/platform-operations"><span className="proof-number"><small>약</small> 50<span>개 API</span></span><p>Next.js → Spring Boot 이관</p></Link>
             <Link href="/projects/platform-operations"><span className="proof-number"><small>약</small> 1시간 <span>→</span> <small>약</small> 10분</span><span className="proof-bars" aria-hidden="true"><span>이전<b /></span><span>현재<b /></span></span><p>배포 자동화 · 서버 2대 기준</p></Link>
             <Link href="/projects/membership"><span className="proof-number"><small>약</small> 1만<span>명</span></span><p>통합회원 전환 완료 · DB 집계 기준</p></Link>
+            <Link href="/projects/report-agent"><span className="proof-number">109<span>건</span></span><p>문제 보고 도우미를 거쳐 등록된 이슈 · Jira 집계</p></Link>
           </div>
         </section>
         <section className="work-section scenes" id="work">
