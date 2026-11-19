@@ -34,6 +34,12 @@
 .gate-labels li.is-blocked, .gate-labels li.is-changed, .gate-labels li.is-blocked span, .gate-labels li.is-changed span { color: var(--amber); }
 .gate-chip { position: absolute; top: 0; left: 0; padding: 4px 10px; border: 1px solid var(--amber); border-radius: 20px; background: #10120fd9; color: var(--amber); font-family: var(--mono); font-size: 10px; letter-spacing: 0.06em; white-space: nowrap; opacity: 0; pointer-events: none; }
 .gate-chip.is-block { background: var(--amber); color: #1d1608; font-weight: 600; }
+.gate-chip.is-record { display: inline-flex; align-items: center; gap: 8px; border-color: #d1f58a80; color: var(--lime); transition: color 0.3s, border-color 0.3s; }
+.gate-chip.is-record[data-state="stale"] { border-color: var(--amber); color: var(--amber); }
+.gate-tree { display: grid; grid-template-columns: repeat(3, 4px); gap: 2px; }
+.gate-tree i { width: 4px; height: 4px; border-radius: 50%; background: #4b5245; transition: background 0.3s, box-shadow 0.3s; }
+.gate-tree .is-on, [data-state="renewed"] .gate-tree .is-edit { background: var(--lime); }
+[data-state="stale"] .gate-tree .is-edit { background: transparent; box-shadow: 0 0 0 1px var(--amber); }
 .gate-log { position: absolute; left: 0; bottom: 6px; font-family: var(--mono); font-size: 12px; letter-spacing: -0.01em; color: var(--muted); min-height: 1.7em; }
 .gate-log[data-tone="pass"] { color: var(--lime); }
 .gate-log[data-tone="alert"] { color: var(--amber); }
