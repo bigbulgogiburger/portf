@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
-import { COMMIT, gateFrame, gateNames, restFrame, type GateFrame } from "@/lib/gates";
+import { useEffect, useRef } from "react";
+import { COMMIT, gateFrame, gateNames, restFrame, storyTime, type GateFrame } from "@/lib/gates";
 import { useInView, useMotion } from "@/lib/motion";
 
 const LIME = "209,245,138";
@@ -19,8 +19,8 @@ const LAST = 6.5;
 const axis = (s: number) => [(s - 2.5) * SPACING, 0.1 * Math.sin(s * 1.05 + 0.4), 0.16 * Math.cos(s * 0.75)] as const;
 const bump = (d: number, width: number) => Math.exp(-(d * d) / (width * width));
 
-// Hero figure: a dotted tube of six gates. The story in lib/gates plays once
-// each time it comes into view; paused or reduced motion shows the rest frame.
+// Hero figure: a dotted tube of six gates. The story in lib/gates repeats while
+// the figure is in view; paused or reduced motion shows the rest frame.
 export function GateTunnel() {
   const { allowed } = useMotion();
   const stageRef = useRef<HTMLDivElement>(null);
@@ -31,7 +31,6 @@ export function GateTunnel() {
   const logRef = useRef<HTMLParagraphElement>(null);
   const pointer = useRef({ x: 0, y: 0 });
   const inView = useInView(stageRef, 0.35);
-  const [run, setRun] = useState(0);
   const animate = allowed && inView;
 
   useEffect(() => {
@@ -135,6 +134,7 @@ export function GateTunnel() {
             }
           }
       }
+      if (sig === null) previous = -9;
       if (sig !== null) {
         if (Math.abs(sig - previous) > 1e-4) heading = sig > previous ? 1 : -1;
         previous = sig;
@@ -194,7 +194,7 @@ export function GateTunnel() {
       }
     };
     const tick = (now: number) => {
-      render(animate ? gateFrame(now - started) : restFrame, animate ? now / 1000 : 0);
+      render(animate ? gateFrame(storyTime(now - started)) : restFrame, animate ? now / 1000 : 0);
       if (animate) raf = requestAnimationFrame(tick);
     };
     const resize = new ResizeObserver(([entry]) => {
@@ -212,7 +212,7 @@ export function GateTunnel() {
       cancelAnimationFrame(raf);
       resize.disconnect();
     };
-  }, [animate, run]);
+  }, [animate]);
 
   return (
     <div
@@ -251,11 +251,6 @@ export function GateTunnel() {
       <p ref={logRef} className="gate-log" data-tone={restFrame.tone} aria-hidden="true">
         {restFrame.log}
       </p>
-      {allowed && (
-        <button type="button" className="replay-button" onClick={() => setRun((n) => n + 1)}>
-          흐름 다시 보기
-        </button>
-      )}
       <p className="sr-only">검증 이후 코드가 바뀌면 커밋을 막고, 리뷰와 테스트를 다시 거친 뒤 커밋합니다.</p>
     </div>
   );

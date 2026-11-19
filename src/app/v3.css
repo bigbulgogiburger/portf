@@ -38,7 +38,6 @@
 .gate-log[data-tone="pass"] { color: var(--lime); }
 .gate-log[data-tone="alert"] { color: var(--amber); }
 .gate-log[data-tone="retry"] { color: var(--text); }
-.gate-stage .replay-button { position: absolute; top: 0; right: 0; pointer-events: auto; }
 
 .point-cloud { display: block; }
 .project-card:first-child .project-copy h3, .project-card:first-child .project-subtitle { padding-right: 150px; }
@@ -131,8 +130,7 @@ html[data-motion="paused"] .tl .tl-span { clip-path: none; transition: none; }
   .gate-stage { height: 300px; }
   .gate-labels li { font-size: 11px; gap: 4px; }
   .gate-labels li span { display: none; }
-  .gate-log { max-width: calc(100% - 124px); font-size: 11px; line-height: 1.5; }
-  .gate-stage .replay-button { top: auto; bottom: 0; }
+  .gate-log { font-size: 11px; line-height: 1.5; }
   .tl { margin-top: 48px; }
   .tl-row { grid-template-columns: 1fr; row-gap: 2px; padding: 10px 0 6px; }
   .tl-head { display: none; }

@@ -40,6 +40,11 @@ export const restFrame: GateFrame = {
   tone: "pass",
 };
 
+// The story repeats; the finished state is held this long before it starts over.
+export const HOLD_MS = 2600;
+// Time within the current pass, for a clock that has been running for `ms`.
+export const storyTime = (ms: number) => ms % (STORY_MS + HOLD_MS);
+
 const ease = (t: number) => t * t * (3 - 2 * t);
 const ramp = (ms: number, start: number, end: number) => Math.min(1, Math.max(0, (ms - start) / (end - start)));
 

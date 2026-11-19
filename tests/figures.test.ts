@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { projects } from "../src/data/portfolio";
 import { figure, figureColor, figureIds, resample, scenePose, settled } from "../src/lib/cloud";
-import { COMMIT, STORY_MS, gateFrame, gateNames, restFrame } from "../src/lib/gates";
+import { COMMIT, HOLD_MS, STORY_MS, gateFrame, gateNames, restFrame, storyTime } from "../src/lib/gates";
 import { traces } from "../src/lib/trace";
 import { span, timeline } from "../src/lib/timeline";
 import { evidenceRows, searchEntries } from "../src/lib/evidence";
@@ -132,4 +132,10 @@ test("scene dots: the stage holds its pose across every scene boundary", () => {
   }
   // Never head-on, where rings facing the flow would collapse into lines.
   for (let p = 0; p <= figureIds.length; p += 0.05) assert.ok(scenePose(p).yaw < -0.5);
+});
+
+test("gate story: it holds the finished state, then starts over", () => {
+  assert.equal(gateFrame(storyTime(STORY_MS + HOLD_MS / 2)), restFrame);
+  assert.deepEqual(gateFrame(storyTime(STORY_MS + HOLD_MS + 500)), gateFrame(500));
+  assert.deepEqual(gateFrame(storyTime(3 * (STORY_MS + HOLD_MS) + 5000)), gateFrame(5000));
 });
