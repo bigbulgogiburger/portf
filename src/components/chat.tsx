@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { Sparkles, X, Send, ArrowUpRight } from "./icons";
+import { MessageSquareText, X, Send, ArrowUpRight } from "./icons";
 import { useMotion } from "@/lib/motion";
 
 type Message = { role: "user" | "assistant"; content: string };
@@ -147,11 +147,11 @@ export function Chat() {
     <>
       <div className="chat-header">
         <div className="assistant-avatar">
-          <Sparkles size={19} />
+          <MessageSquareText size={19} />
         </div>
         <div>
           <strong>도훈의 AI</strong>
-          <span>PORTFOLIO ASSISTANT</span>
+          <span>공개된 프로젝트 본문으로 답변</span>
         </div>
         <button
           className="chat-reset"
@@ -274,7 +274,7 @@ export function Chat() {
         aria-label="도훈의 AI 챗봇 열기"
         onClick={() => setOpen(true)}
       >
-        <Sparkles size={19} />
+        <MessageSquareText size={19} />
         <span>도훈의 AI에게 물어보기</span>
         <i />
       </button>

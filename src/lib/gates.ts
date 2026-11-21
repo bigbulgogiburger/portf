@@ -36,7 +36,8 @@ const beats: Beat[] = [
   { until: 10400, from: 4.4, to: LANDING, log: "✓ 검증 기록과 커밋 대상 일치 · 커밋 진행", tone: "pass" },
 ];
 export const STORY_MS = beats[beats.length - 1].until;
-// What the figure shows without motion, and after the story has played.
+// What the figure shows without motion, and after the story has played. Its line
+// sums up the whole story, so a still figure still tells about the blocked commit.
 export const restFrame: GateFrame = {
   signal: null,
   block: 0,
@@ -44,7 +45,7 @@ export const restFrame: GateFrame = {
   lit: gateNames.map(() => true),
   record: 1,
   edited: true,
-  log: beats[beats.length - 1].log,
+  log: "✓ 검증 뒤 코드가 바뀌면 차단 · 재검증 뒤 커밋",
   tone: "pass",
 };
 

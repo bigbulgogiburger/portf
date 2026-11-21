@@ -44,7 +44,7 @@ export const projects: Project[] = [
     highlight: "정산 생성 시점의 금액 보관",
   },
   {
-    id: "report-agent", number: "02", category: "AI 에이전트 · 운영",
+    id: "report-agent", number: "02", category: "AI 에이전트",
     title: "문제 보고 도우미", subtitle: "전동공구 A/S 시스템의 LLM 에이전트 · DB Inc.",
     problem: "화면 문제 제보가 ‘저장이 안 돼요’ 수준이어서, 개발자가 매번 되묻고 코드를 추적해야 했습니다.",
     summary: "직원이 겪은 문제를 말로 설명하면, 배포된 커밋의 소스를 읽어 원인 후보(파일·줄)까지 좁힌 Jira 이슈 초안을 만듭니다. 이슈는 사람이 확인하고 눌러야 생깁니다.",
@@ -87,7 +87,8 @@ export const projects: Project[] = [
   },
   {
     id: "payments", number: "04", category: "결제 연동·장애 분석",
-    title: "스카이탭 결제·Apple 환불 연동", subtitle: "1:1 태블릿 과외 · 독립 결제 서버와 Spring AOP 오류 수정",
+    // U+2060 keeps "결제·Apple" on one line, so no line starts with the middle dot.
+    title: "스카이탭 결제⁠·Apple 환불 연동", subtitle: "1:1 태블릿 과외 · 독립 결제 서버와 Spring AOP 오류 수정",
     problem: "Apple 환불 검증에서 재시도가 실행되지 않아 호출 구조를 확인해야 했습니다.",
     summary: "기술 스택이 다른 결제 기능을 독립 서버로 개발하고, 호출 주체별로 인증 경로를 나눴습니다.",
     role: "플랫비: 결제·환불 연동 / 교육지대: 회원·결제·모니터링",
@@ -211,9 +212,9 @@ export const capabilities: { title: string; caption: string; skills: Skill[] }[]
   ] },
 ];
 // Result heading by delivery stage: in-progress work is not presented as an outcome.
-export function resultLabel(p: Project): { en: string; ko: string } {
-  if (p.status.endsWith("중")) return { en: "CURRENT SCOPE", ko: "현재 범위" };
-  return { en: "RESULT", ko: "성과" };
+export function resultLabel(p: Project): { ko: string } {
+  if (p.status.endsWith("중")) return { ko: "현재 범위" };
+  return { ko: "성과" };
 }
 // Reviewed public facts, shared by the site and its assistant.
 export const publicKnowledge = JSON.stringify({ profile, career, education, certifications, projects, capabilities });

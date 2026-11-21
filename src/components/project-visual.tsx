@@ -6,7 +6,7 @@ import type { TraceId } from "@/lib/trace";
 
 type Screen = { file: string; alt: string; caption: string };
 // The A/S dashboard is the owner's own screen work, so it is the project visual.
-const dashboard: Screen = {file:"field-service-1",alt:"글로벌 전동공구 브랜드 A/S 관리자 대시보드 (고객사 정보 가림)",caption:"직접 개발한 A/S 대시보드 · 집계값은 테스트 데이터 · 고객사 정보 가림"};
+const dashboard: Screen = {file:"field-service-dashboard",alt:"글로벌 전동공구 브랜드 A/S 관리자 대시보드 (고객사 정보 가림)",caption:"직접 개발한 A/S 대시보드 · 집계값은 테스트 데이터 · 고객사 정보 가림"};
 // The home card has no caption under the image, so it carries a short notice.
 const dashboardNote = "테스트 데이터 · 고객사 정보 가림";
 // Other service screens only give context on case pages.

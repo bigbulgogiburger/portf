@@ -47,15 +47,16 @@ export default async function ProjectPage({
         <Link href="/#work" className="text-link back-link">
           ← 모든 프로젝트
         </Link>
-        <div className="section-kicker">
-          <span>
-            {p.number} / {p.category}
-          </span>
-          <span>{p.period} · {p.status}</span>
-        </div>
         <PointCloud id={p.id as FigureId} className="case-emblem" />
         <h1>{p.title}</h1>
         <p className="case-subtitle">{p.subtitle}</p>
+        <p className="case-facts">
+          <span>
+            {p.number} / {String(projects.length).padStart(2, "0")}
+          </span>
+          <span>{p.category}</span>
+          <span>{p.period} · {p.status}</span>
+        </p>
         <p className="case-intro">{p.summary}</p>
         <div className="case-meta">
           <div>
@@ -114,12 +115,10 @@ export default async function ProjectPage({
         <p className="visual-caption">{visualCaption(p.id)}</p>
         <ServiceContext id={p.id} />
         <section className="case-section">
-          <span className="eyebrow">01 / CHALLENGE</span>
           <h2>문제와 제약</h2>
           <p>{p.challenge}</p>
         </section>
         <section className="case-section">
-          <span className="eyebrow">02 / DECISIONS</span>
           <h2>설계와 구현</h2>
           <div className="decisions">
             {p.decisions.map((d, i) => (
@@ -163,15 +162,13 @@ export default async function ProjectPage({
           </small>
         </section>
         <section className="case-section case-result">
-          <span className="eyebrow">
-            03 / {resultLabel(p).en}
-          </span>
-          <h2>{p.metric}</h2>
+          <h2>{resultLabel(p).ko}</h2>
+          <p className="case-result-metric">{p.metric}</p>
           <p className="metric-label">{p.metricLabel}</p>
           <p>{p.outcome}</p>
         </section>
         <div className="case-next">
-          <span className="eyebrow">다음 프로젝트</span>
+          <span>다음 프로젝트</span>
           <Link href={`/projects/${next.id}`}>
             {next.title}
             <ArrowUpRight />
@@ -188,6 +185,7 @@ export default async function ProjectPage({
           <CopyEmail email={profile.email} />
         </div>
       </main>
+      <footer className="container footer"><span>© 2026 DOHOON PYUN</span><a href="/privacy">AI 이용 안내</a><a href="#main">맨 위로 ↑</a></footer>
       <Chat />
     </>
   );
